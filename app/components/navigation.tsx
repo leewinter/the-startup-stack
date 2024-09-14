@@ -1,4 +1,3 @@
-import type { User } from '@prisma/client'
 import { Link, useLocation, useSubmit, useNavigate } from '@remix-run/react'
 import { ChevronUp, ChevronDown, Slash, Check, Settings, LogOut } from 'lucide-react'
 import { PLANS } from '#app/modules/stripe/plans'
@@ -21,24 +20,10 @@ import {
 } from '#app/components/ui/dropdown-menu'
 import { Button, buttonVariants } from '#app/components/ui/button'
 import { Logo } from '#app/components/logo'
-
-/**
- * Required to handle JsonifyObject Typescript mismatch.
- * This will be fixed in future versions of Remix.
- */
-type JsonifyObjectUser = Omit<User, 'createdAt' | 'updatedAt'> & {
-  image: {
-    id: string
-  } | null
-  roles: {
-    name: string
-  }[]
-  createdAt: string | null
-  updatedAt: string | null
-}
+import { type User } from '#db/schema.ts'
 
 type NavigationProps = {
-  user: JsonifyObjectUser | null
+  user: User
   planId?: string
 }
 

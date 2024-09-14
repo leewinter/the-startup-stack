@@ -13,12 +13,13 @@ import {
   createSubscriptionCheckout,
   createCustomerPortal,
 } from '#app/modules/stripe/queries.server'
-import { prisma } from '#app/utils/db.server'
 import { getLocaleCurrency } from '#app/utils/misc.server'
 import { INTENTS } from '#app/utils/constants/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { Switch } from '#app/components/ui/switch'
 import { Button } from '#app/components/ui/button'
+import { db, schema } from '#db/index.js'
+import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard/settings/billing' as const
 
@@ -31,8 +32,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     redirectTo: LOGIN_PATH,
   })
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: sessionUser.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, sessionUser.id),
   })
   const currency = getLocaleCurrency(request)
 

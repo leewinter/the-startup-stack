@@ -43,7 +43,7 @@ export function userHasRole(
   role: RoleName,
 ) {
   if (!user) return false
-  return user.roles.some((r) => r.name === role)
+  return user.roles.some((r) => r.role.name === role)
 }
 
 /**

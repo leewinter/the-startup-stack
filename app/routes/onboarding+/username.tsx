@@ -18,7 +18,6 @@ import {
   createCustomer,
   createFreeSubscription,
 } from '#app/modules/stripe/queries.server'
-import { prisma } from '#app/utils/db.server'
 import { validateCSRF } from '#app/utils/csrf.server'
 import { checkHoneypot } from '#app/utils/honeypot.server'
 import { useIsPending } from '#app/utils/misc'
@@ -27,6 +26,8 @@ import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { Input } from '#app/components/ui/input'
 import { Button } from '#app/components/ui/button'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
+import { db, schema } from '#db'
+import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/onboarding/username' as const
 
@@ -65,9 +66,11 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const { username } = submission.value
-  const isUsernameTaken = await prisma.user.findUnique({ where: { username } })
+  const user = await db.query.user.findFirst({
+    where: eq(schema.user.username, username),
+  })
 
-  if (isUsernameTaken) {
+  if (user) {
     return json(
       submission.reply({
         fieldErrors: {
@@ -76,10 +79,10 @@ export async function action({ request }: ActionFunctionArgs) {
       }),
     )
   }
-  await prisma.user.update({ where: { id: sessionUser.id }, data: { username } })
+  await db.update(schema.user).set({ username }).where(eq(schema.user.id, sessionUser.id))
   await createCustomer({ userId: sessionUser.id })
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: sessionUser.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, sessionUser.id),
   })
   if (!subscription) await createFreeSubscription({ userId: sessionUser.id, request })
 

@@ -1,14 +1,15 @@
 import { PLANS } from '#app/modules/stripe/plans'
 import { stripe } from '#app/modules/stripe/stripe.server'
-import { prisma } from '#app/utils/db.server'
 import { getLocaleCurrency, HOST_URL } from '#app/utils/misc.server'
 import { ERRORS } from '#app/utils/constants/errors'
+import { db, schema } from '#db/index.js'
+import { eq } from 'drizzle-orm'
 
 /**
  * Creates a Stripe customer for a user.
  */
 export async function createCustomer({ userId }: { userId: string }) {
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const user = await db.query.user.findFirst({ where: eq(schema.user.id, userId) })
   if (!user || user.customerId) throw new Error(ERRORS.STRIPE_CUSTOMER_NOT_CREATED)
 
   const email = user.email ?? undefined
@@ -18,7 +19,10 @@ export async function createCustomer({ userId }: { userId: string }) {
     .catch((err) => console.error(err))
   if (!customer) throw new Error(ERRORS.STRIPE_CUSTOMER_NOT_CREATED)
 
-  await prisma.user.update({ where: { id: user.id }, data: { customerId: customer.id } })
+  await db
+    .update(schema.user)
+    .set({ customerId: customer.id })
+    .where(eq(schema.user.id, user.id))
   return true
 }
 
@@ -32,18 +36,18 @@ export async function createFreeSubscription({
   userId: string
   request: Request
 }) {
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const user = await db.query.user.findFirst({ where: eq(schema.user.id, userId) })
   if (!user || !user.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, user.id),
   })
   if (subscription) return false
 
   const currency = getLocaleCurrency(request)
-  const plan = await prisma.plan.findUnique({
-    where: { id: PLANS.FREE },
-    include: { prices: true },
+  const plan = await db.query.plan.findFirst({
+    where: eq(schema.plan.id, PLANS.FREE),
+    with: { prices: true },
   })
   const yearlyPrice = plan?.prices.find(
     (price) => price.interval === 'year' && price.currency === currency,
@@ -56,18 +60,16 @@ export async function createFreeSubscription({
   })
   if (!stripeSubscription) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
-  await prisma.subscription.create({
-    data: {
-      id: stripeSubscription.id,
-      userId: user.id,
-      planId: String(stripeSubscription.items.data[0].plan.product),
-      priceId: String(stripeSubscription.items.data[0].price.id),
-      interval: String(stripeSubscription.items.data[0].plan.interval),
-      status: stripeSubscription.status,
-      currentPeriodStart: stripeSubscription.current_period_start,
-      currentPeriodEnd: stripeSubscription.current_period_end,
-      cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
-    },
+  await db.insert(schema.subscription).values({
+    id: stripeSubscription.id,
+    userId: user.id,
+    planId: String(stripeSubscription.items.data[0].plan.product),
+    priceId: String(stripeSubscription.items.data[0].price.id),
+    interval: String(stripeSubscription.items.data[0].plan.interval),
+    status: stripeSubscription.status,
+    currentPeriodStart: stripeSubscription.current_period_start,
+    currentPeriodEnd: stripeSubscription.current_period_end,
+    cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
   })
 
   return true
@@ -87,18 +89,18 @@ export async function createSubscriptionCheckout({
   planInterval: string
   request: Request
 }) {
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const user = await db.query.user.findFirst({ where: eq(schema.user.id, userId) })
   if (!user || !user.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, user.id),
   })
   if (subscription?.planId !== PLANS.FREE) return
 
   const currency = getLocaleCurrency(request)
-  const plan = await prisma.plan.findUnique({
-    where: { id: planId },
-    include: { prices: true },
+  const plan = await db.query.plan.findFirst({
+    where: eq(schema.plan.id, planId),
+    with: { prices: true },
   })
 
   const price = plan?.prices.find(
@@ -122,7 +124,7 @@ export async function createSubscriptionCheckout({
  * Creates a Stripe customer portal for a user.
  */
 export async function createCustomerPortal({ userId }: { userId: string }) {
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const user = await db.query.user.findFirst({ where: eq(schema.user.id, userId) })
   if (!user || !user.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
   const customerPortal = await stripe.billingPortal.sessions.create({

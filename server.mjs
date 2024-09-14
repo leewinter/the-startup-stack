@@ -1,11 +1,16 @@
+import crypto from 'node:crypto'
+import fs from 'node:fs'
+import path from 'node:path'
 import { createRequestHandler } from '@remix-run/express'
 import { installGlobals } from '@remix-run/node'
-import crypto from 'crypto'
 import express from 'express'
 import compression from 'compression'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import Database from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 
 installGlobals()
 
@@ -20,6 +25,30 @@ const viteDevServer =
           server: { middlewareMode: true },
         }),
       )
+
+const remixHandler = createRequestHandler({
+  build: viteDevServer
+    ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
+    : () => import('./build/server/index.js'),
+  async getLoadContext(_, res) {
+    return {
+      cspNonce: res.locals.cspNonce,
+    }
+  },
+})
+
+// Setup and migrate the database
+const dbDir = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : path.resolve('./.database')
+fs.mkdirSync(dbDir, { recursive: true })
+
+const sqlite = new Database(path.resolve(dbDir, 'database.db'))
+fs.mkdirSync(dbDir, { recursive: true })
+
+migrate(drizzle(sqlite), {
+  migrationsFolder: './db/migrations',
+})
 
 const app = express()
 
@@ -147,18 +176,7 @@ app.get(['/img/*', '/favicons/*'], (req, res) => {
 })
 
 // Handle SSR requests.
-app.all(
-  '*',
-  createRequestHandler({
-    getLoadContext: (_, res) => ({
-      cspNonce: res.locals.cspNonce,
-    }),
-
-    build: viteDevServer
-      ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
-      : await import('./build/server/index.js'),
-  }),
-)
+app.all('*', remixHandler)
 
 app.listen(PORT, () =>
   console.log(`Express server listening at http://localhost:${PORT}`),

@@ -12,10 +12,10 @@ import { json } from '@remix-run/node'
 import { useChangeLanguage } from 'remix-i18next/react'
 import { AuthenticityTokenProvider } from 'remix-utils/csrf/react'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import { eq } from 'drizzle-orm'
 import { authenticator } from '#app/modules/auth/auth.server'
 import { useNonce } from '#app/utils/hooks/use-nonce'
 import { getHints } from '#app/utils/hooks/use-hints'
-import { prisma } from '#app/utils/db.server'
 import { getTheme, useTheme } from '#app/utils/hooks/use-theme'
 import { getToastSession } from '#app/utils/toast.server'
 import { csrf } from '#app/utils/csrf.server'
@@ -27,6 +27,7 @@ import { Toaster } from '#app/components/ui/sonner'
 import { ClientHintCheck } from '#app/components/misc/client-hints'
 import { GenericErrorBoundary } from '#app/components/misc/error-boundary'
 import i18nServer, { localeCookie } from '#app/modules/i18n/i18n.server'
+import { db, schema } from '#db'
 
 import RootCSS from './root.css?url'
 
@@ -48,15 +49,24 @@ export const links: LinksFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const sessionUser = await authenticator.isAuthenticated(request)
-  const user = sessionUser?.id
-    ? await prisma.user.findUnique({
-        where: { id: sessionUser?.id },
-        include: {
-          image: { select: { id: true } },
-          roles: { select: { name: true } },
+  const user =
+    sessionUser?.id &&
+    (await db.query.user.findFirst({
+      where: eq(schema.user.id, sessionUser.id),
+      with: {
+        image: { columns: { id: true } },
+        roles: {
+          columns: {},
+          with: {
+            role: {
+              columns: {
+                name: true,
+              },
+            },
+          },
         },
-      })
-    : null
+      },
+    }))
 
   const locale = await i18nServer.getLocale(request)
   const { toast, headers: toastHeaders } = await getToastSession(request)

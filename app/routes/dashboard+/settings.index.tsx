@@ -8,7 +8,6 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { Upload } from 'lucide-react'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { getSession, destroySession } from '#app/modules/auth/auth-session.server'
-import { prisma } from '#app/utils/db.server'
 import { createToastHeaders } from '#app/utils/toast.server'
 import { useDoubleCheck } from '#app/utils/hooks/use-double-check'
 import { getUserImgSrc } from '#app/utils/misc'
@@ -23,6 +22,8 @@ import {
   ImageSchema,
 } from '#app/routes/resources+/upload-image'
 import { ROUTE_PATH as RESET_IMAGE_PATH } from '#app/routes/resources+/reset-image'
+import { db, schema } from '#db/index.js'
+import { eq } from 'drizzle-orm'
 
 export const UsernameSchema = z.object({
   username: z
@@ -53,7 +54,9 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     const { username } = submission.value
-    const isUsernameTaken = await prisma.user.findUnique({ where: { username } })
+    const isUsernameTaken = await db.query.user.findFirst({
+      where: eq(schema.user.username, username),
+    })
 
     if (isUsernameTaken) {
       return json(
@@ -65,7 +68,7 @@ export async function action({ request }: ActionFunctionArgs) {
       )
     }
 
-    await prisma.user.update({ where: { id: user.id }, data: { username } })
+    await db.update(schema.user).set({ username }).where(eq(schema.user.id, user.id))
     return json(submission.reply({ fieldErrors: {} }), {
       headers: await createToastHeaders({
         title: 'Success!',
@@ -75,7 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (intent === INTENTS.USER_DELETE_ACCOUNT) {
-    await prisma.user.delete({ where: { id: user.id } })
+    await db.delete(schema.user).where(eq(schema.user.id, user.id))
     return redirect(HOME_PATH, {
       headers: {
         'Set-Cookie': await destroySession(

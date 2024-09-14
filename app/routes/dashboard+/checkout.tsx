@@ -5,11 +5,12 @@ import { json, redirect } from '@remix-run/node'
 import { Loader2, BadgeCheck, AlertTriangle, ExternalLink } from 'lucide-react'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
 import { PLANS } from '#app/modules/stripe/plans'
-import { prisma } from '#app/utils/db.server'
 import { useInterval } from '#app/utils/hooks/use-interval'
 import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { buttonVariants } from '#app/components/ui/button'
+import { db, schema } from '#db/index.js'
+import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard/checkout'
 
@@ -19,8 +20,8 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const sessionUser = await requireSessionUser(request)
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: sessionUser.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, sessionUser.id),
   })
   if (!subscription) return redirect(DASHBOARD_PATH)
 
@@ -58,7 +59,7 @@ export default function DashboardCheckout() {
           <div className="flex w-full px-6">
             <div className="w-full border-b border-border" />
           </div>
-          <div className="relative mx-auto flex w-full  flex-col items-center p-6">
+          <div className="relative mx-auto flex w-full flex-col items-center p-6">
             <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden rounded-lg border border-border bg-secondary px-6 py-24 dark:bg-card">
               <div className="z-10 flex flex-col items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">

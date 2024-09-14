@@ -3,10 +3,11 @@ import { json } from '@remix-run/node'
 import { Plus, ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { requireUser } from '#app/modules/auth/auth.server'
-import { prisma } from '#app/utils/db.server'
 import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
+import { db, schema } from '#db'
+import { eq } from 'drizzle-orm'
 
 export const meta: MetaFunction = () => {
   return [{ title: `${siteConfig.siteTitle} - Dashboard` }]
@@ -14,8 +15,8 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request)
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, user.id),
   })
   return json({ user, subscription } as const)
 }
@@ -38,7 +39,7 @@ export default function DashboardIndex() {
           <div className="flex w-full px-6">
             <div className="w-full border-b border-border" />
           </div>
-          <div className="relative mx-auto flex w-full  flex-col items-center p-6">
+          <div className="relative mx-auto flex w-full flex-col items-center p-6">
             <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden rounded-lg border border-border bg-secondary px-6 py-24 dark:bg-card">
               <div className="z-10 flex max-w-[460px] flex-col items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">

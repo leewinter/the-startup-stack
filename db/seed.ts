@@ -1,10 +1,9 @@
+import 'dotenv/config'
 import type { Interval } from '#app/modules/stripe/plans'
-import { PrismaClient } from '@prisma/client'
-import { prisma } from '#app/utils/db.server'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
-
-const client = new PrismaClient()
+import { db, schema } from '#db/index.js'
+import { eq, or } from 'drizzle-orm'
 
 async function seed() {
   /**
@@ -16,43 +15,82 @@ async function seed() {
   for (const entity of entities) {
     for (const action of actions) {
       for (const access of accesses) {
-        await prisma.permission.create({ data: { entity, action, access } })
+        await db.insert(schema.permission).values({ entity, action, access })
       }
     }
   }
 
-  await prisma.role.create({
-    data: {
-      name: 'admin',
-      permissions: {
-        connect: await prisma.permission.findMany({
-          select: { id: true },
-          where: { access: 'any' },
-        }),
-      },
-    },
-  })
-  await prisma.role.create({
-    data: {
-      name: 'user',
-      permissions: {
-        connect: await prisma.permission.findMany({
-          select: { id: true },
-          where: { access: 'own' },
-        }),
-      },
-    },
-  })
-  await prisma.user.create({
-    select: { id: true },
-    data: {
-      email: 'admin@admin.com',
-      username: 'admin',
-      roles: { connect: [{ name: 'admin' }, { name: 'user' }] },
-    },
+  async function createRoleWithPermissions(
+    name: string,
+    description: string,
+    access: (typeof accesses)[number],
+  ) {
+    await db.transaction(async (tx) => {
+      const [newRole] = await tx
+        .insert(schema.role)
+        .values({ name, description })
+        .returning()
+
+      const permissions = await tx
+        .select({ id: schema.permission.id })
+        .from(schema.permission)
+        .where(eq(schema.permission.access, access))
+
+      // Create permission-to-role associations
+      await tx.insert(schema.permissionToRole).values(
+        permissions.map((perm) => ({
+          roleId: newRole.id,
+          permissionId: perm.id,
+        })),
+      )
+    })
+  }
+
+  await createRoleWithPermissions('admin', 'Administrator role', 'any')
+  await createRoleWithPermissions('user', 'User role', 'own')
+
+  await db.transaction(async (tx) => {
+    const [user] = await tx
+      .insert(schema.user)
+      .values({ email: 'admin@admin.com', username: 'admin' })
+      .returning()
+
+    const roles = await tx
+      .select({ id: schema.role.id })
+      .from(schema.role)
+      .where(or(eq(schema.role.name, 'admin'), eq(schema.role.name, 'user')))
+
+    await tx
+      .insert(schema.roleToUser)
+      .values(roles.map((role) => ({ roleId: role.id, userId: user.id })))
   })
 
   console.info(`🎭 User roles and permissions has been successfully created.`)
+
+  const prices = await stripe.prices.list()
+
+  if (prices.data.length > 0) {
+    Object.values(PRICING_PLANS).forEach(async ({ id, name, description }) => {
+      await db.transaction(async (tx) => {
+        const [plan] = await tx
+          .insert(schema.plan)
+          .values({ id, name, description })
+          .returning()
+
+        await tx.insert(schema.price).values(
+          prices.data
+            .filter((price) => price.product === id)
+            .map((price) => ({
+              id: price.id,
+              planId: plan.id,
+              amount: price.unit_amount ?? 0,
+              currency: price.currency,
+              interval: price.recurring?.interval ?? 'month',
+            })),
+        )
+      })
+    })
+  }
 
   /**
    * Stripe Products.
@@ -98,23 +136,6 @@ async function seed() {
         }),
       )
 
-      // Store product into database.
-      await prisma.plan.create({
-        data: {
-          id,
-          name,
-          description,
-          prices: {
-            create: stripePrices.map((price) => ({
-              id: price.id,
-              amount: price.unit_amount ?? 0,
-              currency: price.currency,
-              interval: price.recurring?.interval ?? 'month',
-            })),
-          },
-        },
-      })
-
       // Return product ID and prices.
       // Used to configure the Customer Portal.
       return {
@@ -156,11 +177,7 @@ async function seed() {
   )
 }
 
-seed()
-  .catch((err: unknown) => {
-    console.error(err)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await client.$disconnect()
-  })
+seed().catch((err: unknown) => {
+  console.error(err)
+  process.exit(1)
+})

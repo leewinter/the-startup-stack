@@ -1,4 +1,5 @@
-import type { Price } from '@prisma/client'
+import type schema from '#db/schema.js'
+import type { InferSelectModel } from 'drizzle-orm'
 
 /**
  * Enumerates subscription plan names.
@@ -79,7 +80,7 @@ export const PRICING_PLANS = {
  */
 type PriceInterval<I extends Interval = Interval, C extends Currency = Currency> = {
   [interval in I]: {
-    [currency in C]: Price['amount']
+    [currency in C]: InferSelectModel<typeof schema.price>['amount']
   }
 }
 

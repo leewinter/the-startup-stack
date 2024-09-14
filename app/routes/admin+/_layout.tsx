@@ -3,12 +3,13 @@ import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import { ShoppingBasket, ExternalLink } from 'lucide-react'
 import { requireUserWithRole } from '#app/utils/permissions.server'
-import { prisma } from '#app/utils/db.server'
 import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
 import { Navigation } from '#app/components/navigation'
 import { Header } from '#app/components/header'
+import { db, schema } from '#db'
+import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/admin' as const
 
@@ -18,8 +19,8 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUserWithRole(request, 'admin')
-  const subscription = await prisma.subscription.findUnique({
-    where: { userId: user.id },
+  const subscription = await db.query.subscription.findFirst({
+    where: eq(schema.subscription.userId, user.id),
   })
   return json({ user, subscription } as const)
 }
