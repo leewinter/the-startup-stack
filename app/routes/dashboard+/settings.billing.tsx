@@ -193,10 +193,7 @@ export default function DashboardBilling() {
                       </span>
                     )}
                     on:{' '}
-                    {new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString(
-                      'en-US',
-                    )}
-                    .
+                    {new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US')}.
                   </p>
                 </div>
                 <p className="text-start text-sm font-normal text-primary/60">

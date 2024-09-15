@@ -1,41 +1,44 @@
-import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core'
 import {
-  sqliteTable,
+  pgTable,
+  timestamp,
   text,
-  numeric,
-  integer,
-  blob,
+  boolean,
   primaryKey,
-} from 'drizzle-orm/sqlite-core'
+  integer,
+  customType,
+} from 'drizzle-orm/pg-core'
 import type { InferSelectModel } from 'drizzle-orm'
-import { sql } from 'drizzle-orm'
 import { relations } from 'drizzle-orm/relations'
-import { v4 as uuid } from 'uuid'
+import { ulid } from 'ulid'
 
 const primaryId = (name: string = 'id') =>
   text(name)
     .primaryKey()
-    .notNull()
-    // TODO: use cuuid
-    .$defaultFn(() => uuid())
+    .$defaultFn(() => ulid())
+
+export const bytea = customType<{ data: Buffer }>({
+  dataType() {
+    return 'bytea'
+  },
+  toDriver(value): Buffer {
+    return value
+  },
+  fromDriver(value): Buffer {
+    return value as Buffer
+  },
+})
 
 const shared = {
-  createdAt: numeric('createdAt')
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: numeric('updatedAt')
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 }
 
-const boolean = (name: string) => integer(name, { mode: 'boolean' })
-
-export const user = sqliteTable('user', {
-  ...shared,
+export const user = pgTable('user', {
   id: primaryId(),
   email: text('email').notNull().unique(),
   username: text('username').unique(),
-  customerId: text('customerId').unique(),
+  customerId: text('customer_id').unique(),
+  ...shared,
 })
 
 export const userRelations = relations(user, ({ many, one }) => ({
@@ -49,16 +52,17 @@ export type User = InferSelectModel<typeof schema.user> & {
   roles: { role: Pick<InferSelectModel<typeof schema.role>, 'name'> }[]
 }
 
-export const userImage = sqliteTable('userImage', {
-  ...shared,
+// TODO: get rid of userImage
+export const userImage = pgTable('user_image', {
   id: primaryId(),
-  altText: text('altText'),
-  contentType: text('contentType').notNull(),
-  blob: blob('blob').notNull(),
-  userId: text('userId')
+  altText: text('alt_text'),
+  contentType: text('content_type').notNull(),
+  blob: bytea('blob').notNull(),
+  userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .unique(),
+  ...shared,
 })
 
 export const userImageRelations = relations(userImage, ({ one }) => ({
@@ -68,11 +72,11 @@ export const userImageRelations = relations(userImage, ({ one }) => ({
   }),
 }))
 
-export const role = sqliteTable('role', {
-  ...shared,
+export const role = pgTable('role', {
   id: primaryId(),
   name: text('name').notNull().unique(),
   description: text('description').default('').notNull(),
+  ...shared,
 })
 
 export const roleRelations = relations(role, ({ many }) => ({
@@ -80,24 +84,25 @@ export const roleRelations = relations(role, ({ many }) => ({
   permissionToRole: many(permissionToRole),
 }))
 
-export const permission = sqliteTable('permission', {
-  ...shared,
+export const permission = pgTable('permission', {
   id: primaryId(),
+  // TODO: use enums?
   entity: text('entity').notNull(),
   action: text('action').notNull(),
   access: text('access').notNull(),
   description: text('description').default('').notNull(),
+  ...shared,
 })
 
 export const permissionRelations = relations(permission, ({ many }) => ({
   permissionToRoles: many(permissionToRole),
 }))
 
-export const plan = sqliteTable('plan', {
-  ...shared,
+export const plan = pgTable('plan', {
   id: primaryId(),
   name: text('name').notNull(),
   description: text('description'),
+  ...shared,
 })
 
 export const planRelations = relations(plan, ({ many }) => ({
@@ -105,15 +110,15 @@ export const planRelations = relations(plan, ({ many }) => ({
   subscriptions: many(subscription),
 }))
 
-export const price = sqliteTable('price', {
-  ...shared,
+export const price = pgTable('price', {
   id: primaryId(),
-  planId: text('planId')
+  planId: text('plan_id')
     .notNull()
     .references(() => plan.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
   amount: integer('amount').notNull(),
   currency: text('currency').notNull(),
   interval: text('interval').notNull(),
+  ...shared,
 })
 
 export const priceRelations = relations(price, ({ one, many }) => ({
@@ -124,24 +129,25 @@ export const priceRelations = relations(price, ({ one, many }) => ({
   subscriptions: many(subscription),
 }))
 
-export const subscription = sqliteTable('subscription', {
-  ...shared,
-  id: primaryId(),
-  userId: text('userId')
+export const subscription = pgTable('subscription', {
+  id: text('id').primaryKey().notNull(),
+  userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' })
     .unique(),
-  planId: text('planId')
+  planId: text('plan_id')
     .notNull()
     .references(() => plan.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
-  priceId: text('priceId')
+  priceId: text('price_id')
     .notNull()
     .references(() => price.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
   interval: text('interval').notNull(),
+  // TODO: use enum?
   status: text('status').notNull(),
-  currentPeriodStart: integer('currentPeriodStart').notNull(),
-  currentPeriodEnd: integer('currentPeriodEnd').notNull(),
-  cancelAtPeriodEnd: boolean('cancelAtPeriodEnd').default(false),
+  currentPeriodStart: timestamp('current_period_start').notNull(),
+  currentPeriodEnd: timestamp('current_period_end').notNull(),
+  cancelAtPeriodEnd: boolean('cancel_at_period_end').default(false),
+  ...shared,
 })
 
 export const subscriptionRelations = relations(subscription, ({ one }) => ({
@@ -159,16 +165,16 @@ export const subscriptionRelations = relations(subscription, ({ one }) => ({
   }),
 }))
 
-export const roleToUser = sqliteTable(
-  'roleToUser',
+export const roleToUser = pgTable(
+  'role_to_user',
   {
-    ...shared,
-    roleId: text('role')
+    roleId: text('role_id')
       .notNull()
       .references(() => role.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-    userId: text('user')
+    userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+    ...shared,
   },
   (t) => ({
     pk: primaryKey({ columns: [t.roleId, t.userId] }),
@@ -186,16 +192,16 @@ export const roleToUserRelations = relations(roleToUser, ({ one }) => ({
   }),
 }))
 
-export const permissionToRole = sqliteTable(
-  'permissionToRole',
+export const permissionToRole = pgTable(
+  'permission_to_role',
   {
-    ...shared,
-    permissionId: text('permission')
+    permissionId: text('permission_id')
       .notNull()
       .references(() => permission.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-    roleId: text('role')
+    roleId: text('role_id')
       .notNull()
       .references(() => role.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+    ...shared,
   },
   (t) => ({
     pk: primaryKey({ columns: [t.permissionId, t.roleId] }),
@@ -235,5 +241,3 @@ export const schema = {
 }
 
 export default schema
-
-export type DB = BaseSQLiteDatabase<'async' | 'sync', unknown, typeof schema>

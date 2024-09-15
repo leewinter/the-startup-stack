@@ -1,15 +1,13 @@
-import path from 'node:path'
-import Database from 'better-sqlite3'
-import { drizzle } from 'drizzle-orm/better-sqlite3'
-
+import ws from 'ws'
+import { drizzle } from 'drizzle-orm/neon-serverless'
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { config } from 'dotenv'
 import { schema } from './schema'
 
-const dbDir = process.env.DB_PATH
-  ? path.resolve(process.env.DB_PATH)
-  : path.resolve('./.database')
+config({ path: '.env' }) // or .env.local
 
-const sqlite = new Database(path.resolve(dbDir, 'database.db'))
+neonConfig.webSocketConstructor = ws
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
-export const db = drizzle(sqlite, { schema })
-
+export const db = drizzle(pool, { schema })
 export { schema } from './schema'

@@ -1,6 +1,5 @@
 import crypto from 'node:crypto'
-import fs from 'node:fs'
-import path from 'node:path'
+import ws from 'ws'
 import { createRequestHandler } from '@remix-run/express'
 import { installGlobals } from '@remix-run/node'
 import express from 'express'
@@ -8,8 +7,8 @@ import compression from 'compression'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import Database from 'better-sqlite3'
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { drizzle } from 'drizzle-orm/neon-serverless'
+import { Pool, neonConfig } from '@neondatabase/serverless'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 
 installGlobals()
@@ -37,16 +36,10 @@ const remixHandler = createRequestHandler({
   },
 })
 
-// Setup and migrate the database
-const dbDir = process.env.DB_PATH
-  ? path.resolve(process.env.DB_PATH)
-  : path.resolve('./.database')
-fs.mkdirSync(dbDir, { recursive: true })
+neonConfig.webSocketConstructor = ws
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
-const sqlite = new Database(path.resolve(dbDir, 'database.db'))
-fs.mkdirSync(dbDir, { recursive: true })
-
-migrate(drizzle(sqlite), {
+migrate(drizzle(pool), {
   migrationsFolder: './db/migrations',
 })
 

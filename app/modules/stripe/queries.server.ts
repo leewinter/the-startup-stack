@@ -67,8 +67,8 @@ export async function createFreeSubscription({
     priceId: String(stripeSubscription.items.data[0].price.id),
     interval: String(stripeSubscription.items.data[0].plan.interval),
     status: stripeSubscription.status,
-    currentPeriodStart: stripeSubscription.current_period_start,
-    currentPeriodEnd: stripeSubscription.current_period_end,
+    currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
+    currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
     cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
   })
 

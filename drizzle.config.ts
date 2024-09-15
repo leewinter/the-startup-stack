@@ -1,15 +1,13 @@
-import 'dotenv/config' // make sure to install dotenv package
+import { config } from 'dotenv'
 import { defineConfig } from 'drizzle-kit'
 
+config({ path: '.env' })
+
 export default defineConfig({
-  dialect: 'sqlite',
   out: './db/migrations',
   schema: './db/schema.ts',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: './.database/database.db',
+    url: process.env.DATABASE_URL!,
   },
-  // Print all statements
-  verbose: true,
-  // Always ask for confirmation
-  strict: true,
 })

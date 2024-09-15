@@ -22,8 +22,17 @@ import { Button, buttonVariants } from '#app/components/ui/button'
 import { Logo } from '#app/components/logo'
 import { type User } from '#db/schema.ts'
 
+/**
+ * Required to handle JsonifyObject Typescript mismatch.
+ * This will be fixed in future versions of Remix.
+ */
+type JsonifyObjectUser = Omit<User, 'createdAt' | 'updatedAt'> & {
+  createdAt: string | null
+  updatedAt: string | null
+}
+
 type NavigationProps = {
-  user: User
+  user: JsonifyObjectUser
   planId?: string
 }
 

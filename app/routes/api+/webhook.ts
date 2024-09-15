@@ -69,8 +69,8 @@ export async function action({ request }: ActionFunctionArgs) {
             priceId: String(subscription.items.data[0].price.id),
             interval: String(subscription.items.data[0].plan.interval),
             status: subscription.status,
-            currentPeriodStart: subscription.current_period_start,
-            currentPeriodEnd: subscription.current_period_end,
+            currentPeriodStart: new Date(subscription.current_period_start),
+            currentPeriodEnd: new Date(subscription.current_period_end),
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
           })
           .where(eq(schema.subscription.userId, user.id))
@@ -119,8 +119,8 @@ export async function action({ request }: ActionFunctionArgs) {
             priceId: String(subscription.items.data[0].price.id),
             interval: String(subscription.items.data[0].plan.interval),
             status: subscription.status,
-            currentPeriodStart: subscription.current_period_start,
-            currentPeriodEnd: subscription.current_period_end,
+            currentPeriodStart: new Date(subscription.current_period_start),
+            currentPeriodEnd: new Date(subscription.current_period_end),
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
           })
           .where(eq(schema.subscription.userId, user.id))
