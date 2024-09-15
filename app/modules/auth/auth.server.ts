@@ -10,7 +10,7 @@ import { ROUTE_PATH as LOGOUT_PATH } from '#app/routes/auth+/logout'
 import { ROUTE_PATH as MAGIC_LINK_PATH } from '#app/routes/auth+/magic-link'
 import { db, schema } from '#db/index.js'
 import { eq } from 'drizzle-orm'
-import { type User } from '#db/schema.js'
+import type { User } from '#db/schema.js'
 
 function getUserWithImageAndRole(email: string) {
   return db.query.user.findFirst({
@@ -121,7 +121,7 @@ export async function requireSessionUser(
   const sessionUser = await authenticator.isAuthenticated(request)
   if (!sessionUser) {
     if (!redirectTo) throw redirect(LOGOUT_PATH)
-    else throw redirect(redirectTo)
+    throw redirect(redirectTo)
   }
   return sessionUser
 }
@@ -132,11 +132,11 @@ export async function requireUser(
 ) {
   const sessionUser = await authenticator.isAuthenticated(request)
   const user = sessionUser?.email
-    ? await getUserWithImageAndRole(sessionUser!.email)
+    ? await getUserWithImageAndRole(sessionUser?.email)
     : null
   if (!user) {
     if (!redirectTo) throw redirect(LOGOUT_PATH)
-    else throw redirect(redirectTo)
+    throw redirect(redirectTo)
   }
   return user
 }

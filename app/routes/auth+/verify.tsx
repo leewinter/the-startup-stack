@@ -95,7 +95,8 @@ export default function Verify() {
         method="POST"
         autoComplete="off"
         className="flex w-full flex-col items-start gap-1"
-        {...getFormProps(codeForm)}>
+        {...getFormProps(codeForm)}
+      >
         <AuthenticityTokenInput />
         <HoneypotInputs />
 

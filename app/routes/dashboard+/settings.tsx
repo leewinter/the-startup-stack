@@ -42,11 +42,13 @@ export default function DashboardSettings() {
             prefetch="intent"
             className={cn(
               `${buttonVariants({ variant: 'ghost' })} ${isSettingsPath && 'bg-primary/5'} justify-start rounded-md`,
-            )}>
+            )}
+          >
             <span
               className={cn(
                 `text-sm text-primary/80 ${isSettingsPath && 'font-medium text-primary'}`,
-              )}>
+              )}
+            >
               General
             </span>
           </Link>
@@ -55,11 +57,13 @@ export default function DashboardSettings() {
             prefetch="intent"
             className={cn(
               `${buttonVariants({ variant: 'ghost' })} ${isBillingPath && 'bg-primary/5'} justify-start rounded-md`,
-            )}>
+            )}
+          >
             <span
               className={cn(
                 `text-sm text-primary/80 ${isBillingPath && 'font-medium text-primary'}`,
-              )}>
+              )}
+            >
               Billing
             </span>
           </Link>

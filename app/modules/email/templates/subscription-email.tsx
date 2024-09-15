@@ -30,7 +30,8 @@ export function SubscriptionSuccessEmail({ email }: SubscriptionEmailOptions) {
           backgroundColor: '#ffffff',
           fontFamily:
             '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-        }}>
+        }}
+      >
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
           <Img
             src="https://react-email-demo-ijnnx5hul-resend.vercel.app/static/vercel-logo.png"
@@ -65,7 +66,8 @@ export function SubscriptionErrorEmail({ email }: SubscriptionEmailOptions) {
           backgroundColor: '#ffffff',
           fontFamily:
             '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-        }}>
+        }}
+      >
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
           <Img
             src="https://react-email-demo-ijnnx5hul-resend.vercel.app/static/vercel-logo.png"

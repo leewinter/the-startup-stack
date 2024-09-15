@@ -51,7 +51,8 @@ export default function Layout() {
         <Link
           to={HOME_PATH}
           prefetch="intent"
-          className="z-10 flex h-10 flex-col items-center justify-center gap-2">
+          className="z-10 flex h-10 flex-col items-center justify-center gap-2"
+        >
           <Logo />
         </Link>
       </div>
@@ -59,7 +60,8 @@ export default function Layout() {
         <Link
           to={HOME_PATH}
           prefetch="intent"
-          className="z-10 flex h-10 w-10 items-center gap-1">
+          className="z-10 flex h-10 w-10 items-center gap-1"
+        >
           <Logo />
         </Link>
 

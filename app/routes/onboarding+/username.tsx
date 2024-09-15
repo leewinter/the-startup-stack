@@ -121,7 +121,8 @@ export default function OnboardingUsername() {
         method="POST"
         autoComplete="off"
         className="flex w-full flex-col items-start gap-1"
-        {...getFormProps(form)}>
+        {...getFormProps(form)}
+      >
         {/* Security */}
         <AuthenticityTokenInput />
         <HoneypotInputs />

@@ -126,7 +126,8 @@ export default function DashboardSettings() {
         ref={imageFormRef}
         onReset={() => setImageSrc(null)}
         {...getFormProps(avatarForm)}
-        className="flex w-full flex-col items-start rounded-lg border border-border bg-card">
+        className="flex w-full flex-col items-start rounded-lg border border-border bg-card"
+      >
         <div className="flex w-full items-start justify-between rounded-lg p-6">
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-primary">Your Avatar</h2>
@@ -136,7 +137,8 @@ export default function DashboardSettings() {
           </div>
           <label
             htmlFor={avatarFields.imageFile.id}
-            className="group relative flex cursor-pointer overflow-hidden rounded-full transition active:scale-95">
+            className="group relative flex cursor-pointer overflow-hidden rounded-full transition active:scale-95"
+          >
             {imageSrc || user.image?.id ? (
               <img
                 src={imageSrc ?? getUserImgSrc(user.image?.id)}
@@ -191,7 +193,8 @@ export default function DashboardSettings() {
                 if (imageFormRef.current) {
                   imageFormRef.current.reset()
                 }
-              }}>
+              }}
+            >
               Reset
             </Button>
           )}
@@ -207,7 +210,8 @@ export default function DashboardSettings() {
       <Form
         method="POST"
         className="flex w-full flex-col items-start rounded-lg border border-border bg-card"
-        {...getFormProps(form)}>
+        {...getFormProps(form)}
+      >
         <div className="flex w-full flex-col gap-4 rounded-lg p-6">
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-medium text-primary">Your Username</h2>
@@ -239,7 +243,8 @@ export default function DashboardSettings() {
             type="submit"
             size="sm"
             name={INTENTS.INTENT}
-            value={INTENTS.USER_UPDATE_USERNAME}>
+            value={INTENTS.USER_UPDATE_USERNAME}
+          >
             Save
           </Button>
         </div>
@@ -265,7 +270,8 @@ export default function DashboardSettings() {
               variant="destructive"
               name={INTENTS.INTENT}
               value={INTENTS.USER_DELETE_ACCOUNT}
-              {...getButtonProps()}>
+              {...getButtonProps()}
+            >
               {doubleCheck ? 'Are you sure?' : 'Delete Account'}
             </Button>
           </Form>

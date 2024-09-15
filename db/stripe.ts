@@ -60,7 +60,7 @@ async function init() {
 
   // Create Stripe products and stores them into database.
   const seededProducts = await Promise.all(seedProducts)
-  console.info(`📦 Stripe Products has been successfully created.`)
+  console.info('📦 Stripe Products has been successfully created.')
 
   // Configure Customer Portal.
   await stripe.billingPortal.configurations.create({
@@ -84,7 +84,7 @@ async function init() {
     },
   })
 
-  console.info(`👒 Stripe Customer Portal has been successfully configured.`)
+  console.info('👒 Stripe Customer Portal has been successfully configured.')
   console.info(
     '🎉 Visit: https://dashboard.stripe.com/test/products to see your products.',
   )

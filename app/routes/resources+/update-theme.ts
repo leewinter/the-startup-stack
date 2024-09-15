@@ -15,7 +15,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (redirectTo) {
     return redirect(safeRedirect(redirectTo), responseInit)
-  } else {
-    return new Response(null, responseInit)
   }
+    return new Response(null, responseInit)
 }

@@ -66,7 +66,8 @@ export default function Admin() {
                     href="https://github.com/dev-xo/remix-saas/tree/main/docs#welcome-to-%EF%B8%8F-remix-saas-documentation"
                     className={cn(
                       `${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`,
-                    )}>
+                    )}
+                  >
                     <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                       Explore Documentation
                     </span>

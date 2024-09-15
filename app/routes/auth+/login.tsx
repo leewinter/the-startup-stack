@@ -97,7 +97,8 @@ export default function Login() {
         method="POST"
         autoComplete="off"
         className="flex w-full flex-col items-start gap-1"
-        {...getFormProps(emailForm)}>
+        {...getFormProps(emailForm)}
+      >
         {/* Security */}
         <AuthenticityTokenInput />
         <HoneypotInputs />
@@ -142,12 +143,13 @@ export default function Login() {
         </span>
       </div>
 
-      <Form action={`/auth/github`} method="POST" className="w-full">
+      <Form action={'/auth/github'} method="POST" className="w-full">
         <Button variant="outline" className="w-full gap-2 bg-transparent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 text-primary/80 group-hover:text-primary"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24"
+          >
             <path
               fill="currentColor"
               fillRule="nonzero"

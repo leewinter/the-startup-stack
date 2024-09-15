@@ -16,6 +16,8 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Use root-loader data.
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function isUser(user: any): user is SerializeFrom<typeof rootLoader>['user'] {
   return user && typeof user === 'object' && typeof user.id === 'string'
 }
@@ -86,5 +88,6 @@ export function useIsPending({
 export function callAll<Args extends Array<unknown>>(
   ...fns: Array<((...args: Args) => unknown) | undefined>
 ) {
+  // biome-ignore lint/complexity/noForEach: fine for now
   return (...args: Args) => fns.forEach((fn) => fn?.(...args))
 }

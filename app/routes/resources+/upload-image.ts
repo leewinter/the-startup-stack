@@ -8,7 +8,7 @@ import {
 } from '@remix-run/node'
 import { z } from 'zod'
 import { parseWithZod } from '@conform-to/zod'
-import { type SubmissionResult } from '@conform-to/react'
+import type { SubmissionResult } from '@conform-to/react'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { createToastHeaders } from '#app/utils/toast.server'
 import { db, schema } from '#db/index.js'
@@ -77,6 +77,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
         },
       }
       return json(result, { status: 400 })
-    } else throw error
+    }throw error
   }
 }

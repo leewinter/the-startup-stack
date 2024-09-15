@@ -35,12 +35,14 @@ export function ThemeSwitcher({
             fetcherKey: 'theme-fetcher',
           },
         )
-      }>
+      }
+    >
       <SelectTrigger
         className={cn(
           'h-6 rounded border-primary/20 bg-secondary !px-2 hover:border-primary/40',
           triggerClass,
-        )}>
+        )}
+      >
         <div className="flex items-start gap-2">
           {mode === 'light' ? (
             <Sun className="h-[14px] w-[14px]" />
@@ -59,7 +61,8 @@ export function ThemeSwitcher({
           <SelectItem
             key={theme}
             value={theme}
-            className={`text-sm font-medium text-primary/60 ${mode === theme && 'text-primary'}`}>
+            className={`text-sm font-medium text-primary/60 ${mode === theme && 'text-primary'}`}
+          >
             {theme && theme.charAt(0).toUpperCase() + theme.slice(1)}
           </SelectItem>
         ))}

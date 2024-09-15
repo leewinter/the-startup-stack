@@ -33,7 +33,8 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
           backgroundColor: '#ffffff',
           fontFamily:
             '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-        }}>
+        }}
+      >
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
           <Img
             src="https://react-email-demo-ijnnx5hul-resend.vercel.app/static/vercel-logo.png"
@@ -49,7 +50,8 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
               fontWeight: '400',
               color: '#484848',
               padding: '12px 0 0',
-            }}>
+            }}
+          >
             Your login code for Remix Auth TOTP
           </Heading>
           {magicLink && (
@@ -67,7 +69,8 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
                   borderRadius: '3px',
                   backgroundColor: '#5e6ad2',
                 }}
-                href={magicLink}>
+                href={magicLink}
+              >
                 Login to totp.fly
               </Button>
             </Section>
@@ -84,7 +87,8 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
               fontSize: '24px',
               fontWeight: '700',
               letterSpacing: '2px',
-            }}>
+            }}
+          >
             {code}
           </code>
           <Hr style={{ margin: '20px 0', borderColor: '#cccccc' }} />

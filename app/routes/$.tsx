@@ -38,7 +38,8 @@ export function ErrorBoundary() {
             <Link
               to={DASHBOARD_PATH}
               prefetch="intent"
-              className={`${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`}>
+              className={`${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`}
+            >
               <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                 Return to Home
               </span>

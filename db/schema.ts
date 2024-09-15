@@ -11,7 +11,7 @@ import type { InferSelectModel } from 'drizzle-orm'
 import { relations } from 'drizzle-orm/relations'
 import { ulid } from 'ulid'
 
-const primaryId = (name: string = 'id') =>
+const primaryId = (name = 'id') =>
   text(name)
     .primaryKey()
     .$defaultFn(() => ulid())

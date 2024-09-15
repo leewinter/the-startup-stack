@@ -118,10 +118,10 @@ export default function DashboardBilling() {
         {subscription?.planId === PLANS.FREE && (
           <div className="flex w-full flex-col items-center justify-evenly gap-2 border-border p-6 pt-0">
             {Object.values(PRICING_PLANS).map((plan) => (
-              <div
+              <button
+                type="button"
                 key={plan.id}
                 tabIndex={0}
-                role="button"
                 className={`flex w-full select-none items-center rounded-md border border-border hover:border-primary/60 ${
                   selectedPlanId === plan.id && 'border-primary/60'
                 }`}
@@ -168,7 +168,7 @@ export default function DashboardBilling() {
                     />
                   </div>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         )}

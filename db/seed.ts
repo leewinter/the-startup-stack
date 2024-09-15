@@ -78,11 +78,12 @@ await db.transaction(async (tx) => {
     .values(roles.map((role) => ({ roleId: role.id, userId: user.id })))
 })
 
-console.info(`🎭 User roles and permissions has been successfully created.`)
+console.info('🎭 User roles and permissions has been successfully created.')
 
 const prices = await stripe.prices.list()
 
 if (prices.data.length > 0) {
+  // biome-ignore lint/complexity/noForEach: <explanation>
   Object.values(PRICING_PLANS).forEach(async ({ id, name, description }) => {
     await db.transaction(async (tx) => {
       const [plan] = await tx

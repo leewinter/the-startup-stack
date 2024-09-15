@@ -40,13 +40,12 @@ export function setTheme(theme: Theme | 'system') {
       maxAge: -1,
       sameSite: 'lax',
     })
-  } else {
+  }
     return cookie.serialize(THEME_COOKIE_KEY, theme, {
       path: '/',
       maxAge: 31536000,
       sameSite: 'lax',
     })
-  }
 }
 
 /**
@@ -70,7 +69,7 @@ export function useTheme() {
 export function useOptimisticThemeMode() {
   const themeFetcher = useFetcher({ key: 'theme-fetcher' })
 
-  if (themeFetcher && themeFetcher.formData) {
+  if (themeFetcher?.formData) {
     const formData = Object.fromEntries(themeFetcher.formData)
     const { theme } = ThemeSchema.parse(formData)
 

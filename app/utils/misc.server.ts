@@ -60,6 +60,7 @@ export function combineHeaders(
  * Singleton Server-Side Pattern.
  */
 export function singleton<Value>(name: string, value: () => Value): Value {
+  // biome-ignore lint/suspicious/noExplicitAny: ...
   const globalStore = global as any
 
   globalStore.__singletons ??= {}
