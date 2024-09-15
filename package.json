@@ -19,7 +19,6 @@
     "lint": "eslint .",
     "start": "cross-env NODE_ENV=production node ./server.mjs",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc",
     "validate": "npm run lint && npm run typecheck"
   },
@@ -82,7 +81,6 @@
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@types/ws": "^8.5.12",
-    "@vitest/coverage-v8": "^1.6.0",
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
