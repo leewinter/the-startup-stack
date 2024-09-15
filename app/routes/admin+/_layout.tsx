@@ -7,7 +7,6 @@ import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
 import { Navigation } from '#app/components/navigation'
-import { Header } from '#app/components/header'
 import { db, schema } from '#db'
 import { eq } from 'drizzle-orm'
 
@@ -31,7 +30,6 @@ export default function Admin() {
   return (
     <div className="flex min-h-[100vh] w-full flex-col bg-secondary dark:bg-black">
       <Navigation user={user} planId={subscription?.planId} />
-      <Header />
 
       <div className="flex h-full w-full px-6 py-8">
         <div className="mx-auto flex h-full w-full max-w-screen-xl gap-12">

@@ -4,7 +4,6 @@ import { json, redirect } from '@remix-run/node'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { ROUTE_PATH as ONBOARDING_USERNAME_PATH } from '#app/routes/onboarding+/username'
 import { Navigation } from '#app/components/navigation'
-import { Header } from '#app/components/header'
 import { db, schema } from '#db/index.js'
 import { eq } from 'drizzle-orm'
 
@@ -26,7 +25,6 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-[100vh] w-full flex-col bg-secondary dark:bg-black">
       <Navigation user={user} planId={subscription?.planId} />
-      <Header />
       <Outlet />
     </div>
   )
