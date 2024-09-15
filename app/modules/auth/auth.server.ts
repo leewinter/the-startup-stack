@@ -32,7 +32,6 @@ function getUserWithImageAndRole(email: string) {
 }
 
 function createUseWithImageAndRole(email: string) {
-  console.log('createUseWithImageAndRole', email)
   return db.transaction(async (tx) => {
     const [newUser] = await tx.insert(schema.user).values({ email }).returning()
     const roles = await tx
