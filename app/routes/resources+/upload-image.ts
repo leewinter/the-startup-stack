@@ -77,6 +77,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
         },
       }
       return json(result, { status: 400 })
-    }throw error
+    }
+    throw error
   }
 }

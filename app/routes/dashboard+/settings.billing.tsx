@@ -92,7 +92,8 @@ export default function DashboardBilling() {
             href="https://stripe.com/docs/testing#cards"
             target="_blank"
             rel="noreferrer"
-            className="font-medium text-primary/80 underline">
+            className="font-medium text-primary/80 underline"
+          >
             Stripe docs
           </a>
           .
@@ -128,7 +129,8 @@ export default function DashboardBilling() {
                 onClick={() => setSelectedPlanId(plan.id)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') setSelectedPlanId(plan.id)
-                }}>
+                }}
+              >
                 <div className="flex w-full flex-col items-start p-4">
                   <div className="flex items-center gap-2">
                     <span className="text-base font-medium text-primary">
@@ -154,7 +156,8 @@ export default function DashboardBilling() {
                   <div className="flex items-center gap-2 px-4">
                     <label
                       htmlFor="interval-switch"
-                      className="text-start text-sm text-primary/60">
+                      className="text-start text-sm text-primary/60"
+                    >
                       {selectedPlanInterval === INTERVALS.MONTH ? 'Monthly' : 'Yearly'}
                     </label>
                     <Switch
@@ -217,7 +220,8 @@ export default function DashboardBilling() {
                 size="sm"
                 name={INTENTS.INTENT}
                 value={INTENTS.SUBSCRIPTION_CREATE_CHECKOUT}
-                disabled={selectedPlanId === PLANS.FREE}>
+                disabled={selectedPlanId === PLANS.FREE}
+              >
                 Upgrade to PRO
               </Button>
             </Form>
@@ -243,7 +247,8 @@ export default function DashboardBilling() {
               type="submit"
               size="sm"
               name={INTENTS.INTENT}
-              value={INTENTS.SUBSCRIPTION_CREATE_CUSTOMER_PORTAL}>
+              value={INTENTS.SUBSCRIPTION_CREATE_CUSTOMER_PORTAL}
+            >
               Manage
             </Button>
           </Form>

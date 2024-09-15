@@ -48,11 +48,11 @@ export async function sendEmail(options: SendEmailOptions) {
   if (response.ok && parsedData.success) {
     return { status: 'success', data: parsedData } as const
   }
-    const parsedErrorResult = ResendErrorSchema.safeParse(data)
-    if (parsedErrorResult.success) {
-      console.error(parsedErrorResult.data)
-      throw new Error(ERRORS.AUTH_EMAIL_NOT_SENT)
-    }
-      console.error(data)
-      throw new Error(ERRORS.AUTH_EMAIL_NOT_SENT)
+  const parsedErrorResult = ResendErrorSchema.safeParse(data)
+  if (parsedErrorResult.success) {
+    console.error(parsedErrorResult.data)
+    throw new Error(ERRORS.AUTH_EMAIL_NOT_SENT)
+  }
+  console.error(data)
+  throw new Error(ERRORS.AUTH_EMAIL_NOT_SENT)
 }

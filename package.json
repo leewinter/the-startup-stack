@@ -12,16 +12,16 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "node ./server.mjs",
-    "db:migrate": "npx drizzle-kit generate",
-    "db:push": "npx drizzle-kit push",
-    "db:seed": "npx tsx ./db/seed.ts",
+    "db:migrate": "bunx drizzle-kit generate",
+    "db:push": "bunx drizzle-kit push",
+    "db:seed": "bun run ./db/seed.ts",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "format:check": "biome format --error-on-warnings .",
     "start": "cross-env NODE_ENV=production node ./server.mjs",
     "test": "vitest",
     "typecheck": "tsc",
-    "validate": "npm run lint && npm run typecheck"
+    "validate": "bun run lint && bun run typecheck"
   },
   "dependencies": {
     "@conform-to/react": "1.1.4",
@@ -44,12 +44,14 @@
     "compression": "^1.7.4",
     "cookie": "^0.6.0",
     "cross-env": "^7.0.3",
+    "crypto-js": "^4.2.0",
     "drizzle-orm": "^0.33.0",
     "express": "^4.19.2",
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
     "i18next": "^23.11.3",
     "i18next-browser-languagedetector": "^8.0.0",
+    "intl-parse-accept-language": "^1.0.0",
     "isbot": "^3.8.0",
     "lucide-react": "^0.383.0",
     "morgan": "^1.10.0",
@@ -66,7 +68,6 @@
     "stripe": "^15.5.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "tsx": "^4.10.5",
     "ulid": "^2.3.0",
     "ws": "^8.18.0",
     "zod": "^3.23.6"
@@ -94,6 +95,7 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
   },
+  "trustedDependencies": ["@biomejs/biome"],
   "engines": {
     "node": ">=18.0.0"
   }

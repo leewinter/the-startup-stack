@@ -41,11 +41,11 @@ export function setTheme(theme: Theme | 'system') {
       sameSite: 'lax',
     })
   }
-    return cookie.serialize(THEME_COOKIE_KEY, theme, {
-      path: '/',
-      maxAge: 31536000,
-      sameSite: 'lax',
-    })
+  return cookie.serialize(THEME_COOKIE_KEY, theme, {
+    path: '/',
+    maxAge: 31536000,
+    sameSite: 'lax',
+  })
 }
 
 /**
