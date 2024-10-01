@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { ERRORS } from '#app/utils/constants/errors'
+import { Resource } from 'sst'
 
 const ResendSuccessSchema = z.object({
   id: z.string(),
@@ -26,7 +27,7 @@ export type SendEmailOptions = {
 }
 
 export async function sendEmail(options: SendEmailOptions) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!Resource.RESEND_API_KEY.value) {
     throw new Error(`Resend - ${ERRORS.ENVS_NOT_INITIALIZED}`)
   }
 
@@ -36,7 +37,7 @@ export async function sendEmail(options: SendEmailOptions) {
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${Resource.RESEND_API_KEY.value}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(email),

@@ -6,15 +6,9 @@ import { createReadableStreamFromReadable } from '@remix-run/node'
 import { renderToPipeableStream } from 'react-dom/server'
 import { createInstance } from 'i18next'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
-import { initEnvs } from '#app/utils/env.server'
 import { NonceProvider } from '#app/utils/hooks/use-nonce'
 import i18nServer from '#app/modules/i18n/i18n.server'
 import * as i18n from '#app/modules/i18n/i18n'
-
-/**
- * Environment Variables.
- */
-initEnvs()
 
 const ABORT_DELAY = 5_000
 

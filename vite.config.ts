@@ -11,6 +11,11 @@ export default defineConfig({
   plugins: [
     remixDevTools(),
     remix({
+      // future: {
+      //   v3_fetcherPersist: true,
+      //   v3_relativeSplatPath: true,
+      //   v3_throwAbortReason: true,
+      // },
       serverModuleFormat: 'esm',
       ignoredRouteFiles: ['**/.*'],
       routes: async (defineRoutes) => {

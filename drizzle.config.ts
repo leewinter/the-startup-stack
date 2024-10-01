@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'drizzle-kit'
+import { Resource } from 'sst'
 
 config({ path: '.env' })
 
@@ -8,7 +9,6 @@ export default defineConfig({
   schema: './db/schema.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    url: process.env.DATABASE_URL!,
+    url: Resource.DATABASE_URL.value,
   },
 })

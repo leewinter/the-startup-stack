@@ -1,5 +1,4 @@
 import crypto from 'node:crypto'
-import ws from 'ws'
 import { createRequestHandler } from '@remix-run/express'
 import { installGlobals } from '@remix-run/node'
 import express from 'express'
@@ -7,17 +6,15 @@ import compression from 'compression'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import { drizzle } from 'drizzle-orm/neon-serverless'
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
+import { Resource } from 'sst'
 
 installGlobals()
 
 const PORT = process.env.PORT || 3000
-const NODE_ENV = process.env.NODE_ENV ?? 'development'
+const NODE_ENV = Resource.NODE_ENV.value
 
 const viteDevServer =
-  process.env.NODE_ENV === 'production'
+  NODE_ENV === 'production'
     ? undefined
     : await import('vite').then((vite) =>
         vite.createServer({
@@ -34,13 +31,6 @@ const remixHandler = createRequestHandler({
       cspNonce: res.locals.cspNonce,
     }
   },
-})
-
-neonConfig.webSocketConstructor = ws
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-
-migrate(drizzle(pool), {
-  migrationsFolder: './db/migrations',
 })
 
 const app = express()

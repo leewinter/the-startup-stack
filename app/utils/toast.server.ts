@@ -5,6 +5,8 @@
 import { redirect, createCookieSessionStorage } from '@remix-run/node'
 import { z } from 'zod'
 import { combineHeaders } from '#app/utils/misc.server'
+import { Resource } from 'sst'
+import { isPermanentStage } from '#infra/stage.ts'
 
 export const TOAST_SESSION_KEY = '_toast'
 export const TOAST_SESSION_FLASH_KEY = '_toast_flash'
@@ -15,8 +17,8 @@ export const toastSessionStorage = createCookieSessionStorage({
     path: '/',
     sameSite: 'lax',
     httpOnly: true,
-    secrets: [process.env.SESSION_SECRET || 'NOT_A_STRONG_SECRET'],
-    secure: process.env.NODE_ENV === 'production',
+    secrets: [Resource.SESSION_SECRET.value || 'NOT_A_STRONG_SECRET'],
+    secure: isPermanentStage,
   },
 })
 

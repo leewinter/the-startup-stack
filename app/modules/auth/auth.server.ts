@@ -11,6 +11,7 @@ import { ROUTE_PATH as MAGIC_LINK_PATH } from '#app/routes/auth+/magic-link'
 import { db, schema } from '#db/index.js'
 import { eq } from 'drizzle-orm'
 import type { User } from '#db/schema.js'
+import { Resource } from 'sst'
 
 function getUserWithImageAndRole(email: string) {
   return db.query.user.findFirst({
@@ -55,7 +56,7 @@ export const authenticator = new Authenticator<User>(authSessionStorage)
 authenticator.use(
   new TOTPStrategy(
     {
-      secret: process.env.ENCRYPTION_SECRET || 'NOT_A_STRONG_SECRET',
+      secret: Resource.ENCRYPTION_SECRET.value || 'NOT_A_STRONG_SECRET',
       magicLinkPath: MAGIC_LINK_PATH,
       sendTOTP: async ({ email, code, magicLink }) => {
         if (process.env.NODE_ENV === 'development') {

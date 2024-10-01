@@ -1,4 +1,6 @@
+import { isPermanentStage } from '#infra/stage.ts'
 import { createCookieSessionStorage } from '@remix-run/node'
+import { Resource } from 'sst'
 
 export const AUTH_SESSION_KEY = '_auth'
 export const authSessionStorage = createCookieSessionStorage({
@@ -7,8 +9,8 @@ export const authSessionStorage = createCookieSessionStorage({
     path: '/',
     sameSite: 'lax',
     httpOnly: true,
-    secrets: [process.env.SESSION_SECRET || 'NOT_A_STRONG_SECRET'],
-    secure: process.env.NODE_ENV === 'production',
+    secrets: [Resource.SESSION_SECRET.value || 'NOT_A_STRONG_SECRET'],
+    secure: isPermanentStage,
   },
 })
 
