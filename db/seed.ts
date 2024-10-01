@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
 import { db, schema } from '#db/index.js'

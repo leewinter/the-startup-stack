@@ -1,5 +1,5 @@
 {
-  "name": "remix-saas",
+  "name": "the-startup-stack",
   "private": true,
   "description": "A Lightweight, Feature-Rich, and Production-Ready Remix Stack for your next SaaS application.",
   "repository": "murderlon/the-startup-stack",
@@ -73,7 +73,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.0",
-    "@flydotio/dockerfile": "^0.5.7",
     "@remix-run/dev": "^2.9.2",
     "@types/compression": "^1.7.5",
     "@types/cookie": "^0.6.0",
@@ -81,9 +80,7 @@
     "@types/morgan": "^1.9.9",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
-    "@types/ws": "^8.5.12",
     "autoprefixer": "^10.4.19",
-    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
     "postcss": "^8.4.38",
     "remix-development-tools": "^4.1.6",
