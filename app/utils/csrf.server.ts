@@ -2,7 +2,6 @@
  * Learn more about CSRF protection:
  * @see https://github.com/sergiodxa/remix-utils?tab=readme-ov-file#csrf
  */
-import { isPermanentStage } from '#infra/stage.ts'
 import { createCookie } from '@remix-run/node'
 import { CSRF, CSRFError } from 'remix-utils/csrf/server'
 import { Resource } from 'sst'
@@ -14,7 +13,7 @@ const cookie = createCookie(CSRF_COOKIE_KEY, {
   sameSite: 'lax',
   httpOnly: true,
   secrets: [Resource.SESSION_SECRET.value || 'NOT_A_STRONG_SECRET'],
-  secure: isPermanentStage,
+  secure: process.env.NODE_ENV === 'production',
 })
 
 export const csrf = new CSRF({ cookie })

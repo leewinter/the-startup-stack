@@ -6,12 +6,11 @@ import compression from 'compression'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import { Resource } from 'sst'
 
 installGlobals()
 
 const PORT = process.env.PORT || 3000
-const NODE_ENV = Resource.NODE_ENV.value
+const NODE_ENV = process.env.NODE_ENV
 
 const viteDevServer =
   NODE_ENV === 'production'

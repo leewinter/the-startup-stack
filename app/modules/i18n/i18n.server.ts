@@ -2,12 +2,11 @@ import { createCookie } from '@remix-run/node'
 import { RemixI18Next } from 'remix-i18next/server'
 
 import * as i18n from '#app/modules/i18n/i18n'
-import { isPermanentStage } from '#infra/stage.ts'
 
 export const localeCookie = createCookie('lng', {
   path: '/',
   sameSite: 'lax',
-  secure: isPermanentStage,
+  secure: process.env.NODE_ENV === 'production',
   httpOnly: true,
 })
 

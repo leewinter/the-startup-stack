@@ -1,13 +1,13 @@
 import { getClientLocales } from 'remix-utils/locales/server'
 import { CURRENCIES } from '#app/modules/stripe/plans'
-import { isPermanentStage } from '#infra/stage.ts'
 
 /**
  * HTTP.
  */
-export const HOST_URL = isPermanentStage
-  ? process.env.PROD_HOST_URL
-  : process.env.DEV_HOST_URL
+export const HOST_URL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.PROD_HOST_URL
+    : process.env.DEV_HOST_URL
 
 export function getDomainUrl(request: Request) {
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('Host')
