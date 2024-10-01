@@ -1,13 +1,12 @@
 import { getClientLocales } from 'remix-utils/locales/server'
 import { CURRENCIES } from '#app/modules/stripe/plans'
+import { Resource } from 'sst'
 
 /**
  * HTTP.
  */
 export const HOST_URL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.PROD_HOST_URL
-    : process.env.DEV_HOST_URL
+  process.env.NODE_ENV === 'production' ? Resource.Remix.url : 'http://localhost:3000'
 
 export function getDomainUrl(request: Request) {
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('Host')

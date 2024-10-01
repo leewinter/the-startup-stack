@@ -9,6 +9,7 @@ import {
 import { ERRORS } from '#app/utils/constants/errors'
 import { db, schema } from '#db/index.js'
 import { eq } from 'drizzle-orm'
+import { Resource } from 'sst'
 
 export const ROUTE_PATH = '/api/webhook' as const
 
@@ -19,10 +20,6 @@ export const ROUTE_PATH = '/api/webhook' as const
  * @returns The Stripe event object.
  */
 async function getStripeEvent(request: Request) {
-  if (!process.env.STRIPE_WEBHOOK_ENDPOINT) {
-    throw new Error(`Stripe - ${ERRORS.ENVS_NOT_INITIALIZED}`)
-  }
-
   try {
     const signature = request.headers.get('Stripe-Signature')
     if (!signature) throw new Error(ERRORS.STRIPE_MISSING_SIGNATURE)
@@ -30,7 +27,7 @@ async function getStripeEvent(request: Request) {
     const event = stripe.webhooks.constructEvent(
       payload,
       signature,
-      process.env.STRIPE_WEBHOOK_ENDPOINT,
+      Resource.StripeWebhookEndpoint.value,
     )
     return event
   } catch (err: unknown) {

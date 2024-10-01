@@ -37,5 +37,9 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "StripeWebhookEndpoint": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }

@@ -8,6 +8,7 @@ export const www = new sst.aws.Remix('Remix', {
     secret.RESEND_API_KEY,
     secret.STRIPE_PUBLIC_KEY,
     secret.STRIPE_SECRET_KEY,
+    secret.StripeWebhookEndpoint,
     secret.HONEYPOT_ENCRYPTION_SEED,
   ],
 })

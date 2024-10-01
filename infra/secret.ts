@@ -5,5 +5,8 @@ export const secret = {
   RESEND_API_KEY: new sst.Secret('RESEND_API_KEY'),
   STRIPE_PUBLIC_KEY: new sst.Secret('STRIPE_PUBLIC_KEY'),
   STRIPE_SECRET_KEY: new sst.Secret('STRIPE_SECRET_KEY'),
+  StripeWebhookEndpoint: new sst.Secret('StripeWebhookEndpoint'),
+  // GitHubClientId: new sst.Secret('GitHubClientId'),
+  // GitHubClientSecret: new sst.Secret('GitHubClientSecret'),
   HONEYPOT_ENCRYPTION_SEED: new sst.Secret('HONEYPOT_ENCRYPTION_SEED'),
 }
