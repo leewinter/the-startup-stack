@@ -10,7 +10,8 @@
       "**/pnpm-lock.yaml",
       "./build",
       "./public/build",
-      ".sst"
+      ".sst",
+      "./sst-env.d.ts"
     ]
   },
   "linter": {
