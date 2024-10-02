@@ -1,6 +1,7 @@
 import type { AppLoadContext, EntryContext } from '@remix-run/node'
 import isbot from 'isbot'
 import { PassThrough } from 'node:stream'
+import crypto from 'node:crypto'
 import { RemixServer } from '@remix-run/react'
 import { createReadableStreamFromReadable } from '@remix-run/node'
 import { renderToPipeableStream } from 'react-dom/server'
@@ -17,7 +18,7 @@ export default async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-  loadContext: AppLoadContext,
+  _: AppLoadContext,
 ) {
   const callbackName = isbot(request.headers.get('user-agent'))
     ? 'onAllReady'
@@ -27,7 +28,7 @@ export default async function handleRequest(
    * Content Security Policy.
    * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
    */
-  const nonce = String(loadContext.cspNonce) ?? undefined
+  const nonce = crypto.randomBytes(16).toString('hex')
 
   responseHeaders.set(
     'Content-Security-Policy',

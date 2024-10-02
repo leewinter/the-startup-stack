@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/neon-serverless'
-import { Pool } from '@neondatabase/serverless'
+import { neonConfig, Pool } from '@neondatabase/serverless'
 import { Resource } from 'sst'
+import ws from 'ws'
 
 import {
   permission,
@@ -34,6 +35,9 @@ export const schema = {
   permissionToRole,
   permissionToRoleRelations,
 }
+
+// WebSocket is not globally defined on AWS
+neonConfig.webSocketConstructor = ws
 
 export const connection = new Pool({
   connectionString: Resource.DATABASE_URL.value,
