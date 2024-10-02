@@ -5,7 +5,6 @@ import express from 'express'
 import compression from 'compression'
 import morgan from 'morgan'
 import helmet from 'helmet'
-import rateLimit from 'express-rate-limit'
 
 installGlobals()
 
@@ -97,45 +96,6 @@ app.use((req, res, next) => {
   } else {
     next()
   }
-})
-
-/**
- * Rate Limit.
- * Implementation based on github.com/epicweb-dev/epic-stack
- *
- * NOTE: Running in development or tests, we want to disable rate limiting.
- */
-const MAX_LIMIT_MULTIPLE = NODE_ENV !== 'production' ? 10_000 : 1
-
-const defaultRateLimit = {
-  windowMs: 60 * 1000,
-  max: 1000 * MAX_LIMIT_MULTIPLE,
-  standardHeaders: true,
-  legacyHeaders: false,
-}
-const strongestRateLimit = rateLimit({
-  ...defaultRateLimit,
-  windowMs: 60 * 1000,
-  max: 10 * MAX_LIMIT_MULTIPLE,
-})
-const strongRateLimit = rateLimit({
-  ...defaultRateLimit,
-  windowMs: 60 * 1000,
-  max: 100 * MAX_LIMIT_MULTIPLE,
-})
-const generalRateLimit = rateLimit(defaultRateLimit)
-
-app.use((req, res, next) => {
-  const STRONG_PATHS = ['/auth/login']
-
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    if (STRONG_PATHS.some((path) => req.path.includes(path))) {
-      return strongestRateLimit(req, res, next)
-    }
-    return strongRateLimit(req, res, next)
-  }
-
-  return generalRateLimit(req, res, next)
 })
 
 // Handle assets requests.

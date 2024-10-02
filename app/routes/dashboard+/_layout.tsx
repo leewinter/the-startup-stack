@@ -4,7 +4,7 @@ import { json, redirect } from '@remix-run/node'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { ROUTE_PATH as ONBOARDING_USERNAME_PATH } from '#app/routes/onboarding+/username'
 import { Navigation } from '#app/components/navigation'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard' as const

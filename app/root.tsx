@@ -27,7 +27,7 @@ import { Toaster } from '#app/components/ui/sonner'
 import { ClientHintCheck } from '#app/components/misc/client-hints'
 import { GenericErrorBoundary } from '#app/components/misc/error-boundary'
 import i18nServer, { localeCookie } from '#app/modules/i18n/i18n.server'
-import { db, schema } from '#db'
+import { db, schema } from '#core/drizzle'
 
 import RootCSS from './root.css?url'
 

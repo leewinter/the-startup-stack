@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from '@remix-run/router'
 import { requireUser } from '#app/modules/auth/auth.server'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/resources/reset-image' as const

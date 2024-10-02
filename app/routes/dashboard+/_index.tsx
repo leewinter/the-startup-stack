@@ -6,7 +6,7 @@ import { requireUser } from '#app/modules/auth/auth.server'
 import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
-import { db, schema } from '#db'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const meta: MetaFunction = () => {

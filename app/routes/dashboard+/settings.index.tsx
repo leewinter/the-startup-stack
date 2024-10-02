@@ -22,7 +22,7 @@ import {
   ImageSchema,
 } from '#app/routes/resources+/upload-image'
 import { ROUTE_PATH as RESET_IMAGE_PATH } from '#app/routes/resources+/reset-image'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const UsernameSchema = z.object({

@@ -9,7 +9,7 @@ import { useInterval } from '#app/utils/hooks/use-interval'
 import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { buttonVariants } from '#app/components/ui/button'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard/checkout'

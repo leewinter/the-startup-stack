@@ -1,4 +1,4 @@
-import type schema from '#db/schema.js'
+import type { price } from '#core/src/price.sql.ts'
 import type { InferSelectModel } from 'drizzle-orm'
 
 /**
@@ -80,7 +80,7 @@ export const PRICING_PLANS = {
  */
 type PriceInterval<I extends Interval = Interval, C extends Currency = Currency> = {
   [interval in I]: {
-    [currency in C]: InferSelectModel<typeof schema.price>['amount']
+    [currency in C]: InferSelectModel<typeof price>['amount']
   }
 }
 

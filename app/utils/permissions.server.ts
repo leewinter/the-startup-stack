@@ -7,6 +7,7 @@ import { requireUser } from '#app/modules/auth/auth.server'
 import { userHasRole } from '#app/utils/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 
+// TODO: move to db enum
 export type RoleName = 'user' | 'admin'
 
 export async function requireUserWithRole(request: Request, name: RoleName) {

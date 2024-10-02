@@ -40,8 +40,8 @@ export async function getToastSession(request: Request) {
     toast,
     headers: toast
       ? new Headers({
-        'Set-Cookie': await toastSessionStorage.commitSession(sessionUser),
-      })
+          'Set-Cookie': await toastSessionStorage.commitSession(sessionUser),
+        })
       : null,
   }
 }

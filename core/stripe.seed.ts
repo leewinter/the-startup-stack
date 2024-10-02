@@ -2,9 +2,7 @@ import type { Interval } from '#app/modules/stripe/plans'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
 
-init()
-
-async function init() {
+export async function seedStripe() {
   /**
    * Stripe Products.
    */

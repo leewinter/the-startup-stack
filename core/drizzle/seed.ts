@@ -1,7 +1,8 @@
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq, getTableName, or, sql } from 'drizzle-orm'
+import { seedStripe } from '../stripe.seed'
 
 for (const table of [
   schema.permissionToRole,
@@ -14,15 +15,15 @@ for (const table of [
   schema.permission,
   schema.plan,
 ]) {
-  // await db.delete(table) // clear tables without truncating / resetting ids
+  // await db.delete(table)
   db.execute(sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`))
 }
 
 /**
  * Users, Roles and Permissions.
  */
-const entities = ['user']
-const actions = ['create', 'read', 'update', 'delete']
+const entities = ['user'] as const
+const actions = ['create', 'read', 'update', 'delete'] as const
 const accesses = ['own', 'any'] as const
 for (const entity of entities) {
   for (const action of actions) {
@@ -79,28 +80,27 @@ await db.transaction(async (tx) => {
 
 console.info('🎭 User roles and permissions has been successfully created.')
 
+await seedStripe()
 const prices = await stripe.prices.list()
 
-if (prices.data.length > 0) {
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  Object.values(PRICING_PLANS).forEach(async ({ id, name, description }) => {
-    await db.transaction(async (tx) => {
-      const [plan] = await tx
-        .insert(schema.plan)
-        .values({ id, name, description })
-        .returning()
+// biome-ignore lint/complexity/noForEach: <explanation>
+Object.values(PRICING_PLANS).forEach(async ({ id, name, description }) => {
+  await db.transaction(async (tx) => {
+    const [plan] = await tx
+      .insert(schema.plan)
+      .values({ id, name, description })
+      .returning()
 
-      await tx.insert(schema.price).values(
-        prices.data
-          .filter((price) => price.product === id)
-          .map((price) => ({
-            id: price.id,
-            planId: plan.id,
-            amount: price.unit_amount ?? 0,
-            currency: price.currency,
-            interval: price.recurring?.interval ?? 'month',
-          })),
-      )
-    })
+    await tx.insert(schema.price).values(
+      prices.data
+        .filter((price) => price.product === id)
+        .map((price) => ({
+          id: price.id,
+          planId: plan.id,
+          amount: price.unit_amount ?? 0,
+          currency: price.currency,
+          interval: price.recurring?.interval ?? 'month',
+        })),
+    )
   })
-}
+})

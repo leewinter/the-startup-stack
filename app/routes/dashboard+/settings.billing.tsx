@@ -18,7 +18,7 @@ import { INTENTS } from '#app/utils/constants/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { Switch } from '#app/components/ui/switch'
 import { Button } from '#app/components/ui/button'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard/settings/billing' as const

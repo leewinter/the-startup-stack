@@ -11,7 +11,7 @@ import { parseWithZod } from '@conform-to/zod'
 import type { SubmissionResult } from '@conform-to/react'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { createToastHeaders } from '#app/utils/toast.server'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/resources/upload-image' as const

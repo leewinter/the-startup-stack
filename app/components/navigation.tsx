@@ -20,7 +20,7 @@ import {
 } from '#app/components/ui/dropdown-menu'
 import { Button, buttonVariants } from '#app/components/ui/button'
 import { Logo } from '#app/components/logo'
-import type { User } from '#db/schema.ts'
+import type { User } from '#core/src/user.sql'
 
 /**
  * Required to handle JsonifyObject Typescript mismatch.

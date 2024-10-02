@@ -7,7 +7,7 @@ import {
   sendSubscriptionErrorEmail,
 } from '#app/modules/email/templates/subscription-email'
 import { ERRORS } from '#app/utils/constants/errors'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 import { Resource } from 'sst'
 

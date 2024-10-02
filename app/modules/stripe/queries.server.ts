@@ -2,7 +2,7 @@ import { PLANS } from '#app/modules/stripe/plans'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { getLocaleCurrency, HOST_URL } from '#app/utils/misc.server'
 import { ERRORS } from '#app/utils/constants/errors'
-import { db, schema } from '#db/index.js'
+import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 
 /**
