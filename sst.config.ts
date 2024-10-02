@@ -4,7 +4,7 @@ import { readdirSync } from 'node:fs'
 export default $config({
   app(input) {
     return {
-      name: 'remix-saas',
+      name: 'the-startup-stack',
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       home: 'aws',
       providers: {
