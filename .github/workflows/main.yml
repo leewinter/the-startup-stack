@@ -19,21 +19,21 @@ jobs:
         uses: styfle/cancel-workflow-action@0.12.1
 
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install Dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-          run_install: true
+        uses: oven-sh/setup-bun@v2
+
+      - name: Check formatting
+        run: bun run format:check
 
       - name: Run Lint
-        run: pnpm lint
+        run: bun run lint
 
   typecheck:
     name: ʦ TypeScript
@@ -51,13 +51,10 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-          run_install: true
+        uses: oven-sh/setup-bun@v2
 
       - name: Run Typechecking
-        run: pnpm typecheck
+        run: bun run typecheck
 
   vitest:
     name: ⚡ Vitest
@@ -75,10 +72,7 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-          run_install: true
+        uses: oven-sh/setup-bun@v2
 
       - name: Run Vitest
-        run: pnpm test
+        run: bun run test

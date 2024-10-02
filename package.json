@@ -20,8 +20,7 @@
     "lint": "biome lint --write .",
     "start": "cross-env NODE_ENV=production node ./server.js",
     "test": "vitest",
-    "typecheck": "tsc",
-    "validate": "bun run lint && bun run typecheck"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@conform-to/react": "1.1.4",
