@@ -18,7 +18,6 @@ export const subscription = pgTable('subscription', {
     .notNull()
     .references(() => price.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
   interval: text('interval').notNull(),
-  // TODO: use enum?
   status: text('status').notNull(),
   currentPeriodStart: timestamp('current_period_start').notNull(),
   currentPeriodEnd: timestamp('current_period_end').notNull(),

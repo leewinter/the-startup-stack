@@ -1,5 +1,5 @@
 {
-  "id": "cbc24d0e-b146-4d27-937f-6ed718d68191",
+  "id": "c973372c-294e-4f77-9e65-2a17463de860",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,19 +16,22 @@
         },
         "entity": {
           "name": "entity",
-          "type": "text",
+          "type": "entity",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "action": {
           "name": "action",
-          "type": "text",
+          "type": "action",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "access": {
           "name": "access",
-          "type": "text",
+          "type": "access",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -96,8 +99,12 @@
           "name": "permission_to_role_permission_id_permission_id_fk",
           "tableFrom": "permission_to_role",
           "tableTo": "permission",
-          "columnsFrom": ["permission_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "permission_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -105,8 +112,12 @@
           "name": "permission_to_role_role_id_role_id_fk",
           "tableFrom": "permission_to_role",
           "tableTo": "role",
-          "columnsFrom": ["role_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "role_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -114,7 +125,10 @@
       "compositePrimaryKeys": {
         "permission_to_role_permission_id_role_id_pk": {
           "name": "permission_to_role_permission_id_role_id_pk",
-          "columns": ["permission_id", "role_id"]
+          "columns": [
+            "permission_id",
+            "role_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -216,8 +230,12 @@
           "name": "price_plan_id_plan_id_fk",
           "tableFrom": "price",
           "tableTo": "plan",
-          "columnsFrom": ["plan_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "plan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -237,7 +255,8 @@
         },
         "name": {
           "name": "name",
-          "type": "text",
+          "type": "name",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -270,7 +289,9 @@
         "role_name_unique": {
           "name": "role_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -311,8 +332,12 @@
           "name": "role_to_user_role_id_role_id_fk",
           "tableFrom": "role_to_user",
           "tableTo": "role",
-          "columnsFrom": ["role_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "role_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -320,8 +345,12 @@
           "name": "role_to_user_user_id_user_id_fk",
           "tableFrom": "role_to_user",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -329,7 +358,10 @@
       "compositePrimaryKeys": {
         "role_to_user_role_id_user_id_pk": {
           "name": "role_to_user_role_id_user_id_pk",
-          "columns": ["role_id", "user_id"]
+          "columns": [
+            "role_id",
+            "user_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -414,8 +446,12 @@
           "name": "subscription_user_id_user_id_fk",
           "tableFrom": "subscription",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -423,8 +459,12 @@
           "name": "subscription_plan_id_plan_id_fk",
           "tableFrom": "subscription",
           "tableTo": "plan",
-          "columnsFrom": ["plan_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "plan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "restrict",
           "onUpdate": "cascade"
         },
@@ -432,8 +472,12 @@
           "name": "subscription_price_id_price_id_fk",
           "tableFrom": "subscription",
           "tableTo": "price",
-          "columnsFrom": ["price_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "price_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "restrict",
           "onUpdate": "cascade"
         }
@@ -443,7 +487,9 @@
         "subscription_user_id_unique": {
           "name": "subscription_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["user_id"]
+          "columns": [
+            "user_id"
+          ]
         }
       }
     },
@@ -497,17 +543,23 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         },
         "user_username_unique": {
           "name": "user_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         },
         "user_customer_id_unique": {
           "name": "user_customer_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["customer_id"]
+          "columns": [
+            "customer_id"
+          ]
         }
       }
     },
@@ -566,8 +618,12 @@
           "name": "user_image_user_id_user_id_fk",
           "tableFrom": "user_image",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -577,12 +633,48 @@
         "user_image_user_id_unique": {
           "name": "user_image_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["user_id"]
+          "columns": [
+            "user_id"
+          ]
         }
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "public.access": {
+      "name": "access",
+      "schema": "public",
+      "values": [
+        "own",
+        "any"
+      ]
+    },
+    "public.action": {
+      "name": "action",
+      "schema": "public",
+      "values": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "public.entity": {
+      "name": "entity",
+      "schema": "public",
+      "values": [
+        "user"
+      ]
+    },
+    "public.name": {
+      "name": "name",
+      "schema": "public",
+      "values": [
+        "user",
+        "admin"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {

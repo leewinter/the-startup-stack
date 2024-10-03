@@ -1,8 +1,32 @@
+DO $$ BEGIN
+ CREATE TYPE "public"."access" AS ENUM('own', 'any');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."action" AS ENUM('create', 'read', 'update', 'delete');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."entity" AS ENUM('user');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."name" AS ENUM('user', 'admin');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "permission" (
 	"id" text PRIMARY KEY NOT NULL,
-	"entity" text NOT NULL,
-	"action" text NOT NULL,
-	"access" text NOT NULL,
+	"entity" "entity" NOT NULL,
+	"action" "action" NOT NULL,
+	"access" "access" NOT NULL,
 	"description" text DEFAULT '' NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
@@ -36,7 +60,7 @@ CREATE TABLE IF NOT EXISTS "price" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "role" (
 	"id" text PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
+	"name" "name" NOT NULL,
 	"description" text DEFAULT '' NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),

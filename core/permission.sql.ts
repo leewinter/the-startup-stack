@@ -1,15 +1,18 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, primaryKey, text } from 'drizzle-orm/pg-core'
+import { pgTable, primaryKey, text, pgEnum } from 'drizzle-orm/pg-core'
 
 import { primaryId, timestamps } from './drizzle/types'
 import { role } from './role.sql'
 
+export const entityEnum = pgEnum('entity', ['user'])
+export const actionEnum = pgEnum('action', ['create', 'read', 'update', 'delete'])
+export const accessEnum = pgEnum('access', ['own', 'any'])
+
 export const permission = pgTable('permission', {
   id: primaryId(),
-  // TODO: use enums?
-  entity: text('entity').notNull(),
-  action: text('action').notNull(),
-  access: text('access').notNull(),
+  entity: entityEnum('entity').notNull(),
+  action: actionEnum('action').notNull(),
+  access: accessEnum('access').notNull(),
   description: text('description').default('').notNull(),
   ...timestamps,
 })

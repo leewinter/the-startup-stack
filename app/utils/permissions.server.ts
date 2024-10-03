@@ -6,9 +6,9 @@ import { json } from '@remix-run/node'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { userHasRole } from '#app/utils/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
+import type { role } from '#core/role.sql.ts'
 
-// TODO: move to db enum
-export type RoleName = 'user' | 'admin'
+export type RoleName = (typeof role.$inferInsert)['name']
 
 export async function requireUserWithRole(request: Request, name: RoleName) {
   const user = await requireUser(request, { redirectTo: LOGIN_PATH })

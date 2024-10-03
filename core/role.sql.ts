@@ -1,13 +1,15 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, primaryKey, text } from 'drizzle-orm/pg-core'
+import { pgEnum, pgTable, primaryKey, text } from 'drizzle-orm/pg-core'
 
 import { primaryId, timestamps } from './drizzle/types'
 import { user } from './user.sql'
 import { permissionToRole } from './permission.sql'
 
+export const roleEnum = pgEnum('name', ['user', 'admin'])
+
 export const role = pgTable('role', {
   id: primaryId(),
-  name: text('name').notNull().unique(),
+  name: roleEnum('name').notNull().unique(),
   description: text('description').default('').notNull(),
   ...timestamps,
 })

@@ -15,8 +15,10 @@ for (const table of [
   schema.permission,
   schema.plan,
 ]) {
-  // await db.delete(table)
-  db.execute(sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`))
+  // await db.execute(
+  //   sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`),
+  // )
+  await db.delete(table)
 }
 
 /**
@@ -34,9 +36,9 @@ for (const entity of entities) {
 }
 
 async function createRoleWithPermissions(
-  name: string,
+  name: (typeof schema.role.$inferInsert)['name'],
   description: string,
-  access: (typeof accesses)[number],
+  access: (typeof schema.permission.$inferInsert)['access'],
 ) {
   await db.transaction(async (tx) => {
     const [newRole] = await tx
