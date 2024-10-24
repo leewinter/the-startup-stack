@@ -1,12 +1,10 @@
 import { getClientLocales } from 'remix-utils/locales/server'
 import { CURRENCIES } from '#app/modules/stripe/plans'
-import { Resource } from 'sst'
 
 /**
  * HTTP.
  */
-export const HOST_URL =
-  process.env.NODE_ENV === 'production' ? Resource.Remix.url : 'http://localhost:3000'
+export const HOST_URL = process.env.HOST_URL
 
 export function getDomainUrl(request: Request) {
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('Host')
@@ -53,17 +51,4 @@ export function combineHeaders(
     }
   }
   return combined
-}
-
-/**
- * Singleton Server-Side Pattern.
- */
-export function singleton<Value>(name: string, value: () => Value): Value {
-  // biome-ignore lint/suspicious/noExplicitAny: ...
-  const globalStore = global as any
-
-  globalStore.__singletons ??= {}
-  globalStore.__singletons[name] ??= value()
-
-  return globalStore.__singletons[name]
 }

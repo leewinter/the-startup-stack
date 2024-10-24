@@ -1,4 +1,3 @@
-import type { ActionFunctionArgs } from '@remix-run/node'
 import { z } from 'zod'
 import { stripe } from '#app/modules/stripe/stripe.server'
 import { PLANS } from '#app/modules/stripe/plans'
@@ -10,34 +9,24 @@ import { ERRORS } from '#app/utils/constants/errors'
 import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 import { Resource } from 'sst'
+import { Hono } from 'hono'
 
-export const ROUTE_PATH = '/api/webhook' as const
+export const route = new Hono().post('/', async (ctx) => {
+  const sig = ctx.req.header('stripe-signature')
 
-/**
- * Gets and constructs a Stripe event signature.
- *
- * @throws An error if Stripe signature is missing or if event construction fails.
- * @returns The Stripe event object.
- */
-async function getStripeEvent(request: Request) {
-  try {
-    const signature = request.headers.get('Stripe-Signature')
-    if (!signature) throw new Error(ERRORS.STRIPE_MISSING_SIGNATURE)
-    const payload = await request.text()
-    const event = stripe.webhooks.constructEvent(
-      payload,
-      signature,
-      Resource.StripeWebhookEndpoint.value,
-    )
-    return event
-  } catch (err: unknown) {
-    console.log(err)
-    throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
-  }
-}
+  if (!sig) throw new Error(ERRORS.STRIPE_MISSING_SIGNATURE)
 
-export async function action({ request }: ActionFunctionArgs) {
-  const event = await getStripeEvent(request)
+  console.log({
+    sig,
+    secret: Resource.StripeWebhook.secret,
+    id: Resource.StripeWebhook.id,
+  })
+
+  const event = await stripe.webhooks.constructEventAsync(
+    await ctx.req.text(),
+    sig,
+    Resource.StripeWebhook.secret,
+  )
 
   try {
     switch (event.type) {
@@ -89,7 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
           }
         }
 
-        return new Response(null)
+        return ctx.json({})
       }
 
       /**
@@ -122,7 +111,7 @@ export async function action({ request }: ActionFunctionArgs) {
           })
           .where(eq(schema.subscription.userId, user.id))
 
-        return new Response(null)
+        return ctx.json({})
       }
 
       /**
@@ -140,7 +129,7 @@ export async function action({ request }: ActionFunctionArgs) {
             .delete(schema.subscription)
             .where(eq(schema.subscription.id, dbSubscription.id))
 
-        return new Response(null)
+        return ctx.json({})
       }
     }
   } catch (err: unknown) {
@@ -158,7 +147,7 @@ export async function action({ request }: ActionFunctionArgs) {
         if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })
-        return new Response(null)
+        return ctx.json({})
       }
 
       case 'customer.subscription.updated': {
@@ -174,12 +163,12 @@ export async function action({ request }: ActionFunctionArgs) {
         if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })
-        return new Response(null)
+        return ctx.json({})
       }
     }
 
     throw err
   }
 
-  return new Response(null)
-}
+  return ctx.json({})
+})

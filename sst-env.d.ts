@@ -5,6 +5,15 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
+    "Api": {
+      "name": string
+      "type": "sst.aws.Function"
+      "url": string
+    }
+    "ApiRouter": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
     "DATABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string
@@ -37,9 +46,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
-    "StripeWebhookEndpoint": {
-      "type": "sst.sst.Secret"
-      "value": string
+    "StripeWebhook": {
+      "id": string
+      "secret": string
+      "type": "stripe.index/webhookEndpoint.WebhookEndpoint"
     }
   }
 }

@@ -22,7 +22,8 @@
         "noSvgWithoutTitle": "off"
       },
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "info"
       }
     }
   },

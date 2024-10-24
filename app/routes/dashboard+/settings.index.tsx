@@ -77,6 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
     })
   }
 
+  // TODO: cancel Stripe subscription
   if (intent === INTENTS.USER_DELETE_ACCOUNT) {
     await db.delete(schema.user).where(eq(schema.user.id, user.id))
     return redirect(HOME_PATH, {
@@ -224,9 +225,8 @@ export default function DashboardSettings() {
             autoComplete="off"
             defaultValue={user?.username ?? ''}
             required
-            className={`w-80 bg-transparent ${
-              username.errors && 'border-destructive focus-visible:ring-destructive'
-            }`}
+            className={`w-80 bg-transparent ${username.errors && 'border-destructive focus-visible:ring-destructive'
+              }`}
             {...getInputProps(username, { type: 'text' })}
           />
           {username.errors && (

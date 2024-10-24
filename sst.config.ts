@@ -1,6 +1,5 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 import { readdirSync } from 'node:fs'
-
 export default $config({
   app(input) {
     return {
@@ -9,9 +8,10 @@ export default $config({
       home: 'aws',
       providers: {
         aws: {
-          version: '6.52.0',
           region: 'eu-central-1',
         },
+        'pulumi-stripe': true,
+        cloudflare: true,
       },
     }
   },
