@@ -1,11 +1,18 @@
 import { domain } from './dns'
+import { email } from './email'
 import { secret } from './secret'
 import { webhook } from './stripe'
 
 export const api = new sst.aws.Function('Api', {
   url: true,
   handler: 'functions/api/index.handler',
-  link: [secret.DATABASE_URL, secret.RESEND_API_KEY, secret.STRIPE_SECRET_KEY, webhook],
+  link: [secret.DATABASE_URL, secret.STRIPE_SECRET_KEY, webhook, email],
+  permissions: [
+    {
+      actions: ['ses:SendEmail'],
+      resources: ['*'],
+    },
+  ],
 })
 
 new sst.aws.Router('ApiRouter', {

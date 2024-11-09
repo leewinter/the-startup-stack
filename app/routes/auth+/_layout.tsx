@@ -19,32 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({})
 }
 
-const QUOTES = [
-  {
-    quote: 'There is nothing impossible to they who will try.',
-    author: 'Alexander the Great',
-  },
-  {
-    quote: 'The only way to do great work is to love what you do.',
-    author: 'Steve Jobs',
-  },
-  {
-    quote: 'The best way to predict the future is to create it.',
-    author: 'Peter Drucker',
-  },
-  {
-    quote: 'The only limit to our realization of tomorrow will be our doubts of today.',
-    author: 'Franklin D. Roosevelt',
-  },
-  {
-    quote: 'The only thing we have to fear is fear itself.',
-    author: 'Franklin D. Roosevelt',
-  },
-]
-
 export default function Layout() {
-  const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)]
-
   return (
     <div className="flex h-screen w-full">
       <div className="absolute left-1/2 top-10 mx-auto flex -translate-x-1/2 transform lg:hidden">
@@ -64,11 +39,6 @@ export default function Layout() {
         >
           <Logo />
         </Link>
-
-        <div className="z-10 flex flex-col items-start gap-2">
-          <p className="text-base font-normal text-primary">{randomQuote.quote}</p>
-          <p className="text-base font-normal text-primary/60">- {randomQuote.author}</p>
-        </div>
         <div className="base-grid absolute left-0 top-0 z-0 h-full w-full opacity-40" />
       </div>
       <div className="flex h-full w-full flex-col border-l border-primary/5 bg-card lg:w-[50%]">

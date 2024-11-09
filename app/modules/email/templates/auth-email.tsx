@@ -4,10 +4,8 @@ import {
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Section,
-  Img,
   Button,
   Preview,
   Text,
@@ -36,12 +34,6 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
         }}
       >
         <Container style={{ margin: '0 auto', padding: '20px 0 48px' }}>
-          <Img
-            src="https://react-email-demo-ijnnx5hul-resend.vercel.app/static/vercel-logo.png"
-            width="40"
-            height="37"
-            alt=""
-          />
           <Heading
             style={{
               fontSize: '24px',
@@ -52,7 +44,7 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
               padding: '12px 0 0',
             }}
           >
-            Your login code for Remix Auth TOTP
+            Your login code for The Startup Stack
           </Heading>
           {magicLink && (
             <Section style={{ padding: '8px 0px' }}>
@@ -71,7 +63,7 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
                 }}
                 href={magicLink}
               >
-                Login to totp.fly
+                Login
               </Button>
             </Section>
           )}
@@ -91,10 +83,6 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
           >
             {code}
           </code>
-          <Hr style={{ margin: '20px 0', borderColor: '#cccccc' }} />
-          <Text style={{ color: '#8898aa', fontSize: '12px' }}>
-            200 totp.fly.dev - Los Angeles, CA
-          </Text>
         </Container>
       </Body>
     </Html>

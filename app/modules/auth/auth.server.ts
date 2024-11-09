@@ -32,8 +32,8 @@ function getUserWithImageAndRole(email: string) {
   })
 }
 
-function createUseWithImageAndRole(email: string) {
-  return db.transaction(async (tx) => {
+async function createUseWithImageAndRole(email: string) {
+  await db.transaction(async (tx) => {
     const [newUser] = await tx.insert(schema.user).values({ email }).returning()
     const roles = await tx
       .select({ id: schema.role.id })
@@ -43,9 +43,8 @@ function createUseWithImageAndRole(email: string) {
     await tx
       .insert(schema.roleToUser)
       .values(roles.map((role) => ({ roleId: role.id, userId: newUser.id })))
-
-    return getUserWithImageAndRole(email)
   })
+  return getUserWithImageAndRole(email)
 }
 
 export const authenticator = new Authenticator<User>(authSessionStorage)
