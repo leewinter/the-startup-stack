@@ -4,7 +4,7 @@ import { PLANS } from '#core/constants'
 import {
   sendSubscriptionSuccessEmail,
   sendSubscriptionErrorEmail,
-} from '#app/modules/email/templates/subscription-email'
+} from '#core/email/templates/subscription'
 import { Resource } from 'sst'
 import { Hono } from 'hono'
 import { User } from '#core/user/index.ts'

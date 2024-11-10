@@ -1,6 +1,6 @@
 import { render } from '@react-email/render'
 import { Body, Container, Head, Html, Preview, Text } from '@react-email/components'
-import { sendEmail } from '#app/modules/email/email.server'
+import { Email } from '..'
 
 type SubscriptionEmailOptions = {
   email: string
@@ -80,7 +80,7 @@ export async function sendSubscriptionSuccessEmail({
 }: SubscriptionEmailOptions) {
   const html = renderSubscriptionSuccessEmail({ email, subscriptionId })
 
-  await sendEmail({
+  await Email.send({
     to: email,
     subject: 'Successfully Subscribed to PRO',
     html,
@@ -93,7 +93,7 @@ export async function sendSubscriptionErrorEmail({
 }: SubscriptionEmailOptions) {
   const html = renderSubscriptionErrorEmail({ email, subscriptionId })
 
-  await sendEmail({
+  await Email.send({
     to: email,
     subject: 'Subscription Issue - Customer Support',
     html,

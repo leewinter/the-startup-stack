@@ -1,4 +1,3 @@
-import { render } from '@react-email/render'
 import {
   Body,
   Container,
@@ -9,8 +8,9 @@ import {
   Button,
   Preview,
   Text,
+  render,
 } from '@react-email/components'
-import { sendEmail } from '#app/modules/email/email.server'
+import { Email } from '..'
 
 type AuthEmailOptions = {
   email: string
@@ -102,7 +102,7 @@ export function renderAuthEmailEmail(args: AuthEmailOptions) {
 export async function sendAuthEmail({ email, code, magicLink }: AuthEmailOptions) {
   const html = renderAuthEmailEmail({ email, code, magicLink })
 
-  await sendEmail({
+  await Email.send({
     to: email,
     subject: 'Your login code for Remix Auth TOTP',
     html,
