@@ -6,8 +6,7 @@ import { requireUser } from '#app/modules/auth/auth.server'
 import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
-import { db, schema } from '#core/drizzle'
-import { eq } from 'drizzle-orm'
+import { Subscription } from '#core/subscription/index.ts'
 
 export const meta: MetaFunction = () => {
   return [{ title: `${siteConfig.siteTitle} - Dashboard` }]
@@ -15,9 +14,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request)
-  const subscription = await db.query.subscription.findFirst({
-    where: eq(schema.subscription.userId, user.id),
-  })
+  const subscription = Subscription.fromUserID(user.id)
   return json({ user, subscription } as const)
 }
 

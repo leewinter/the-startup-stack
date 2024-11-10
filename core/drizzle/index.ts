@@ -12,8 +12,8 @@ import {
 import { plan, planRelations } from '../plan.sql'
 import { price, priceRelations } from '../price.sql'
 import { role, roleRelations, roleToUser, roleToUserRelations } from '../role.sql'
-import { subscription, subscriptionRelations } from '../subscription.sql'
-import { user, userRelations, userImage, userImageRelations } from '../user.sql'
+import { subscription, subscriptionRelations } from '../subscription/sql.ts'
+import { user, userRelations, userImage, userImageRelations } from '../user/sql.ts'
 
 export const schema = {
   user,

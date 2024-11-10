@@ -1,8 +1,7 @@
-import { stripe } from '#app/modules/stripe/stripe.server'
+import { Stripe } from '#core/stripe'
 import { PRICING_PLANS } from '#app/modules/stripe/plans'
 import { db, schema } from '#core/drizzle'
 import { eq, getTableName, or, sql } from 'drizzle-orm'
-import { seedStripe } from '../stripe.seed'
 
 for (const table of [
   schema.permissionToRole,
@@ -82,8 +81,7 @@ await db.transaction(async (tx) => {
 
 console.info('🎭 User roles and permissions has been successfully created.')
 
-await seedStripe()
-const prices = await stripe.prices.list()
+const prices = await Stripe.client.prices.list()
 
 // biome-ignore lint/complexity/noForEach: <explanation>
 Object.values(PRICING_PLANS).forEach(async ({ id, name, description }) => {

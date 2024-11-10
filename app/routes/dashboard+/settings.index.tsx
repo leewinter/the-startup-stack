@@ -24,6 +24,7 @@ import {
 import { ROUTE_PATH as RESET_IMAGE_PATH } from '#app/routes/resources+/reset-image'
 import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
+import { User } from '#core/user/index.ts'
 
 export const UsernameSchema = z.object({
   username: z
@@ -54,9 +55,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     const { username } = submission.value
-    const isUsernameTaken = await db.query.user.findFirst({
-      where: eq(schema.user.username, username),
-    })
+    const isUsernameTaken = await User.fromUsername(username)
 
     if (isUsernameTaken) {
       return json(
@@ -68,7 +67,7 @@ export async function action({ request }: ActionFunctionArgs) {
       )
     }
 
-    await db.update(schema.user).set({ username }).where(eq(schema.user.id, user.id))
+    await User.update(user.id, { username })
     return json(submission.reply({ fieldErrors: {} }), {
       headers: await createToastHeaders({
         title: 'Success!',
@@ -225,8 +224,9 @@ export default function DashboardSettings() {
             autoComplete="off"
             defaultValue={user?.username ?? ''}
             required
-            className={`w-80 bg-transparent ${username.errors && 'border-destructive focus-visible:ring-destructive'
-              }`}
+            className={`w-80 bg-transparent ${
+              username.errors && 'border-destructive focus-visible:ring-destructive'
+            }`}
             {...getInputProps(username, { type: 'text' })}
           />
           {username.errors && (

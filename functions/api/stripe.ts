@@ -1,15 +1,15 @@
 import { z } from 'zod'
-import { stripe } from '#app/modules/stripe/stripe.server'
+import { Stripe } from '#core/stripe'
 import { PLANS } from '#app/modules/stripe/plans'
 import {
   sendSubscriptionSuccessEmail,
   sendSubscriptionErrorEmail,
 } from '#app/modules/email/templates/subscription-email'
 import { ERRORS } from '#app/utils/constants/errors'
-import { db, schema } from '#core/drizzle'
-import { eq } from 'drizzle-orm'
 import { Resource } from 'sst'
 import { Hono } from 'hono'
+import { User } from '#core/user/index.ts'
+import { Subscription } from '#core/subscription/index.ts'
 
 export const route = new Hono().post('/', async (ctx) => {
   const sig = ctx.req.header('stripe-signature')
@@ -22,11 +22,7 @@ export const route = new Hono().post('/', async (ctx) => {
     id: Resource.StripeWebhook.id,
   })
 
-  const event = await stripe.webhooks.constructEventAsync(
-    await ctx.req.text(),
-    sig,
-    Resource.StripeWebhook.secret,
-  )
+  const event = await Stripe.createEvent(await ctx.req.text(), sig)
 
   try {
     switch (event.type) {
@@ -40,41 +36,26 @@ export const route = new Hono().post('/', async (ctx) => {
           .object({ customer: z.string(), subscription: z.string() })
           .parse(session)
 
-        const user = await db.query.user.findFirst({
-          where: eq(schema.user.customerId, customerId),
-        })
+        const user = await User.fromCustomerID(customerId)
         if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
 
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-        await db
-          .update(schema.subscription)
-          .set({
-            id: subscription.id,
-            userId: user.id,
-            planId: String(subscription.items.data[0].plan.product),
-            priceId: String(subscription.items.data[0].price.id),
-            interval: String(subscription.items.data[0].plan.interval),
-            status: subscription.status,
-            currentPeriodStart: new Date(subscription.current_period_start),
-            currentPeriodEnd: new Date(subscription.current_period_end),
-            cancelAtPeriodEnd: subscription.cancel_at_period_end,
-          })
-          .where(eq(schema.subscription.userId, user.id))
+        const subscription = await Stripe.getSubscription(subscriptionId)
+        await Subscription.update(user.id, subscription)
 
         await sendSubscriptionSuccessEmail({ email: user.email, subscriptionId })
 
         // Cancel free subscription. — User upgraded to a paid plan.
         // Not required, but it's a good practice to keep just a single active plan.
-        const subscriptions = (
-          await stripe.subscriptions.list({ customer: customerId })
-        ).data.map((sub) => sub.items)
+        const subscriptions = (await Stripe.listSubscriptions(customerId)).data.map(
+          (sub) => sub.items,
+        )
 
         if (subscriptions.length > 1) {
           const freeSubscription = subscriptions.find((sub) =>
             sub.data.some((item) => item.price.product === PLANS.FREE),
           )
           if (freeSubscription) {
-            await stripe.subscriptions.cancel(freeSubscription?.data[0].subscription)
+            await Stripe.cancelSubscription(freeSubscription?.data[0].subscription)
           }
         }
 
@@ -91,25 +72,10 @@ export const route = new Hono().post('/', async (ctx) => {
           .object({ customer: z.string() })
           .parse(subscription)
 
-        const user = await db.query.user.findFirst({
-          where: eq(schema.user.customerId, customerId),
-        })
+        const user = await User.fromCustomerID(customerId)
         if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
 
-        await db
-          .update(schema.subscription)
-          .set({
-            id: subscription.id,
-            userId: user.id,
-            planId: String(subscription.items.data[0].plan.product),
-            priceId: String(subscription.items.data[0].price.id),
-            interval: String(subscription.items.data[0].plan.interval),
-            status: subscription.status,
-            currentPeriodStart: new Date(subscription.current_period_start),
-            currentPeriodEnd: new Date(subscription.current_period_end),
-            cancelAtPeriodEnd: subscription.cancel_at_period_end,
-          })
-          .where(eq(schema.subscription.userId, user.id))
+        await Subscription.update(user.id, subscription)
 
         return ctx.json({})
       }
@@ -121,13 +87,10 @@ export const route = new Hono().post('/', async (ctx) => {
         const subscription = event.data.object
         const { id } = z.object({ id: z.string() }).parse(subscription)
 
-        const dbSubscription = await db.query.subscription.findFirst({
-          where: eq(schema.subscription.id, id),
-        })
-        if (dbSubscription)
-          await db
-            .delete(schema.subscription)
-            .where(eq(schema.subscription.id, dbSubscription.id))
+        const dbSubscription = await Subscription.fromID(id)
+        if (dbSubscription) {
+          Subscription.remove(dbSubscription.id)
+        }
 
         return ctx.json({})
       }
@@ -141,9 +104,7 @@ export const route = new Hono().post('/', async (ctx) => {
           .object({ customer: z.string(), subscription: z.string() })
           .parse(session)
 
-        const user = await db.query.user.findFirst({
-          where: eq(schema.user.customerId, customerId),
-        })
+        const user = await User.fromCustomerID(customerId)
         if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })
@@ -157,9 +118,7 @@ export const route = new Hono().post('/', async (ctx) => {
           .object({ id: z.string(), customer: z.string() })
           .parse(subscription)
 
-        const user = await db.query.user.findFirst({
-          where: eq(schema.user.customerId, customerId),
-        })
+        const user = await User.fromCustomerID(customerId)
         if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })

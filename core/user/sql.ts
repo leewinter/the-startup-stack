@@ -1,9 +1,9 @@
-import { type InferSelectModel, relations } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import { pgTable, text } from 'drizzle-orm/pg-core'
 
-import { bytea, primaryId, timestamps } from './drizzle/types'
-import { type role, roleToUser } from './role.sql'
-import { subscription } from './subscription.sql'
+import { bytea, primaryId, timestamps } from '../drizzle/types'
+import { roleToUser } from '../role.sql'
+import { subscription } from '../subscription/sql.ts'
 
 export const user = pgTable('user', {
   id: primaryId(),
@@ -19,12 +19,6 @@ export const userRelations = relations(user, ({ many, one }) => ({
   roles: many(roleToUser),
 }))
 
-export type User = InferSelectModel<typeof user> & {
-  image: Pick<InferSelectModel<typeof userImage>, 'id'> | null
-  roles: { role: Pick<InferSelectModel<typeof role>, 'name'> }[]
-}
-
-// TODO: get rid of userImage
 export const userImage = pgTable('user_image', {
   id: primaryId(),
   altText: text('alt_text'),

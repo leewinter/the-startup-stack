@@ -9,16 +9,15 @@ import { Form, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
 import { PLANS, PRICING_PLANS, INTERVALS, CURRENCIES } from '#app/modules/stripe/plans'
-import {
-  createSubscriptionCheckout,
-  createCustomerPortal,
-} from '#app/modules/stripe/queries.server'
 import { getLocaleCurrency } from '#app/utils/misc.server'
 import { INTENTS } from '#app/utils/constants/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { Switch } from '#app/components/ui/switch'
 import { Button } from '#app/components/ui/button'
-import { db, schema } from '#core/drizzle'
+import { Subscription } from '#core/subscription/index.ts'
+import { Stripe } from '#core/stripe'
+import { ERRORS } from '#app/utils/constants/errors.ts'
+import { db, schema } from '#core/drizzle/index.ts'
 import { eq } from 'drizzle-orm'
 
 export const ROUTE_PATH = '/dashboard/settings/billing' as const
@@ -32,9 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     redirectTo: LOGIN_PATH,
   })
 
-  const subscription = await db.query.subscription.findFirst({
-    where: eq(schema.subscription.userId, sessionUser.id),
-  })
+  const subscription = await Subscription.fromUserID(sessionUser.id)
   const currency = getLocaleCurrency(request)
 
   return json({ subscription, currency } as const)
@@ -51,21 +48,30 @@ export async function action({ request }: ActionFunctionArgs) {
   if (intent === INTENTS.SUBSCRIPTION_CREATE_CHECKOUT) {
     const planId = String(formData.get('planId'))
     const planInterval = String(formData.get('planInterval'))
-    const checkoutUrl = await createSubscriptionCheckout({
-      userId: sessionUser.id,
-      planId,
-      planInterval,
-      request,
+    const subscription = await Subscription.fromUserID(sessionUser.id)
+    if (subscription?.planId !== PLANS.FREE) return
+
+    const currency = getLocaleCurrency(request)
+    const plan = await db.query.plan.findFirst({
+      where: eq(schema.plan.id, planId),
+      with: { prices: true },
     })
-    if (!checkoutUrl) return json({ success: false } as const)
-    return redirect(checkoutUrl)
+
+    const price = plan?.prices.find(
+      (price) => price.interval === planInterval && price.currency === currency,
+    )
+    if (!price) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    if (!sessionUser.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+
+    const checkout = await Stripe.checkout(sessionUser.customerId, price.id)
+    if (!checkout?.url) return json({ success: false } as const)
+    return redirect(checkout.url)
   }
   if (intent === INTENTS.SUBSCRIPTION_CREATE_CUSTOMER_PORTAL) {
-    const customerPortalUrl = await createCustomerPortal({
-      userId: sessionUser.id,
-    })
-    if (!customerPortalUrl) return json({ success: false } as const)
-    return redirect(customerPortalUrl)
+    if (!sessionUser.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    const customerPortal = await Stripe.customerPortal(sessionUser.customerId)
+    if (!customerPortal) return json({ success: false } as const)
+    return redirect(customerPortal.url)
   }
 
   return json({})

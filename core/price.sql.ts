@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm'
 import { pgTable, integer, text } from 'drizzle-orm/pg-core'
 
 import { primaryId, timestamps } from './drizzle/types'
-import { subscription } from './subscription.sql'
+import { subscription } from './subscription/sql.ts'
 import { plan } from './plan.sql'
 
 export const price = pgTable('price', {

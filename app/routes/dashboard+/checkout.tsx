@@ -9,8 +9,7 @@ import { useInterval } from '#app/utils/hooks/use-interval'
 import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
 import { buttonVariants } from '#app/components/ui/button'
-import { db, schema } from '#core/drizzle'
-import { eq } from 'drizzle-orm'
+import { Subscription } from '#core/subscription/index.ts'
 
 export const ROUTE_PATH = '/dashboard/checkout'
 
@@ -20,9 +19,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const sessionUser = await requireSessionUser(request)
-  const subscription = await db.query.subscription.findFirst({
-    where: eq(schema.subscription.userId, sessionUser.id),
-  })
+  const subscription = await Subscription.fromUserID(sessionUser.id)
   if (!subscription) return redirect(DASHBOARD_PATH)
 
   return json({ isFreePlan: subscription.planId === PLANS.FREE } as const)

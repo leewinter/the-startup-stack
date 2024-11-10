@@ -4,13 +4,11 @@ import { TOTPStrategy } from 'remix-auth-totp'
 import { GitHubStrategy } from 'remix-auth-github'
 import { authSessionStorage } from '#app/modules/auth/auth-session.server'
 import { sendAuthEmail } from '#app/modules/email/templates/auth-email'
-import { HOST_URL } from '#app/utils/misc.server'
 import { ERRORS } from '#app/utils/constants/errors'
 import { ROUTE_PATH as LOGOUT_PATH } from '#app/routes/auth+/logout'
 import { ROUTE_PATH as MAGIC_LINK_PATH } from '#app/routes/auth+/magic-link'
 import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
-import type { User } from '#core/user.sql'
 import { Resource } from 'sst'
 
 function getUserWithImageAndRole(email: string) {
@@ -47,7 +45,9 @@ async function createUseWithImageAndRole(email: string) {
   return getUserWithImageAndRole(email)
 }
 
-export const authenticator = new Authenticator<User>(authSessionStorage)
+export const authenticator = new Authenticator<
+  Awaited<ReturnType<typeof getUserWithImageAndRole>>
+>(authSessionStorage)
 
 /**
  * TOTP - Strategy.
@@ -94,7 +94,7 @@ authenticator.use(
     {
       clientId: process.env.GITHUB_CLIENT_ID || '',
       clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
-      redirectURI: `${HOST_URL}/auth/github/callback`,
+      redirectURI: `${process.env.HOST_URL}/auth/github/callback`,
     },
     async ({ profile }) => {
       const email = profile._json.email || profile.emails[0].value

@@ -14,10 +14,6 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { Loader2 } from 'lucide-react'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
-import {
-  createCustomer,
-  createFreeSubscription,
-} from '#app/modules/stripe/queries.server'
 import { validateCSRF } from '#app/utils/csrf.server'
 import { checkHoneypot } from '#app/utils/honeypot.server'
 import { useIsPending } from '#app/utils/misc'
@@ -26,8 +22,11 @@ import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { Input } from '#app/components/ui/input'
 import { Button } from '#app/components/ui/button'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'
-import { db, schema } from '#core/drizzle'
-import { eq } from 'drizzle-orm'
+import { User } from '#core/user/index.ts'
+import { Stripe } from '#core/stripe'
+import { Subscription } from '#core/subscription/index.ts'
+import { getLocaleCurrency } from '#app/utils/misc.server.ts'
+import { PLANS } from '#app/modules/stripe/plans.ts'
 
 export const ROUTE_PATH = '/onboarding/username' as const
 
@@ -66,11 +65,9 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const { username } = submission.value
-  const user = await db.query.user.findFirst({
-    where: eq(schema.user.username, username),
-  })
+  const usernameExists = Boolean(await User.fromUsername(username))
 
-  if (user) {
+  if (usernameExists) {
     return json(
       submission.reply({
         fieldErrors: {
@@ -79,12 +76,15 @@ export async function action({ request }: ActionFunctionArgs) {
       }),
     )
   }
-  await db.update(schema.user).set({ username }).where(eq(schema.user.id, sessionUser.id))
-  await createCustomer({ userId: sessionUser.id })
-  const subscription = await db.query.subscription.findFirst({
-    where: eq(schema.subscription.userId, sessionUser.id),
-  })
-  if (!subscription) await createFreeSubscription({ userId: sessionUser.id, request })
+  const user = await User.update(sessionUser.id, { username })
+  const customer = await Stripe.createCustomer(user.email, user.username ?? undefined)
+  const subscription = await Stripe.createSubscription(
+    customer.id,
+    PLANS.FREE,
+    getLocaleCurrency(request),
+  )
+  await User.update(user.id, { customerId: customer.id })
+  await Subscription.insert(user.id, subscription)
 
   return redirect(DASHBOARD_PATH)
 }

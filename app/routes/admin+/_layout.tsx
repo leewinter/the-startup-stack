@@ -7,8 +7,7 @@ import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { buttonVariants } from '#app/components/ui/button'
 import { Navigation } from '#app/components/navigation'
-import { db, schema } from '#core/drizzle'
-import { eq } from 'drizzle-orm'
+import { Subscription } from '#core/subscription/index.ts'
 
 export const ROUTE_PATH = '/admin' as const
 
@@ -18,9 +17,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUserWithRole(request, 'admin')
-  const subscription = await db.query.subscription.findFirst({
-    where: eq(schema.subscription.userId, user.id),
-  })
+  const subscription = await Subscription.fromUserID(user.id)
   return json({ user, subscription } as const)
 }
 

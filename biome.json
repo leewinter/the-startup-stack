@@ -6,12 +6,11 @@
   "files": {
     "ignore": [
       "**/node_modules",
-      "**/package-lock.json",
-      "**/pnpm-lock.yaml",
       "./build",
       "./public/build",
       ".sst",
-      "./sst-env.d.ts"
+      "./sst-env.d.ts",
+      "./core/migrations"
     ]
   },
   "linter": {

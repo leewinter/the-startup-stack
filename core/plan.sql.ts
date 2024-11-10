@@ -3,7 +3,7 @@ import { pgTable, text } from 'drizzle-orm/pg-core'
 
 import { primaryId, timestamps } from './drizzle/types'
 import { price } from './price.sql'
-import { subscription } from './subscription.sql'
+import { subscription } from './subscription/sql.ts'
 
 export const plan = pgTable('plan', {
   id: primaryId(),
