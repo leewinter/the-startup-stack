@@ -26,7 +26,7 @@ import { User } from '#core/user/index.ts'
 import { Stripe } from '#core/stripe'
 import { Subscription } from '#core/subscription/index.ts'
 import { getLocaleCurrency } from '#app/utils/misc.server.ts'
-import { PLANS } from '#app/modules/stripe/plans.ts'
+import { PLANS } from '#core/constants.ts'
 
 export const ROUTE_PATH = '/onboarding/username' as const
 

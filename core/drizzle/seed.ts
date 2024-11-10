@@ -1,5 +1,5 @@
 import { Stripe } from '#core/stripe'
-import { PRICING_PLANS } from '#app/modules/stripe/plans'
+import { PRICING_PLANS } from '#core/constants'
 import { db, schema } from '#core/drizzle'
 import { eq, getTableName, or, sql } from 'drizzle-orm'
 

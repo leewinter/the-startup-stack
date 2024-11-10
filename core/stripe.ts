@@ -1,6 +1,5 @@
 import { Resource } from 'sst'
 import StripeClient from 'stripe'
-import { ERRORS } from '#app/utils/constants/errors.ts'
 import { plan as planSchema } from './plan.sql.ts'
 import { eq } from 'drizzle-orm'
 import { db } from './drizzle/index.ts'
@@ -14,12 +13,19 @@ const stripe = new StripeClient(Resource.STRIPE_SECRET_KEY.value, {
 export namespace Stripe {
   export const client = stripe
 
+  export const errors = {
+    MISSING_SIGNATURE: 'Unable to verify webhook signature.',
+    MISSING_ENDPOINT_SECRET: 'Unable to verify webhook endpoint.',
+    CUSTOMER_NOT_CREATED: 'Unable to create customer.',
+    SOMETHING_WENT_WRONG: 'Something went wrong while trying to handle Stripe API.',
+  }
+
   export const createCustomer = async (email: string, name: string | undefined) => {
     const customer = await client.customers
       .create({ email, name })
       .catch((err) => console.error(err))
 
-    if (!customer) throw new Error(ERRORS.STRIPE_CUSTOMER_NOT_CREATED)
+    if (!customer) throw new Error(errors.CUSTOMER_NOT_CREATED)
     return customer
   }
 
@@ -37,14 +43,14 @@ export namespace Stripe {
       (price) => price.interval === 'year' && price.currency === currency,
     )
 
-    if (!yearlyPrice) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    if (!yearlyPrice) throw new Error(errors.SOMETHING_WENT_WRONG)
 
     const subscription = await client.subscriptions.create({
       customer: customerId,
       items: [{ price: yearlyPrice.id }],
     })
 
-    if (!subscription) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    if (!subscription) throw new Error(errors.SOMETHING_WENT_WRONG)
     return subscription
   }
 
@@ -57,7 +63,7 @@ export namespace Stripe {
       success_url: `${HOST_URL}/dashboard/checkout`,
       cancel_url: `${HOST_URL}/dashboard/settings/billing`,
     })
-    if (!checkout) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    if (!checkout) throw new Error(errors.SOMETHING_WENT_WRONG)
     return checkout
   }
 
@@ -66,7 +72,7 @@ export namespace Stripe {
       customer: customerID,
       return_url: `${HOST_URL}/dashboard/settings/billing`,
     })
-    if (!portal) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+    if (!portal) throw new Error(errors.SOMETHING_WENT_WRONG)
     return portal
   }
 

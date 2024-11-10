@@ -1,5 +1,5 @@
 import { getClientLocales } from 'remix-utils/locales/server'
-import { CURRENCIES } from '#app/modules/stripe/plans'
+import { CURRENCIES } from '#core/constants'
 
 /**
  * HTTP.

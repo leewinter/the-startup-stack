@@ -1,11 +1,10 @@
 import { z } from 'zod'
 import { Stripe } from '#core/stripe'
-import { PLANS } from '#app/modules/stripe/plans'
+import { PLANS } from '#core/constants'
 import {
   sendSubscriptionSuccessEmail,
   sendSubscriptionErrorEmail,
 } from '#app/modules/email/templates/subscription-email'
-import { ERRORS } from '#app/utils/constants/errors'
 import { Resource } from 'sst'
 import { Hono } from 'hono'
 import { User } from '#core/user/index.ts'
@@ -14,7 +13,7 @@ import { Subscription } from '#core/subscription/index.ts'
 export const route = new Hono().post('/', async (ctx) => {
   const sig = ctx.req.header('stripe-signature')
 
-  if (!sig) throw new Error(ERRORS.STRIPE_MISSING_SIGNATURE)
+  if (!sig) throw new Error(Stripe.errors.MISSING_SIGNATURE)
 
   console.log({
     sig,
@@ -37,7 +36,7 @@ export const route = new Hono().post('/', async (ctx) => {
           .parse(session)
 
         const user = await User.fromCustomerID(customerId)
-        if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
+        if (!user) throw new Error('Something went wrong')
 
         const subscription = await Stripe.getSubscription(subscriptionId)
         await Subscription.update(user.id, subscription)
@@ -73,7 +72,8 @@ export const route = new Hono().post('/', async (ctx) => {
           .parse(subscription)
 
         const user = await User.fromCustomerID(customerId)
-        if (!user) throw new Error(ERRORS.SOMETHING_WENT_WRONG)
+        if (!user)
+          throw new Error('Something went wrong while trying to handle Stripe API.')
 
         await Subscription.update(user.id, subscription)
 
@@ -105,7 +105,7 @@ export const route = new Hono().post('/', async (ctx) => {
           .parse(session)
 
         const user = await User.fromCustomerID(customerId)
-        if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+        if (!user) throw new Error(Stripe.errors.SOMETHING_WENT_WRONG)
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })
         return ctx.json({})
@@ -119,7 +119,9 @@ export const route = new Hono().post('/', async (ctx) => {
           .parse(subscription)
 
         const user = await User.fromCustomerID(customerId)
-        if (!user) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
+        if (!user) {
+          throw new Error(Stripe.errors.SOMETHING_WENT_WRONG)
+        }
 
         await sendSubscriptionErrorEmail({ email: user.email, subscriptionId })
         return ctx.json({})

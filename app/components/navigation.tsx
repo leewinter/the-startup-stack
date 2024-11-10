@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '#app/components/ui/dropdown-menu'
 import type { requireUserWithRole } from '#app/utils/permissions.server'
-import { PLANS } from '#app/modules/stripe/plans'
+import { PLANS } from '#core/constants'
 import { ROUTE_PATH as ADMIN_PATH } from '#app/routes/admin+/_layout'
 import { ROUTE_PATH as LOGOUT_PATH } from '#app/routes/auth+/logout'
 import { ROUTE_PATH as DASHBOARD_PATH } from '#app/routes/dashboard+/_layout'

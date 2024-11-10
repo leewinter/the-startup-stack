@@ -3,12 +3,12 @@ import type {
   LoaderFunctionArgs,
   ActionFunctionArgs,
 } from '@remix-run/node'
-import type { Interval, Plan } from '#app/modules/stripe/plans'
+import type { Interval, Plan } from '#core/constants'
 import { useState } from 'react'
 import { Form, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
-import { PLANS, PRICING_PLANS, INTERVALS, CURRENCIES } from '#app/modules/stripe/plans'
+import { PLANS, PRICING_PLANS, INTERVALS, CURRENCIES } from '#core/constants'
 import { getLocaleCurrency } from '#app/utils/misc.server'
 import { INTENTS } from '#app/utils/constants/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'

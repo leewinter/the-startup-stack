@@ -1,4 +1,4 @@
-import { PRICING_PLANS } from '#app/modules/stripe/plans.ts'
+import { PRICING_PLANS } from '#core/constants.ts'
 import { domain } from './dns'
 
 // -------------------------- FREE PLAN ------------------------------------
