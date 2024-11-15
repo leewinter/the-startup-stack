@@ -1,9 +1,5 @@
 import { Resource } from 'sst'
 import StripeClient from 'stripe'
-import { plan as planSchema } from './plan.sql.ts'
-import { eq } from 'drizzle-orm'
-import { db } from './drizzle/index.ts'
-import { HOST_URL } from '#app/utils/misc.server.ts'
 
 const stripe = new StripeClient(Resource.STRIPE_SECRET_KEY.value, {
   apiVersion: '2024-04-10',
@@ -29,25 +25,10 @@ export namespace Stripe {
     return customer
   }
 
-  export const createSubscription = async (
-    customerId: string,
-    planId: string,
-    currency: string,
-  ) => {
-    const plan = await db.query.plan.findFirst({
-      where: eq(planSchema.id, planId),
-      with: { prices: true },
-    })
-
-    const yearlyPrice = plan?.prices.find(
-      (price) => price.interval === 'year' && price.currency === currency,
-    )
-
-    if (!yearlyPrice) throw new Error(errors.SOMETHING_WENT_WRONG)
-
+  export const createSubscription = async (customerId: string, priceID: string) => {
     const subscription = await client.subscriptions.create({
       customer: customerId,
-      items: [{ price: yearlyPrice.id }],
+      items: [{ price: priceID }],
     })
 
     if (!subscription) throw new Error(errors.SOMETHING_WENT_WRONG)
@@ -60,8 +41,8 @@ export namespace Stripe {
       line_items: [{ price: priceID, quantity: 1 }],
       mode: 'subscription',
       payment_method_types: ['card'],
-      success_url: `${HOST_URL}/dashboard/checkout`,
-      cancel_url: `${HOST_URL}/dashboard/settings/billing`,
+      success_url: `${process.env.HOST_URL}/dashboard/checkout`,
+      cancel_url: `${process.env.HOST_URL}/dashboard/settings/billing`,
     })
     if (!checkout) throw new Error(errors.SOMETHING_WENT_WRONG)
     return checkout
@@ -70,7 +51,7 @@ export namespace Stripe {
   export const customerPortal = async (customerID: string) => {
     const portal = client.billingPortal.sessions.create({
       customer: customerID,
-      return_url: `${HOST_URL}/dashboard/settings/billing`,
+      return_url: `${process.env.HOST_URL}/dashboard/settings/billing`,
     })
     if (!portal) throw new Error(errors.SOMETHING_WENT_WRONG)
     return portal

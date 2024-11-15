@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm'
 import { pgTable, text } from 'drizzle-orm/pg-core'
 
 import { bytea, primaryId, timestamps } from '../drizzle/types'
-import { roleToUser } from '../role.sql'
+import { roleToUser } from '../role/sql.ts'
 import { subscription } from '../subscription/sql.ts'
 
 export const user = pgTable('user', {

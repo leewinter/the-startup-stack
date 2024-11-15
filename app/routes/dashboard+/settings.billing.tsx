@@ -3,7 +3,7 @@ import type {
   LoaderFunctionArgs,
   ActionFunctionArgs,
 } from '@remix-run/node'
-import type { Interval, Plan } from '#core/constants'
+import type { Interval, Plan as PlanEnum } from '#core/constants'
 import { useState } from 'react'
 import { Form, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
@@ -17,8 +17,7 @@ import { Button } from '#app/components/ui/button'
 import { Subscription } from '#core/subscription/index.ts'
 import { Stripe } from '#core/stripe'
 import { ERRORS } from '#app/utils/constants/errors.ts'
-import { db, schema } from '#core/drizzle/index.ts'
-import { eq } from 'drizzle-orm'
+import { Plan } from '#core/plan/index.ts'
 
 export const ROUTE_PATH = '/dashboard/settings/billing' as const
 
@@ -52,10 +51,7 @@ export async function action({ request }: ActionFunctionArgs) {
     if (subscription?.planId !== PLANS.FREE) return
 
     const currency = getLocaleCurrency(request)
-    const plan = await db.query.plan.findFirst({
-      where: eq(schema.plan.id, planId),
-      with: { prices: true },
-    })
+    const plan = await Plan.fromID(planId)
 
     const price = plan?.prices.find(
       (price) => price.interval === planInterval && price.currency === currency,
@@ -80,8 +76,8 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function DashboardBilling() {
   const { subscription, currency } = useLoaderData<typeof loader>()
 
-  const [selectedPlanId, setSelectedPlanId] = useState<Plan>(
-    (subscription?.planId as Plan) ?? PLANS.FREE,
+  const [selectedPlanId, setSelectedPlanId] = useState<PlanEnum>(
+    (subscription?.planId as PlanEnum) ?? PLANS.FREE,
   )
   const [selectedPlanInterval, setSelectedPlanInterval] = useState<Interval>(
     INTERVALS.MONTH,

@@ -6,7 +6,7 @@ import { json } from '@remix-run/node'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { userHasRole } from '#app/utils/misc'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
-import type { role } from '#core/role.sql.ts'
+import type { role } from '#core/role/sql.ts'
 
 export type RoleName = (typeof role.$inferInsert)['name']
 

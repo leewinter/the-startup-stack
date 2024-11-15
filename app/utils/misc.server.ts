@@ -1,11 +1,6 @@
 import { getClientLocales } from 'remix-utils/locales/server'
 import { CURRENCIES } from '#core/constants'
 
-/**
- * HTTP.
- */
-export const HOST_URL = process.env.HOST_URL
-
 export function getDomainUrl(request: Request) {
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('Host')
   if (!host) return null

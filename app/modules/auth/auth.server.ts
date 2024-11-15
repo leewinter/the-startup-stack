@@ -11,7 +11,7 @@ import { db, schema } from '#core/drizzle'
 import { eq } from 'drizzle-orm'
 import { Resource } from 'sst'
 
-function getUserWithImageAndRole(email: string) {
+async function getUserWithImageAndRole(email: string) {
   return db.query.user.findFirst({
     where: eq(schema.user.email, email),
     with: {
@@ -30,7 +30,7 @@ function getUserWithImageAndRole(email: string) {
   })
 }
 
-async function createUseWithImageAndRole(email: string) {
+async function createUserWithRole(email: string) {
   await db.transaction(async (tx) => {
     const [newUser] = await tx.insert(schema.user).values({ email }).returning()
     const roles = await tx
@@ -77,7 +77,7 @@ authenticator.use(
       let user = await getUserWithImageAndRole(email)
 
       if (!user) {
-        user = await createUseWithImageAndRole(email)
+        user = await createUserWithRole(email)
         if (!user) throw new Error(ERRORS.AUTH_USER_NOT_CREATED)
       }
 
@@ -102,7 +102,7 @@ authenticator.use(
       let user = await getUserWithImageAndRole(email)
 
       if (!user) {
-        user = await createUseWithImageAndRole(email)
+        user = await createUserWithRole(email)
         if (!user) throw new Error(ERRORS.AUTH_USER_NOT_CREATED)
       }
 

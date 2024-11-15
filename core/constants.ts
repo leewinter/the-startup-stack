@@ -1,4 +1,4 @@
-import type { price } from '#core/price.sql.ts'
+import type { price } from '#core/price/sql.ts'
 import type { InferSelectModel } from 'drizzle-orm'
 
 /**

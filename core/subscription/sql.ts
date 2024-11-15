@@ -2,8 +2,8 @@ import { relations } from 'drizzle-orm'
 import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 import { user } from '../user/sql.ts'
 import { timestamps } from '../drizzle/types.ts'
-import { plan } from '../plan.sql'
-import { price } from '../price.sql'
+import { plan } from '../plan/sql.ts'
+import { price } from '../price/sql.ts'
 
 export const subscription = pgTable('subscription', {
   id: text('id').primaryKey().notNull(),

@@ -26,7 +26,8 @@ import { User } from '#core/user/index.ts'
 import { Stripe } from '#core/stripe'
 import { Subscription } from '#core/subscription/index.ts'
 import { getLocaleCurrency } from '#app/utils/misc.server.ts'
-import { PLANS } from '#core/constants.ts'
+import { INTERVALS, PLANS } from '#core/constants.ts'
+import { Plan } from '#core/plan/index.ts'
 
 export const ROUTE_PATH = '/onboarding/username' as const
 
@@ -78,11 +79,11 @@ export async function action({ request }: ActionFunctionArgs) {
   }
   const user = await User.update(sessionUser.id, { username })
   const customer = await Stripe.createCustomer(user.email, user.username ?? undefined)
-  const subscription = await Stripe.createSubscription(
-    customer.id,
-    PLANS.FREE,
-    getLocaleCurrency(request),
-  )
+  const price = await Plan.price(PLANS.FREE, INTERVALS.YEAR, getLocaleCurrency(request))
+
+  if (!price) throw new Error('Could not find price for free plan.')
+
+  const subscription = await Stripe.createSubscription(customer.id, price.id)
   await User.update(user.id, { customerId: customer.id })
   await Subscription.insert(user.id, subscription)
 
@@ -136,9 +137,8 @@ export default function OnboardingUsername() {
             autoComplete="off"
             ref={inputRef}
             required
-            className={`bg-transparent ${
-              username.errors && 'border-destructive focus-visible:ring-destructive'
-            }`}
+            className={`bg-transparent ${username.errors && 'border-destructive focus-visible:ring-destructive'
+              }`}
             {...getInputProps(username, { type: 'text' })}
           />
         </div>

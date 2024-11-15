@@ -1,9 +1,9 @@
 import { relations } from 'drizzle-orm'
 import { pgTable, text } from 'drizzle-orm/pg-core'
 
-import { primaryId, timestamps } from './drizzle/types'
-import { price } from './price.sql'
-import { subscription } from './subscription/sql.ts'
+import { primaryId, timestamps } from '../drizzle/types.ts'
+import { price } from '../price/sql.ts'
+import { subscription } from '../subscription/sql.ts'
 
 export const plan = pgTable('plan', {
   id: primaryId(),

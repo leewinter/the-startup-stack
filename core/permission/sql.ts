@@ -1,8 +1,8 @@
 import { relations } from 'drizzle-orm'
 import { pgTable, primaryKey, text, pgEnum } from 'drizzle-orm/pg-core'
 
-import { primaryId, timestamps } from './drizzle/types'
-import { role } from './role.sql'
+import { primaryId, timestamps } from '../drizzle/types'
+import { role } from '../role/sql.ts'
 
 export const entityEnum = pgEnum('entity', ['user'])
 export const actionEnum = pgEnum('action', ['create', 'read', 'update', 'delete'])

@@ -1,10 +1,8 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../drizzle'
-import { user as schema } from './sql'
+import { user as schema, userImage as imageSchema } from './sql'
 
 export namespace User {
-  export type Info = typeof schema.$inferSelect
-
   export const update = async (
     id: string,
     partial: Partial<typeof schema.$inferInsert>,
@@ -27,5 +25,9 @@ export namespace User {
     return db.query.user.findFirst({
       where: eq(schema.username, username),
     })
+  }
+
+  export const image = async (id: string) => {
+    return db.query.userImage.findFirst({ where: eq(imageSchema.userId, id) })
   }
 }

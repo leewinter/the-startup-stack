@@ -8,10 +8,10 @@ import {
   permissionRelations,
   permissionToRole,
   permissionToRoleRelations,
-} from '../permission.sql'
-import { plan, planRelations } from '../plan.sql'
-import { price, priceRelations } from '../price.sql'
-import { role, roleRelations, roleToUser, roleToUserRelations } from '../role.sql'
+} from '../permission/sql.ts'
+import { plan, planRelations } from '../plan/sql.ts'
+import { price, priceRelations } from '../price/sql.ts'
+import { role, roleRelations, roleToUser, roleToUserRelations } from '../role/sql.ts'
 import { subscription, subscriptionRelations } from '../subscription/sql.ts'
 import { user, userRelations, userImage, userImageRelations } from '../user/sql.ts'
 
