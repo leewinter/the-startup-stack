@@ -137,8 +137,9 @@ export default function OnboardingUsername() {
             autoComplete="off"
             ref={inputRef}
             required
-            className={`bg-transparent ${username.errors && 'border-destructive focus-visible:ring-destructive'
-              }`}
+            className={`bg-transparent ${
+              username.errors && 'border-destructive focus-visible:ring-destructive'
+            }`}
             {...getInputProps(username, { type: 'text' })}
           />
         </div>
