@@ -6,11 +6,10 @@
   "files": {
     "ignore": [
       "**/node_modules",
-      "./build",
-      "./public/build",
+      "packages/www/build",
       ".sst",
-      "./sst-env.d.ts",
-      "./core/migrations"
+      "sst-env.d.ts",
+      "core/src/migrations"
     ]
   },
   "linter": {

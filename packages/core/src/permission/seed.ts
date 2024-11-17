@@ -1,12 +1,9 @@
 import { Permission } from '.'
 
 export default async function seed() {
-  const entities = ['user'] as const
-  const actions = ['create', 'read', 'update', 'delete'] as const
-  const accesses = ['own', 'any'] as const
-  for (const entity of entities) {
-    for (const action of actions) {
-      for (const access of accesses) {
+  for (const entity of Permission.entities) {
+    for (const action of Permission.actions) {
+      for (const access of Permission.accesses) {
         await Permission.insert({ entity, action, access })
       }
     }
