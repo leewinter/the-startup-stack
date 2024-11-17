@@ -1,4 +1,4 @@
-import { PRICING_PLANS } from '#core/constants.ts'
+import { PRICING_PLANS } from '@company/core/src/constants'
 import { domain } from './dns'
 
 // -------------------------- FREE PLAN ------------------------------------

@@ -5,7 +5,7 @@ import { webhook } from './stripe'
 
 export const api = new sst.aws.Function('Api', {
   url: true,
-  handler: 'functions/api/index.handler',
+  handler: 'packages/functions/api/index.handler',
   link: [secret.DATABASE_URL, secret.STRIPE_SECRET_KEY, webhook, email],
   permissions: [
     {

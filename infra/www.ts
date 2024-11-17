@@ -1,8 +1,9 @@
-import { domain } from './dns.ts'
-import { email } from './email.ts'
-import { secret } from './secret.ts'
+import { domain } from './dns'
+import { email } from './email'
+import { secret } from './secret'
 
 export const www = new sst.aws.Remix('Remix', {
+  path: './packages/www',
   domain: {
     name: domain,
     dns: sst.cloudflare.dns(),

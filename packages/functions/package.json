@@ -1,0 +1,19 @@
+{
+  "name": "@company/functions",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./*": "./*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "sst": "^3.3.4",
+    "hono": "^4.6.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
