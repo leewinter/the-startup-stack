@@ -9,6 +9,7 @@
     "db:push": "bun run --filter @company/core db:push",
     "db:seed": "bun run --filter @company/core db:seed",
     "typecheck": "bun --filter=* typecheck",
+    "test": "bun --filter=* test",
     "format": "biome format --write .",
     "format:check": "biome format --error-on-warnings .",
     "lint": "biome lint --write ."
