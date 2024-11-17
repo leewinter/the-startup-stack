@@ -9,7 +9,7 @@ node_modules
 
 # Miscelaneous
 /.cache
-/build
+packages/www/build
 /public/build
 .env
 
