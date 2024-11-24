@@ -49,9 +49,8 @@ export function AuthEmail({ code, magicLink }: AuthEmailOptions) {
           {magicLink && (
             <Section style={{ padding: '8px 0px' }}>
               <Button
-                pY={11}
-                pX={23}
                 style={{
+                  padding: '11px 23px',
                   display: 'block',
                   color: '#fff',
                   fontSize: '15px',
@@ -100,7 +99,7 @@ export function renderAuthEmailEmail(args: AuthEmailOptions) {
  * Senders.
  */
 export async function sendAuthEmail({ email, code, magicLink }: AuthEmailOptions) {
-  const html = renderAuthEmailEmail({ email, code, magicLink })
+  const html = await renderAuthEmailEmail({ email, code, magicLink })
 
   await Email.send({
     to: email,

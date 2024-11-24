@@ -16,11 +16,11 @@
   },
   "workspaces": ["packages/*"],
   "dependencies": {
-    "sst": "^3.3.4"
+    "sst": "^3.3.27"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.0",
-    "typescript": "^5.5.4"
+    "@biomejs/biome": "^1.9.4",
+    "typescript": "^5.7.2"
   },
   "trustedDependencies": ["@biomejs/biome"]
 }

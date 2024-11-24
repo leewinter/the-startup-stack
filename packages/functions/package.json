@@ -10,10 +10,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "sst": "^3.3.4",
+    "sst": "^3.3.27",
     "hono": "^4.6.3"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.7.2"
   }
 }

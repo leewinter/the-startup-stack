@@ -16,7 +16,7 @@
     "@aws-sdk/client-sesv2": "^3.687.0",
     "@neondatabase/serverless": "^0.9.5",
     "stripe": "^15.5.0",
-    "sst": "^3.3.4",
+    "sst": "^3.3.27",
     "drizzle-orm": "^0.36.2",
     "ulid": "^2.3.0",
     "ws": "^8.18.0"
@@ -25,6 +25,6 @@
     "@types/ws": "^8.5.13",
     "drizzle-kit": "^0.28.1",
     "cross-env": "^7.0.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.7.2"
   }
 }
