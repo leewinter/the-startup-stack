@@ -1,5 +1,5 @@
 import type { Theme, ThemeExtended } from '#app/utils/hooks/use-theme'
-import { useSubmit, useFetcher } from '@remix-run/react'
+import { useSubmit } from '@remix-run/react'
 import { Sun, Moon, Monitor } from 'lucide-react'
 import { useOptimisticThemeMode } from '#app/utils/hooks/use-theme'
 import { cn } from '#app/utils/misc'
@@ -68,26 +68,5 @@ export function ThemeSwitcher({
         ))}
       </SelectContent>
     </Select>
-  )
-}
-
-export function ThemeSwitcherHome() {
-  const fetcher = useFetcher({ key: 'theme-fetcher' })
-  const themes: ThemeExtended[] = ['light', 'dark', 'system']
-
-  return (
-    <fetcher.Form method="POST" action={THEME_PATH} className="flex gap-3">
-      {themes.map((theme) => (
-        <button key={theme} type="submit" name="theme" value={theme}>
-          {theme === 'light' ? (
-            <Sun className="h-4 w-4 text-primary/80 hover:text-primary" />
-          ) : theme === 'dark' ? (
-            <Moon className="h-4 w-4 text-primary/80 hover:text-primary" />
-          ) : (
-            <Monitor className="h-4 w-4 text-primary/80 hover:text-primary" />
-          )}
-        </button>
-      ))}
-    </fetcher.Form>
   )
 }
