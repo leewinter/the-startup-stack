@@ -1,6 +1,6 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Plus, ExternalLink } from 'lucide-react'
+import { LucidePlus, LucideExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { cn } from '#app/utils/misc.js'
@@ -40,7 +40,7 @@ export default function DashboardIndex() {
             <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden rounded-lg border border-border bg-secondary px-6 py-24 dark:bg-card">
               <div className="z-10 flex max-w-[460px] flex-col items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">
-                  <Plus className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                  <LucidePlus className="h-8 w-8 stroke-[1.5px] text-primary/60" />
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <p className="text-base font-medium text-primary">{t('title')}</p>
@@ -64,7 +64,7 @@ export default function DashboardIndex() {
                   <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                     Explore Documentation
                   </span>
-                  <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+                  <LucideExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
                 </a>
               </div>
               <div className="base-grid absolute h-full w-full opacity-40" />

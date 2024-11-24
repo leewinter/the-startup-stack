@@ -5,7 +5,7 @@ import { json, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
-import { Upload } from 'lucide-react'
+import { LucideUpload } from 'lucide-react'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { getSession, destroySession } from '#app/modules/auth/auth-session.server'
 import { createToastHeaders } from '#app/utils/toast.server'
@@ -149,7 +149,7 @@ export default function DashboardSettings() {
               <div className="h-20 w-20 rounded-full bg-gradient-to-br from-lime-400 from-10% via-cyan-300 to-blue-500" />
             )}
             <div className="absolute z-10 hidden h-full w-full items-center justify-center bg-primary/40 group-hover:flex">
-              <Upload className="h-6 w-6 text-secondary" />
+              <LucideUpload className="h-6 w-6 text-secondary" />
             </div>
           </label>
           <input

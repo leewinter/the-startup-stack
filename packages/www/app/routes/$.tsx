@@ -1,6 +1,6 @@
 import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import { HelpCircle, ExternalLink } from 'lucide-react'
+import { LucideHelpCircle, LucideExternalLink } from 'lucide-react'
 import { siteConfig } from '#app/utils/constants/brand'
 import { GenericErrorBoundary } from '#app/components/misc/error-boundary'
 import { buttonVariants } from '#app/components/ui/button'
@@ -27,7 +27,7 @@ export function ErrorBoundary() {
         404: () => (
           <div className="flex h-screen w-full flex-col items-center justify-center gap-8 rounded-md bg-card px-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card hover:border-primary/40">
-              <HelpCircle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+              <LucideHelpCircle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
             </div>
             <div className="flex flex-col items-center gap-2">
               <p className="text-2xl font-medium text-primary">Whoops!</p>
@@ -43,7 +43,7 @@ export function ErrorBoundary() {
               <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                 Return to Home
               </span>
-              <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+              <LucideExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
             </Link>
           </div>
         ),

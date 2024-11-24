@@ -1,6 +1,6 @@
 import { useNavigate } from '@remix-run/react'
 import { useTranslation } from 'react-i18next'
-import { Languages } from 'lucide-react'
+import { LucideLanguages } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -27,7 +27,7 @@ export function LanguageSwitcher() {
     <Select onValueChange={(value) => navigate(`${pathname}?lng=${value}`)}>
       <SelectTrigger className="h-6 rounded border-primary/20 bg-secondary !px-2 hover:border-primary/40">
         <div className="flex items-start gap-2">
-          <Languages className="h-[14px] w-[14px]" />
+          <LucideLanguages className="h-[14px] w-[14px]" />
           <span className="text-xs font-medium">{formatLanguage(language || 'en')}</span>
         </div>
       </SelectTrigger>

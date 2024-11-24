@@ -12,7 +12,7 @@ import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
-import { Loader2 } from 'lucide-react'
+import { LucideLoader2 } from 'lucide-react'
 import { authenticator } from '#app/modules/auth/auth.server'
 import { getSession, commitSession } from '#app/modules/auth/auth-session.server'
 import { validateCSRF } from '#app/utils/csrf.server'
@@ -132,7 +132,7 @@ export default function Login() {
         </div>
 
         <Button type="submit" className="w-full">
-          {isPending ? <Loader2 className="animate-spin" /> : 'Continue with Email'}
+          {isPending ? <LucideLoader2 className="animate-spin" /> : 'Continue with Email'}
         </Button>
       </Form>
 

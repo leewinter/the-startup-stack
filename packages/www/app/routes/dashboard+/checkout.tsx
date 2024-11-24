@@ -2,7 +2,12 @@ import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useState } from 'react'
 import { Link, useLoaderData, useRevalidator } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
-import { Loader2, BadgeCheck, AlertTriangle, ExternalLink } from 'lucide-react'
+import {
+  LucideLoader2,
+  LucideBadgeCheck,
+  LucideAlertTriangle,
+  LucideExternalLink,
+} from 'lucide-react'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
 import { PLANS } from '@company/core/src/constants'
 import { useInterval } from '#app/utils/hooks/use-interval'
@@ -61,13 +66,13 @@ export default function DashboardCheckout() {
               <div className="z-10 flex flex-col items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">
                   {isFreePlan && retries < 3 && (
-                    <Loader2 className="h-8 w-8 animate-spin stroke-[1.5px] text-primary/60" />
+                    <LucideLoader2 className="h-8 w-8 animate-spin stroke-[1.5px] text-primary/60" />
                   )}
                   {!isFreePlan && (
-                    <BadgeCheck className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <LucideBadgeCheck className="h-8 w-8 stroke-[1.5px] text-primary/60" />
                   )}
                   {isFreePlan && retries === 3 && (
-                    <AlertTriangle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <LucideAlertTriangle className="h-8 w-8 stroke-[1.5px] text-primary/60" />
                   )}
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -89,7 +94,7 @@ export default function DashboardCheckout() {
                   <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                     Return to Dashboard
                   </span>
-                  <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+                  <LucideExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
                 </Link>
               </div>
               <div className="base-grid absolute h-full w-full opacity-40" />

@@ -1,7 +1,7 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import { ShoppingBasket, ExternalLink } from 'lucide-react'
+import { LucideShoppingBasket, LucideExternalLink } from 'lucide-react'
 import { requireUserWithRole } from '#app/utils/permissions.server'
 import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
@@ -46,7 +46,7 @@ export default function Admin() {
               <div className="relative flex w-full flex-col items-center justify-center gap-6 overflow-hidden rounded-lg border border-border bg-secondary px-6 py-24 dark:bg-card">
                 <div className="z-10 flex max-w-[460px] flex-col items-center gap-4">
                   <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-card hover:border-primary/40">
-                    <ShoppingBasket className="h-8 w-8 stroke-[1.5px] text-primary/60" />
+                    <LucideShoppingBasket className="h-8 w-8 stroke-[1.5px] text-primary/60" />
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <p className="text-base font-medium text-primary">Track your Sales</p>
@@ -68,7 +68,7 @@ export default function Admin() {
                     <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
                       Explore Documentation
                     </span>
-                    <ExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
+                    <LucideExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
                   </a>
                 </div>
 

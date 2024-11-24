@@ -1,5 +1,12 @@
 import { Link, useLocation, useNavigate, useSubmit } from '@remix-run/react'
-import { Check, ChevronDown, ChevronUp, LogOut, Settings, Slash } from 'lucide-react'
+import {
+  LucideCheck,
+  LucideChevronDown,
+  LucideChevronUp,
+  LucideLogOut,
+  LucideSettings,
+  LucideSlash,
+} from 'lucide-react'
 import { Logo } from '#app/components/logo'
 import { LanguageSwitcher } from '#app/components/misc/language-switcher'
 import { ThemeSwitcher } from '#app/components/misc/theme-switcher'
@@ -61,7 +68,7 @@ export function Navigation({ user, planId }: NavigationProps) {
           >
             <Logo />
           </Link>
-          <Slash className="h-6 w-6 -rotate-12 stroke-[1.5px] text-primary/10" />
+          <LucideSlash className="h-6 w-6 -rotate-12 stroke-[1.5px] text-primary/10" />
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
@@ -88,8 +95,8 @@ export function Navigation({ user, planId }: NavigationProps) {
                   </span>
                 </div>
                 <span className="flex flex-col items-center justify-center">
-                  <ChevronUp className="relative top-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
-                  <ChevronDown className="relative bottom-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
+                  <LucideChevronUp className="relative top-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
+                  <LucideChevronDown className="relative bottom-[3px] h-[14px] w-[14px] stroke-[1.5px] text-primary/60" />
                 </span>
               </Button>
             </DropdownMenuTrigger>
@@ -113,7 +120,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                     {user?.username || ''}
                   </p>
                 </div>
-                <Check className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60" />
+                <LucideCheck className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60" />
               </DropdownMenuItem>
 
               {planId && planId === PLANS.FREE && (
@@ -185,7 +192,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                 <span className="text-sm text-primary/60 group-hover:text-primary group-focus:text-primary">
                   Settings
                 </span>
-                <Settings className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
+                <LucideSettings className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -219,7 +226,7 @@ export function Navigation({ user, planId }: NavigationProps) {
                 <span className="text-sm text-primary/60 group-hover:text-primary group-focus:text-primary">
                   Log Out
                 </span>
-                <LogOut className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
+                <LucideLogOut className="h-[18px] w-[18px] stroke-[1.5px] text-primary/60 group-hover:text-primary group-focus:text-primary" />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

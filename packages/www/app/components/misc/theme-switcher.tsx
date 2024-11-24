@@ -1,6 +1,6 @@
 import type { Theme, ThemeExtended } from '#app/utils/hooks/use-theme'
 import { useSubmit } from '@remix-run/react'
-import { Sun, Moon, Monitor } from 'lucide-react'
+import { LucideSun, LucideMoon, LucideMonitor } from 'lucide-react'
 import { useOptimisticThemeMode } from '#app/utils/hooks/use-theme'
 import { cn } from '#app/utils/misc'
 import { ROUTE_PATH as THEME_PATH } from '#app/routes/resources+/update-theme'
@@ -45,11 +45,11 @@ export function ThemeSwitcher({
       >
         <div className="flex items-start gap-2">
           {mode === 'light' ? (
-            <Sun className="h-[14px] w-[14px]" />
+            <LucideSun className="h-[14px] w-[14px]" />
           ) : mode === 'dark' ? (
-            <Moon className="h-[14px] w-[14px]" />
+            <LucideMoon className="h-[14px] w-[14px]" />
           ) : (
-            <Monitor className="h-[14px] w-[14px]" />
+            <LucideMonitor className="h-[14px] w-[14px]" />
           )}
           <span className="text-xs font-medium">
             {mode.charAt(0).toUpperCase() + mode.slice(1)}
