@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from '@remix-run/node'
 import { useRef, useState } from 'react'
 import { Form, useFetcher, useLoaderData, useActionData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { data, redirect } from '@remix-run/node'
 import { z } from 'zod'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
@@ -38,7 +38,7 @@ export const UsernameSchema = z.object({
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request)
-  return json({ user })
+  return { user }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -49,7 +49,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (intent === INTENTS.USER_UPDATE_USERNAME) {
     const submission = parseWithZod(formData, { schema: UsernameSchema })
     if (submission.status !== 'success') {
-      return json(submission.reply(), {
+      return data(submission.reply(), {
         status: submission.status === 'error' ? 400 : 200,
       })
     }
@@ -58,7 +58,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const isUsernameTaken = await User.fromUsername(username)
 
     if (isUsernameTaken) {
-      return json(
+      return data(
         submission.reply({
           fieldErrors: {
             username: [ERRORS.ONBOARDING_USERNAME_ALREADY_EXISTS],
@@ -68,7 +68,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     await User.update(user.id, { username })
-    return json(submission.reply({ fieldErrors: {} }), {
+    return data(submission.reply({ fieldErrors: {} }), {
       headers: await createToastHeaders({
         title: 'Success!',
         description: 'Username updated successfully.',
@@ -255,8 +255,8 @@ export default function DashboardSettings() {
         <div className="flex flex-col gap-2 p-6">
           <h2 className="text-xl font-medium text-primary">Delete Account</h2>
           <p className="text-sm font-normal text-primary/60">
-            Permanently delete your Remix SaaS account, all of your projects, links and
-            their respective stats.
+            Permanently delete your account, all of your projects, links and their
+            respective stats.
           </p>
         </div>
         <div className="flex min-h-14 w-full items-center justify-between rounded-lg rounded-t-none border-t border-border bg-red-500/10 px-6 dark:bg-red-500/10">

@@ -23,9 +23,9 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@react-email/components": "^0.0.28",
     "@react-email/render": "^1.0.2",
-    "@remix-run/node": "^2.9.2",
-    "@remix-run/react": "^2.9.1",
-    "@remix-run/router": "^1.16.0",
+    "@remix-run/node": "^2.15.0",
+    "@remix-run/react": "^2.15.0",
+    "@remix-run/router": "^1.21.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
@@ -50,7 +50,7 @@
     "zod": "^3.23.6"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.9.2",
+    "@remix-run/dev": "^2.15.0",
     "@types/cookie": "^1.0.0",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",

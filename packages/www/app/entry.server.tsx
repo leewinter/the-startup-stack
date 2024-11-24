@@ -11,7 +11,7 @@ import { NonceProvider } from '#app/utils/hooks/use-nonce'
 import i18nServer from '#app/modules/i18n/i18n.server'
 import * as i18n from '#app/modules/i18n/i18n'
 
-const ABORT_DELAY = 5_000
+export const streamTimeout = 5_000
 
 export default async function handleRequest(
   request: Request,
@@ -54,11 +54,7 @@ export default async function handleRequest(
     const { pipe, abort } = renderToPipeableStream(
       <NonceProvider value={nonce}>
         <I18nextProvider i18n={instance}>
-          <RemixServer
-            context={remixContext}
-            url={request.url}
-            abortDelay={ABORT_DELAY}
-          />
+          <RemixServer nonce={nonce} context={remixContext} url={request.url} />
         </I18nextProvider>
       </NonceProvider>,
       {
@@ -94,6 +90,6 @@ export default async function handleRequest(
       },
     )
 
-    setTimeout(abort, ABORT_DELAY)
+    setTimeout(abort, streamTimeout + 1000)
   })
 }

@@ -1,7 +1,7 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useState } from 'react'
 import { Link, useLoaderData, useRevalidator } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import {
   LucideLoader2,
   LucideBadgeCheck,
@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const subscription = await Subscription.fromUserID(sessionUser.id)
   if (!subscription) return redirect(DASHBOARD_PATH)
 
-  return json({ isFreePlan: subscription.planId === PLANS.FREE } as const)
+  return { isFreePlan: subscription.planId === PLANS.FREE }
 }
 
 export default function DashboardCheckout() {

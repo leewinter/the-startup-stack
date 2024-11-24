@@ -19,7 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (isOnboardingPathname) return redirect(DASHBOARD_PATH)
   if (user.username && isOnboardingUsernamePathname) return redirect(DASHBOARD_PATH)
 
-  return json({})
+  return {}
 }
 
 export default function Onboarding() {

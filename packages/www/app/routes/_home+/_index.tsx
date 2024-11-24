@@ -1,13 +1,11 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
 import { authenticator } from '#app/modules/auth/auth.server'
 import { useTheme } from '#app/utils/hooks/use-theme.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { buttonVariants } from '#app/components/ui/button'
 import { Logo } from '#app/components/logo'
-import ShadowPNG from '#public/images/shadow.png'
 
 export const meta: MetaFunction = () => {
   return [{ title: `${siteConfig.siteTitle} - Starter Kit` }]
@@ -15,7 +13,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const sessionUser = await authenticator.isAuthenticated(request)
-  return json({ user: sessionUser } as const)
+  return { user: sessionUser }
 }
 
 export default function Index() {
@@ -47,7 +45,7 @@ export default function Index() {
 
       {/* Background */}
       <img
-        src={ShadowPNG}
+        src="/images/shadow.png"
         alt="Hero"
         className={`fixed left-0 top-0 z-0 h-full w-full opacity-60 ${theme === 'dark' ? 'invert' : ''}`}
       />

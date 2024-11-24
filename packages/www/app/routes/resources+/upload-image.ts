@@ -1,9 +1,9 @@
 import type { ActionFunctionArgs } from '@remix-run/router'
 import {
-  json,
   unstable_createMemoryUploadHandler,
   unstable_parseMultipartFormData,
   MaxPartSizeExceededError,
+  data,
 } from '@remix-run/node'
 import { z } from 'zod'
 import { parseWithZod } from '@conform-to/zod'
@@ -40,7 +40,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       async: true,
     })
     if (submission.status !== 'success') {
-      return json(submission.reply(), {
+      return data(submission.reply(), {
         status: submission.status === 'error' ? 400 : 200,
       })
     }
@@ -55,7 +55,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       })
     })
 
-    return json(submission.reply({ fieldErrors: {} }), {
+    return data(submission.reply({ fieldErrors: {} }), {
       headers: await createToastHeaders({
         title: 'Success!',
         description: 'Image uploaded successfully.',
@@ -75,7 +75,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
           },
         },
       }
-      return json(result, { status: 400 })
+      return data(result, { status: 400 })
     }
     throw error
   }

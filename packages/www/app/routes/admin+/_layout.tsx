@@ -1,6 +1,5 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
 import { LucideShoppingBasket, LucideExternalLink } from 'lucide-react'
 import { requireUserWithRole } from '#app/utils/permissions.server'
 import { cn } from '#app/utils/misc.js'
@@ -18,7 +17,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUserWithRole(request, 'admin')
   const subscription = await Subscription.fromUserID(user.id)
-  return json({ user, subscription } as const)
+  return { user, subscription }
 }
 
 export default function Admin() {

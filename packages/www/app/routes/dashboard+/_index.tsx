@@ -1,5 +1,4 @@
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
 import { LucidePlus, LucideExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { requireUser } from '#app/modules/auth/auth.server'
@@ -15,7 +14,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request)
   const subscription = Subscription.fromUserID(user.id)
-  return json({ user, subscription } as const)
+  return { user, subscription }
 }
 
 export default function DashboardIndex() {

@@ -1,5 +1,5 @@
 export default {
   title: 'Create your App',
   description:
-    'Build your app on top of Remix SaaS, explore the documentation and start your journey.',
+    'Build your app on top of The Startup Stack, explore the documentation and start your journey.',
 }

@@ -5,7 +5,7 @@ import type {
 } from '@remix-run/node'
 import { useRef, useEffect } from 'react'
 import { Form, useLoaderData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { data, redirect } from '@remix-run/node'
 import { useHydrated } from 'remix-utils/use-hydrated'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   if (!authEmail) return redirect('/auth/login')
 
-  return json({ authEmail, authError } as const, {
+  return data({ authEmail, authError } as const, {
     headers: {
       'Set-Cookie': await commitSession(cookie),
     },

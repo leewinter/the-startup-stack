@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { requireUser } from '#app/modules/auth/auth.server'
 import { ROUTE_PATH as ONBOARDING_USERNAME_PATH } from '#app/routes/onboarding+/username'
 import { Navigation } from '#app/components/navigation'
@@ -13,7 +13,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!user.username) return redirect(ONBOARDING_USERNAME_PATH)
   const subscription = await Subscription.fromUserID(user.id)
 
-  return json({ user, subscription } as const)
+  return { user, subscription }
 }
 
 export default function Dashboard() {

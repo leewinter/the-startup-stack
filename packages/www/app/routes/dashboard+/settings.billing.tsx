@@ -6,7 +6,7 @@ import type {
 import type { Interval, Plan as PlanEnum } from '@company/core/src/constants'
 import { useState } from 'react'
 import { Form, useLoaderData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { requireSessionUser } from '#app/modules/auth/auth.server'
 import { PLANS, PRICING_PLANS, INTERVALS, CURRENCIES } from '@company/core/src/constants'
 import { getLocaleCurrency } from '#app/utils/misc.server'
@@ -22,7 +22,7 @@ import { Plan } from '@company/core/src/plan/index'
 export const ROUTE_PATH = '/dashboard/settings/billing' as const
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Remix SaaS - Billing' }]
+  return [{ title: 'The Startup Stack - Billing' }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -33,7 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const subscription = await Subscription.fromUserID(sessionUser.id)
   const currency = getLocaleCurrency(request)
 
-  return json({ subscription, currency } as const)
+  return { subscription, currency }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -60,17 +60,17 @@ export async function action({ request }: ActionFunctionArgs) {
     if (!sessionUser.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
 
     const checkout = await Stripe.checkout(sessionUser.customerId, price.id)
-    if (!checkout?.url) return json({ success: false } as const)
+    if (!checkout?.url) return { success: false }
     return redirect(checkout.url)
   }
   if (intent === INTENTS.SUBSCRIPTION_CREATE_CUSTOMER_PORTAL) {
     if (!sessionUser.customerId) throw new Error(ERRORS.STRIPE_SOMETHING_WENT_WRONG)
     const customerPortal = await Stripe.customerPortal(sessionUser.customerId)
-    if (!customerPortal) return json({ success: false } as const)
+    if (!customerPortal) return { success: false }
     return redirect(customerPortal.url)
   }
 
-  return json({})
+  return {}
 }
 
 export default function DashboardBilling() {

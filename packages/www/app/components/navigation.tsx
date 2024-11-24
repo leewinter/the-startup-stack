@@ -29,20 +29,8 @@ import { ROUTE_PATH as DASHBOARD_SETTINGS_BILLING_PATH } from '#app/routes/dashb
 import { useRequestInfo } from '#app/utils/hooks/use-request-info'
 import { cn, getUserImgSrc, userHasRole } from '#app/utils/misc'
 
-/**
- * Required to handle JsonifyObject Typescript mismatch.
- * This will be fixed in future versions of Remix.
- */
-type JsonifyObjectUser = Omit<
-  Awaited<ReturnType<typeof requireUserWithRole>>,
-  'createdAt' | 'updatedAt'
-> & {
-  createdAt: string | null
-  updatedAt: string | null
-}
-
 type NavigationProps = {
-  user: JsonifyObjectUser
+  user: Awaited<ReturnType<typeof requireUserWithRole>>
   planId?: string
 }
 

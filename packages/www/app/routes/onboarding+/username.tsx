@@ -5,7 +5,7 @@ import type {
 } from '@remix-run/node'
 import { useRef, useEffect } from 'react'
 import { Form, useActionData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { data, redirect } from '@remix-run/node'
 import { useHydrated } from 'remix-utils/use-hydrated'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -42,12 +42,12 @@ export const UsernameSchema = z.object({
 })
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Remix SaaS - Username' }]
+  return [{ title: 'The Startup Stack - Username' }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireSessionUser(request, { redirectTo: LOGIN_PATH })
-  return json({})
+  return {}
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -62,14 +62,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const submission = parseWithZod(formData, { schema: UsernameSchema })
   if (submission.status !== 'success') {
-    return json(submission.reply(), { status: submission.status === 'error' ? 400 : 200 })
+    return data(submission.reply(), { status: submission.status === 'error' ? 400 : 200 })
   }
 
   const { username } = submission.value
   const usernameExists = Boolean(await User.fromUsername(username))
 
   if (usernameExists) {
-    return json(
+    return data(
       submission.reply({
         fieldErrors: {
           username: [ERRORS.ONBOARDING_USERNAME_ALREADY_EXISTS],

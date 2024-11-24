@@ -5,7 +5,7 @@ import type {
 } from '@remix-run/node'
 import { useRef, useEffect } from 'react'
 import { Form, useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { data } from '@remix-run/node'
 import { useHydrated } from 'remix-utils/use-hydrated'
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -43,7 +43,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const authEmail = cookie.get('auth:email')
   const authError = cookie.get(authenticator.sessionErrorKey)
 
-  return json({ authEmail, authError } as const, {
+  return data({ authEmail, authError } as const, {
     headers: {
       'Set-Cookie': await commitSession(cookie),
     },
@@ -86,7 +86,7 @@ export default function Login() {
     <div className="mx-auto flex h-full w-full max-w-96 flex-col items-center justify-center gap-6">
       <div className="mb-2 flex flex-col gap-2">
         <h3 className="text-center text-2xl font-medium text-primary">
-          Continue to Remix SaaS
+          Continue to [your company]
         </h3>
         <p className="text-center text-base font-normal text-primary/60">
           Welcome back! Please log in to continue.
