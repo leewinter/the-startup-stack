@@ -4,6 +4,19 @@ Get independence from expensive SaaS without loosing its developer experience,
 the infra primitives to adapt to any future requirement, and the tools to build
 delightful, secure user experiences.
 
+## Contents
+
+- [Features](#features)
+  - [Planned](#planned)
+- [What is this?](#what-is-this)
+  - [Infrastructure](#infrastructure)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [When should I use this?](#when-should-i-use-this)
+- [Use](#use)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
+
 ## Features
 
 - **[Remix][]** as the full-stack **[React][]** framework.
@@ -27,9 +40,11 @@ delightful, secure user experiences.
 ### Planned
 
 - Postgres Row-Level Security (see [Drizzle](https://orm.drizzle.team/docs/rls)
-  and [Neon](https://neon.tech/docs/guides/neon-authorize) docs)
+  and [Neon](https://neon.tech/docs/guides/neon-authorize) docs).
+- File uploads to S3 and served over Cloudfront.
 - The new SST authentication component when it comes out.
-- Tailwind [v4.0](https://tailwindcss.com/blog/tailwindcss-v4-beta) when it comes out.
+- Tailwind [v4.0](https://tailwindcss.com/blog/tailwindcss-v4-beta) when it
+  comes out.
 
 ## What is this?
 
@@ -78,6 +93,8 @@ on building and deploying code, which accelerates development cycles. It also
 automatically scales to handle varying workloads, ensuring cost-efficiency and
 optimal performance without manual intervention.
 
+Every developer has its own [personal isolated stage](https://sst.dev/docs/workflow#with-a-team), including your `main` and `dev` branches.
+
 Prefer servers and containers?
 [Just change ten lines of SST code](https://sst.dev/docs/examples/#aws-remix-container-with-redis).
 
@@ -88,18 +105,15 @@ the decision to use [Postgres][]. No matter what data requirements may surface,
 you can rest assured that Postgres will be able to handle it, either directly or
 through an [extension](https://neon.tech/docs/extensions/pg-extensions).
 
-> [!NOTE]  
-> _Why [Neon][] instead of
-> [Postgres on AWS with SST](https://sst.dev/docs/component/aws/postgres), you
-> may ask?_
->
-> An exception is made as the developer experience of Neon still beats Postgres
-> on AWS, mainly because of features such as
-> [branching](https://neon.tech/flow), and the fact that you start for free and
-> scale-to-zero while on AWS you pay per hour.
->
-> Neon is built on top of AWS and is available in the AWS marketplace so you
-> still only have a single bill to pay.
+_Why [Neon][] instead of
+[Postgres on AWS with SST](https://sst.dev/docs/component/aws/postgres), you may
+ask?_
+
+An exception is made as the developer experience of Neon still beats Postgres on
+AWS, mainly because of features such as [branching](https://neon.tech/flow), and
+the fact that you start for free and scale-to-zero while on AWS you pay per
+hour. Neon is built on top of AWS and is available in the AWS marketplace so you
+still only have a single bill to pay.
 
 Interfacing with your database through an ORM or not remains a debated topic.
 That’s why [Drizzle][Drizzle ORM], the headless ORM, is chosen:
@@ -127,17 +141,17 @@ actions without going to your API.
 
 The frontend is built with [Remix][], a full-stack [React][] framework that
 prioritizes web standards and delivers long-term stability for modern web
-applications. Remix’s commitment to working with the browser, rather than
-against it, means you can leverage fundamental web features like form
-submissions, progressive enhancement, and caching out of the box.
+applications. Remix’s commitment to working with the browser means you can
+leverage fundamental web features like form submissions, progressive
+enhancement, and caching out of the box.
 
 Whether you're deploying to traditional Node.js servers, serverless environments
 like AWS Lambda, or cutting-edge edge runtimes like Cloudflare Workers, Remix
 runs seamlessly. This flexibility lets you adapt to infrastructure changes
 without rewriting your frontend logic.
 
-With Remix, the rug is not pulled out from under you to chase innovation (not pointing fingers 👀).
-Instead, you get incremental
+With Remix, the rug is not pulled out from under you to chase innovation (not
+pointing fingers 👀). Instead, you get incremental
 [future flags](https://remix.run/docs/en/main/guides/api-development-strategy).
 
 Meanwhile you build interfaces rapidly with [shadcn][] and [Tailwind CSS][],
@@ -145,13 +159,18 @@ which let’s be honest, they don’t need a pitch anymore at this point.
 
 ## When should I use this?
 
-## Use
+For startups (or side projects) that prefer long-term stability and flexibility
+when requirements change.
 
-## Questions? Answers.
+This template is not designed to be the quickest to set up to play with.
+
+## Use
 
 ## Acknowledgments
 
 ## License
+
+[MIT](https://github.com/Murderlon/the-startup-stack/blob/master/license) © [Merlijn Vos](https://github.com/Murderlon)
 
 <!-- Definitions -->
 
