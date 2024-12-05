@@ -93,7 +93,9 @@ on building and deploying code, which accelerates development cycles. It also
 automatically scales to handle varying workloads, ensuring cost-efficiency and
 optimal performance without manual intervention.
 
-Every developer has its own [personal isolated stage](https://sst.dev/docs/workflow#with-a-team), including your `main` and `dev` branches.
+Every developer has its own
+[personal isolated stage](https://sst.dev/docs/workflow#with-a-team), including
+your `main` and `dev` branches.
 
 Prefer servers and containers?
 [Just change ten lines of SST code](https://sst.dev/docs/examples/#aws-remix-container-with-redis).
@@ -164,13 +166,159 @@ when requirements change.
 
 This template is not designed to be the quickest to set up to play with.
 
+## Setup
+
+We need to setup a couple of things in order to provision our infrastructure.
+
+1. Domain to host the site and API on. Can be skipped but then you can’t test
+   payments.
+2. AWS account to provision the infrastructure.
+3. Neon account with configured database.
+4. Stripe account for payments.
+5. GitHub account for the social login.
+6. Secure secrets for sessions, honeypots, and encryption.
+
+### Domain
+
+A domain registered with
+[Cloudflare](https://www.cloudflare.com/products/registrar/) or
+[AWS Route 53](https://aws.amazon.com/route53/).
+
+Just kicking the tires? You can skip this but then you can’t test payments as we
+need to provision a stable URL for the Stripe webhook.
+
+### AWS
+
+SST requires an [AWS][] account.
+
+The easiest way is to use your personal root user account to try things out. If
+you are going to run this stack under an AWS Organization, checkout the SST docs
+on how to [setup your AWS account](https://sst.dev/docs/aws-accounts).
+
+When you’re done, read the
+[SST credentials docs](https://sst.dev/docs/iam-credentials) and put your
+credentials in `~/.aws/credentials`.
+
+### Neon
+
+1. Get an account on [Neon](https://neon.tech) and create a Postgres database.
+2. Add your connection string:
+
+```sh
+bunx sst secret add DATABASE_URL your-connection-string
+```
+
+### Stripe
+
+In order to use Stripe Subscriptions and seed our database, we need to get the
+secret keys from our Stripe Dashboard.
+
+1. Create a [Stripe Account](https://dashboard.stripe.com/login) or use an
+   existing one.
+2. Visit [API Keys](https://dashboard.stripe.com/test/apikeys) section and copy
+   the `Publishable` and `Secret` keys.
+3. Copy `.env.example` to `.env` if you haven’t yet.
+4. Put the secret in there as `STRIPE_API_KEY`.
+
+We put it in `.env` because this secret is needed at build time too.
+
+Both values are also needed at runtime:
+
+```sh
+bunx sst secret add STRIPE_PUBLIC_KEY your-key
+bunx sst secret add STRIPE_SECRET_KEY your-secret
+```
+
+### Secrets
+
+Lastly, there are some other secrets we need to configure:
+
+```sh
+# Secures cookies and session data.
+bunx sst secret add SESSION_SECRET openssl rand -base64 32
+# Encrypts one-time passwords (OTP)
+bunx sst secret add ENCRYPTION_SECRET openssl rand -base64 32
+# Secures honeypot values in forms.
+bunx sst secret add HONEYPOT_ENCRYPTION_SEED openssl rand -base64 32
+```
+
 ## Use
+
+### Authentication
+
+The following methods are supported:
+
+- Email/Code
+- Magic Links
+- Social Logins (Github)
+
+Under the hood, we are using `remix-auth`, `remix-auth-totp` and
+`remix-auth-github` to handle the authentication process.
+
+In order to speed up development, the OTP code will also be displayed in the
+terminal/console, so you don't have to constantly check the email inbox.
+(Recommended for development purposes only.)
+
+You can authenticate as `admin` by using the following credentials:
+
+- Email: `admin@admin.com`
+- Code: OTP Code is provided by the terminal/console, as email is not sent to
+  the `admin` user.
+
+### Subscriptions
+
+The following subscription features are included:
+
+- Subscription Plans
+- Subscription Checkout
+- Subscription Management (via Stripe Customer Portal)
+- Subscription Webhooks
+
+You can test Subscriptions in by using the following Stripe test cards:
+
+- `4242 4242 4242 4242` (Visa)
+- `5555 5555 5555 4444` (Mastercard)
+
+### Internationalization
+
+Translations are done via `remix-i18next`, a library from
+[`@sergiodxa`](https://github.com/sergiodxa) that integrates `i18next` with
+Remix. You can learn more about `remix-i18next` by checking the
+[official documentation](https://github.com/sergiodxa/remix-i18next).
+
+Usage is as simple as it can be, as everything is already set up for you.
+
+- Check `/modules/i18n` in order to customize the languages you want to support.
+- Add/Edit the translations in the `locales` folder.
+- Use the `useTranslation` hook in your components to translate your content.
+
+### Hooks
+
+- `useDoubleCheck`: A hook to confirm user actions, like deleting a record.
+  (Original Source: [Epic Stack](github.com/epicweb-dev/epic-stack))
+- `useInterval`: A hook to run a function at a specified interval.
+- `useNonce`: A hook to generate a nonce value.
+- `useRequestInfo`: A hook that returns the request information from the `root`
+  loader.
+- `useTheme`: A hook to manage the application theme.
+
+### Toasts
+
+- `getToastSession`: A utility to get the toast session.
+- `createToastHeaders`: A utility to create toast headers.
+- `redirectWithToast`: A utility to redirect with a toast message.
 
 ## Acknowledgments
 
+- [remix-saas](https://github.com/dev-xo/remix-saas) for most of the Remix
+  boiler plate and some of the docs.
+- [terminaldotshop](https://github.com/terminaldotshop/terminal) for SST and
+  other code patterns.
+
 ## License
 
-[MIT](https://github.com/Murderlon/the-startup-stack/blob/master/license) © [Merlijn Vos](https://github.com/Murderlon)
+[MIT](https://github.com/Murderlon/the-startup-stack/blob/master/license) ©
+[Merlijn Vos](https://github.com/Murderlon)
 
 <!-- Definitions -->
 
@@ -188,3 +336,4 @@ This template is not designed to be the quickest to set up to play with.
 [Hono]: https://hono.dev
 [AWS Lambda]: https://aws.amazon.com/lambda
 [Zod]: https://zod.dev
+[AWS]: https://aws.amazon.com
