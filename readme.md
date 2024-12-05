@@ -190,7 +190,8 @@ more information.
 
 Just kicking the tires? You can skip this setting up a domain for now.
 
-> [!WARNING] Having no domain configured means emails and Stripe payments won’t
+> [!WARNING] 
+> Having no domain configured means emails and Stripe payments won’t
 > work and you can only use the admin account from the initial database seed.
 
 1. Comment out all the code in `infra/email.ts` and all its references (in
