@@ -26,6 +26,7 @@ delightful, secure user experiences.
 - **[Postgres][]** database through **[Neon][]**.
 - **[Drizzle ORM][]** as the headless TypeScript ORM.
 - **[Stripe][]** for subscription plans, customer portal, and more.
+- **[Bun][]** for fast local development.
 - **[shadcn][]** React components.
 - **[Tailwind CSS][]** utility CSS Framework.
 - **[React Email][]**, customizable emails with React.
@@ -169,25 +170,40 @@ This template is not designed to be the quickest to set up to play with.
 
 ## Setup
 
-We need to setup a couple of things in order to provision our infrastructure.
+### Prerequisites
 
-1. **Domain** to host the site and API on. Can be skipped but then you can’t test
-   payments.
-2. **AWS account** to provision the infrastructure.
-3. **Neon account** with configured database.
-4. **Stripe account** for payments.
-5. **GitHub account** for the social login.
-6. **Secure secrets** for sessions, honeypots, and encryption.
+- [Bun](https://bun.sh).
+- Checkout the repository.
+- `bun install` to install the dependencies.
 
 ### Domain
 
 A domain registered with
-[Cloudflare](https://www.cloudflare.com/products/registrar/) or
-[AWS Route 53](https://aws.amazon.com/route53/).
+[Cloudflare](https://www.cloudflare.com/products/registrar/),
+[AWS Route 53](https://aws.amazon.com/route53/), or
+[Vercel](https://vercel.com).
 
-> [!NOTE]
-> Just kicking the tires? You can skip this but then you can’t test payments as we
-need to provision a stable URL for the Stripe webhook.
+See the [SST docs on custom domains](https://sst.dev/docs/custom-domains) for
+more information.
+
+#### No domain (for now)
+
+Just kicking the tires? You can skip this setting up a domain for now.
+
+> [!WARNING] Having no domain configured means emails and Stripe payments won’t
+> work and you can only use the admin account from the initial database seed.
+
+1. Comment out all the code in `infra/email.ts` and all its references (in
+   `link`).
+2. Remove the `domain` configurations from `infra/index.ts`, `infra/stripe.ts`,
+   and `infra/api.ts`:
+
+```diff
+- domain: {
+-   name: domain,
+-   dns: sst.cloudflare.dns(),
+- },
+```
 
 ### AWS
 
@@ -208,6 +224,15 @@ credentials in `~/.aws/credentials`.
 
 ```sh
 bunx sst secret add DATABASE_URL your-connection-string
+```
+
+Run the following commands in this order:
+
+```sh
+# Push the latest migration to Neon (already in the repository)
+bun run db:push
+# Seed the database
+bun run db:seed
 ```
 
 ### Stripe
@@ -339,3 +364,4 @@ Usage is as simple as it can be, as everything is already set up for you.
 [AWS Lambda]: https://aws.amazon.com/lambda
 [Zod]: https://zod.dev
 [AWS]: https://aws.amazon.com
+[Bun]: https://bun.sh
