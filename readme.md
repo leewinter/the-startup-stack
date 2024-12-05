@@ -13,6 +13,7 @@ delightful, secure user experiences.
   - [Backend](#backend)
   - [Frontend](#frontend)
 - [When should I use this?](#when-should-i-use-this)
+- [Setup](#setup)
 - [Use](#use)
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
@@ -170,13 +171,13 @@ This template is not designed to be the quickest to set up to play with.
 
 We need to setup a couple of things in order to provision our infrastructure.
 
-1. Domain to host the site and API on. Can be skipped but then you can’t test
+1. **Domain** to host the site and API on. Can be skipped but then you can’t test
    payments.
-2. AWS account to provision the infrastructure.
-3. Neon account with configured database.
-4. Stripe account for payments.
-5. GitHub account for the social login.
-6. Secure secrets for sessions, honeypots, and encryption.
+2. **AWS account** to provision the infrastructure.
+3. **Neon account** with configured database.
+4. **Stripe account** for payments.
+5. **GitHub account** for the social login.
+6. **Secure secrets** for sessions, honeypots, and encryption.
 
 ### Domain
 
@@ -184,7 +185,8 @@ A domain registered with
 [Cloudflare](https://www.cloudflare.com/products/registrar/) or
 [AWS Route 53](https://aws.amazon.com/route53/).
 
-Just kicking the tires? You can skip this but then you can’t test payments as we
+> [!NOTE]
+> Just kicking the tires? You can skip this but then you can’t test payments as we
 need to provision a stable URL for the Stripe webhook.
 
 ### AWS
