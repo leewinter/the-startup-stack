@@ -1,4 +1,4 @@
-![Screenshot of the app and the SST multiplex in the terminal](./.github/cover.png)
+![](./.github/cover.png)
 
 # The Startup Stack
 
@@ -16,7 +16,18 @@ delightful, secure user experiences.
   - [Frontend](#frontend)
 - [When should I use this?](#when-should-i-use-this)
 - [Setup](#setup)
+  - [Prerequisites](#prerequisites)
+  - [AWS](#aws)
+  - [Domain](#domain)
+  - [Neon](#neon)
+  - [Stripe](#stripe)
+  - [Secrets](#secrets)
 - [Use](#use)
+  - [Authentication](#authentication)
+  - [Subscriptions](#subscriptions)
+  - [Internationalization](#internationalization)
+  - [Hooks](#hooks)
+  - [Toasts](#toasts)
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
 
@@ -205,7 +216,7 @@ more information.
 
 Just kicking the tires? You can skip this setting up a domain for now.
 
-> [!WARNING] 
+> [!WARNING]
 > Having no domain configured means emails and Stripe payments won’t
 > work and you can only use the admin account from the initial database seed.
 

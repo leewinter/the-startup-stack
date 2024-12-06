@@ -1,7 +1,9 @@
+import fs from 'node:fs/promises'
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import Markdown from 'react-markdown'
+import rehypeSlug from 'rehype-slug'
 import { authenticator } from '#app/modules/auth/auth.server'
-import { useTheme } from '#app/utils/hooks/use-theme.js'
 import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { buttonVariants } from '#app/components/ui/button'
@@ -13,15 +15,18 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const sessionUser = await authenticator.isAuthenticated(request)
-  return { user: sessionUser }
+  const readme = await fs.readFile(
+    new URL('../../../../../readme.md', import.meta.url),
+    'utf8',
+  )
+  return { user: sessionUser, readme }
 }
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>()
-  const theme = useTheme()
+  const { user, readme } = useLoaderData<typeof loader>()
 
   return (
-    <div className="relative flex h-full w-full flex-col bg-card">
+    <>
       {/* Navigation */}
       <div className="sticky top-0 z-50 mx-auto flex w-full max-w-screen-lg items-center justify-between p-6 py-3">
         <Link to="/" prefetch="intent" className="flex h-10 items-center gap-1">
@@ -34,23 +39,9 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="z-10 mx-auto flex w-full max-w-screen-lg flex-col gap-4 px-6">
-        <div className="z-10 flex h-full w-full flex-col items-center justify-center gap-4 p-12 md:p-24">
-          <h1 className="text-center text-6xl font-bold leading-tight text-primary md:text-7xl lg:leading-tight">
-            The Startup Stack
-          </h1>
-        </div>
-      </div>
-
-      {/* Background */}
-      <img
-        src="/images/shadow.png"
-        alt="Hero"
-        className={`fixed left-0 top-0 z-0 h-full w-full opacity-60 ${theme === 'dark' ? 'invert' : ''}`}
-      />
-      <div className="base-grid fixed h-screen w-screen opacity-40" />
-      <div className="fixed bottom-0 h-screen w-screen bg-gradient-to-t from-[hsl(var(--card))] to-transparent" />
-    </div>
+      <Markdown rehypePlugins={[rehypeSlug]} className="prose md:prose-xl px-8 mx-auto">
+        {readme}
+      </Markdown>
+    </>
   )
 }
