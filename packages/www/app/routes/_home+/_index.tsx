@@ -8,6 +8,7 @@ import { siteConfig } from '#app/utils/constants/brand'
 import { ROUTE_PATH as LOGIN_PATH } from '#app/routes/auth+/login'
 import { buttonVariants } from '#app/components/ui/button'
 import { Logo } from '#app/components/logo'
+import { useTheme } from '#app/utils/hooks/use-theme.ts'
 
 export const meta: MetaFunction = () => {
   return [{ title: `${siteConfig.siteTitle} - Starter Kit` }]
@@ -24,6 +25,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { user, readme } = useLoaderData<typeof loader>()
+  const theme = useTheme()
 
   return (
     <>
@@ -39,7 +41,18 @@ export default function Index() {
         </div>
       </div>
 
-      <Markdown rehypePlugins={[rehypeSlug]} className="prose md:prose-xl px-8 mx-auto">
+      {/* Background */}
+      <img
+        src="/images/shadow.png"
+        alt="Hero"
+        className={`fixed left-0 top-0 -z-10 h-full w-full opacity-60 ${theme === 'dark' ? 'invert' : ''}`}
+      />
+      <div className="base-grid fixed -z-20 h-screen w-screen opacity-40" />
+
+      <Markdown
+        rehypePlugins={[rehypeSlug]}
+        className="prose md:prose-xl px-8 mx-auto dark:prose-invert"
+      >
         {readme}
       </Markdown>
     </>
