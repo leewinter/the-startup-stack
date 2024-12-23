@@ -58,7 +58,7 @@ delightful, secure user experiences.
 - Postgres Row-Level Security (see [Drizzle](https://orm.drizzle.team/docs/rls)
   and [Neon](https://neon.tech/docs/guides/neon-authorize) docs).
 - File uploads to S3 and served over Cloudfront.
-- The new SST authentication component when it comes out.
+- The new SST [OpenAUTH](https://openauth.js.org) component instead of rolling it ourselves.
 - Tailwind [v4.0](https://tailwindcss.com/blog/tailwindcss-v4-beta) when it
   comes out.
 
@@ -291,6 +291,23 @@ bunx sst secret add HONEYPOT_ENCRYPTION_SEED openssl rand -base64 32
 ```
 
 ## Use
+
+### Commands
+
+> ![NOTE]
+> The first time you spin up SST provisioning all the infra can take a couple minutes.
+
+Spin up your local development environment
+
+```sh
+bun run dev
+```
+
+Go to production
+
+```sh
+bunx sst deploy --production
+```
 
 ### Authentication
 
