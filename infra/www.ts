@@ -25,6 +25,8 @@ export const www = new sst.aws.Remix('Remix', {
     secret.DATABASE_URL,
     secret.STRIPE_PUBLIC_KEY,
     secret.STRIPE_SECRET_KEY,
+    secret.GITHUB_CLIENT_ID,
+    secret.GITHUB_CLIENT_SECRET,
     secret.HONEYPOT_ENCRYPTION_SEED,
   ],
 })

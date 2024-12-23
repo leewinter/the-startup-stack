@@ -92,8 +92,8 @@ authenticator.use(
 authenticator.use(
   new GitHubStrategy(
     {
-      clientId: process.env.GITHUB_CLIENT_ID || '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+      clientId: Resource.GITHUB_CLIENT_ID.value,
+      clientSecret: Resource.GITHUB_CLIENT_SECRET.value,
       redirectURI: `${process.env.HOST_URL}/auth/github/callback`,
     },
     async ({ profile }) => {

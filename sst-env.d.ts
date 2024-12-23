@@ -28,6 +28,14 @@ declare module "sst" {
       "sender": string
       "type": "sst.aws.Email"
     }
+    "GITHUB_CLIENT_ID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "GITHUB_CLIENT_SECRET": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "HONEYPOT_ENCRYPTION_SEED": {
       "type": "sst.sst.Secret"
       "value": string

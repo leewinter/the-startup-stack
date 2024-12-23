@@ -1,5 +1,5 @@
 export const domain =
   {
-    production: 'sivir.tech',
-    dev: 'dev.sivir.tech',
-  }[$app.stage] || `${$app.stage}.sivir.tech`
+    production: 'merlijn.site',
+    dev: 'dev.merlijn.site',
+  }[$app.stage] || `${$app.stage}.merlijn.site`

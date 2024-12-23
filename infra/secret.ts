@@ -4,7 +4,7 @@ export const secret = {
   DATABASE_URL: new sst.Secret('DATABASE_URL'),
   STRIPE_PUBLIC_KEY: new sst.Secret('STRIPE_PUBLIC_KEY'),
   STRIPE_SECRET_KEY: new sst.Secret('STRIPE_SECRET_KEY'),
-  // GITHUB_CLIENT_ID: new sst.Secret('GITHUB_CLIENT_ID'),
-  // GITHUB_CLIENT_SECRET: new sst.Secret('GITGUB_CLIENT_SECRET'),
+  GITHUB_CLIENT_ID: new sst.Secret('GITHUB_CLIENT_ID'),
+  GITHUB_CLIENT_SECRET: new sst.Secret('GITHUB_CLIENT_SECRET'),
   HONEYPOT_ENCRYPTION_SEED: new sst.Secret('HONEYPOT_ENCRYPTION_SEED'),
 }
