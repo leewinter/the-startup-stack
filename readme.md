@@ -6,6 +6,8 @@ Get independence from expensive SaaS without loosing its developer experience,
 the infra primitives to adapt to any future requirement, and the tools to build
 delightful, secure user experiences.
 
+Check it live 👉 https://stack.merlijn.site
+
 ## Contents
 
 - [Features](#features)
@@ -238,7 +240,7 @@ Just kicking the tires? You can skip this setting up a domain for now.
 2. Add your connection string:
 
 ```sh
-bunx sst secret add DATABASE_URL your-connection-string
+bunx sst secret set DATABASE_URL your-connection-string
 ```
 
 Run the following commands in this order:
@@ -273,8 +275,8 @@ We put it in `.env` because this secret is needed at build time too.
 Both values are also needed at runtime:
 
 ```sh
-bunx sst secret add STRIPE_PUBLIC_KEY your-key
-bunx sst secret add STRIPE_SECRET_KEY your-secret
+bunx sst secret set STRIPE_PUBLIC_KEY your-key
+bunx sst secret set STRIPE_SECRET_KEY your-secret
 ```
 
 ### Secrets
@@ -283,18 +285,18 @@ Lastly, there are some other secrets we need to configure:
 
 ```sh
 # Secures cookies and session data.
-bunx sst secret add SESSION_SECRET openssl rand -base64 32
+bunx sst secret set SESSION_SECRET "$(openssl rand -base64 32)"
 # Encrypts one-time passwords (OTP)
-bunx sst secret add ENCRYPTION_SECRET openssl rand -base64 32
+bunx sst secret set ENCRYPTION_SECRET "$(openssl rand -base64 32)"
 # Secures honeypot values in forms.
-bunx sst secret add HONEYPOT_ENCRYPTION_SEED openssl rand -base64 32
+bunx sst secret set HONEYPOT_ENCRYPTION_SEED "$(openssl rand -base64 32)"
 ```
 
 ## Use
 
 ### Commands
 
-> ![NOTE]
+> [!NOTE]
 > The first time you spin up SST provisioning all the infra can take a couple minutes.
 
 Spin up your local development environment

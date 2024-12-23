@@ -4,7 +4,6 @@ import { domain } from './dns'
 // -------------------------- FREE PLAN ------------------------------------
 
 export const freeProduct = new stripe.Product(PRICING_PLANS.free.id, {
-  productId: PRICING_PLANS.free.id,
   name: PRICING_PLANS.free.name,
   description: PRICING_PLANS.free.description,
   active: true,
@@ -84,7 +83,6 @@ export const freePriceEurYear = new stripe.Price(
 // -------------------------- PRO PLAN ------------------------------------
 
 export const proProduct = new stripe.Product(PRICING_PLANS.pro.id, {
-  productId: PRICING_PLANS.pro.id,
   name: PRICING_PLANS.pro.name,
   description: PRICING_PLANS.pro.description,
   active: true,

@@ -1,11 +1,11 @@
-import { PRICING_PLANS } from '@company/core/src/constants'
 import { Stripe } from '@company/core/src/stripe'
 import { db, schema } from '../drizzle'
 
 export default async function seed() {
   const prices = await Stripe.client.prices.list()
+  const products = await Stripe.client.products.list()
 
-  for (const { id, name, description } of Object.values(PRICING_PLANS)) {
+  for (const { id, name, description } of products.data.filter((p) => p.active)) {
     await db.transaction(async (tx) => {
       const [plan] = await tx
         .insert(schema.plan)

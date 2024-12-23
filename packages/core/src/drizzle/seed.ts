@@ -3,6 +3,7 @@ import permissionSeed from '../permission/seed'
 import roleSeed from '../role/seed'
 import userSeed from '../user/seed'
 import planSeed from '../plan/seed'
+import { getTableName } from 'drizzle-orm'
 
 for (const table of [
   schema.permissionToRole,
@@ -19,6 +20,7 @@ for (const table of [
   //   sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`),
   // )
   await db.delete(table)
+  console.log(`Deleted table ${getTableName(table)}`)
 }
 
 await permissionSeed()
