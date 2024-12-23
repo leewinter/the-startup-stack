@@ -2,7 +2,7 @@
 
 # The Startup Stack
 
-Get independence from expensive SaaS without loosing its developer experience,
+Get independence from expensive SaaS without losing its developer experience,
 the infra primitives to adapt to any future requirement, and the tools to build
 delightful, secure user experiences.
 
@@ -295,11 +295,11 @@ Lastly, there are some other secrets we need to configure:
 
 ```sh
 # Secures cookies and session data.
-bunx sst secret set SESSION_SECRET "$(openssl rand -base64 32)"
+bunx sst secret set SESSION_SECRET "$(openssl rand -hex 32)"
 # Encrypts one-time passwords (OTP)
-bunx sst secret set ENCRYPTION_SECRET "$(openssl rand -base64 32)"
+bunx sst secret set ENCRYPTION_SECRET "$(openssl rand -hex 32)"
 # Secures honeypot values in forms.
-bunx sst secret set HONEYPOT_ENCRYPTION_SEED "$(openssl rand -base64 32)"
+bunx sst secret set HONEYPOT_ENCRYPTION_SEED "$(openssl rand -hex 32)"
 ```
 
 ## Use
