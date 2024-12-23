@@ -188,9 +188,19 @@ This template is not designed to be the quickest to set up to play with.
 
 ### Prerequisites
 
-- [Bun](https://bun.sh).
-- Checkout the repository.
-- `bun install` to install the dependencies.
+Install [Bun](https://bun.sh).
+
+Get the template locally. Make sure to select "No" for installing dependencies with npm.
+
+```sh
+npx create-remix@latest --template Murderlon/the-startup-stack
+```
+
+Install the dependencies.
+
+```sh
+bun install`
+```
 
 ### AWS
 
