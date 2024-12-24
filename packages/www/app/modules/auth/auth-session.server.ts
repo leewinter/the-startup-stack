@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from 'react-router'
+import { createCookieSessionStorage } from '@remix-run/node'
 import { Resource } from 'sst'
 
 export const AUTH_SESSION_KEY = '_auth'

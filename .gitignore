@@ -2,8 +2,6 @@
 yarn.lock
 node_modules
 
-.react-router/
-
 # Editor Configs
 .idea
 .vscode

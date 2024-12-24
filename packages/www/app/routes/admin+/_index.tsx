@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from 'react-router'
+import type { LoaderFunctionArgs } from '@remix-run/node'
 import { requireUserWithRole } from '#app/utils/permissions.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {

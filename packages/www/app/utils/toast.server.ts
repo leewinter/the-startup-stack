@@ -2,7 +2,7 @@
  * Server-Side Toasts.
  * Implementation based on github.com/epicweb-dev/epic-stack
  */
-import { redirect, createCookieSessionStorage } from 'react-router'
+import { redirect, createCookieSessionStorage } from '@remix-run/node'
 import { z } from 'zod'
 import { combineHeaders } from '#app/utils/misc.server'
 import { Resource } from 'sst'

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet } from '@remix-run/react'
 
 export const ROUTE_PATH = '/' as const
 

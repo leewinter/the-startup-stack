@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from 'react-router'
+import type { LoaderFunctionArgs } from '@remix-run/node'
 import { db, schema } from '@company/core/src/drizzle/index'
 import { eq } from 'drizzle-orm'
 
