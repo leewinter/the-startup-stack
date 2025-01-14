@@ -26,7 +26,6 @@ Check it live 👉 <https://stack.merlijn.site>
   - [Secrets](#secrets)
 - [Use](#use)
   - [Commands](#commands)
-  - [Authentication](#authentication)
   - [Subscriptions](#subscriptions)
   - [Internationalization](#internationalization)
   - [Hooks](#hooks)
@@ -214,6 +213,9 @@ When you’re done, read the
 [SST credentials docs](https://sst.dev/docs/iam-credentials) and put your
 credentials in `~/.aws/credentials`.
 
+Lastly, change the name in `sst.config.ts` to your project name
+and your preferred region to deploy in.
+
 ### Domain
 
 A domain registered with
@@ -224,25 +226,10 @@ A domain registered with
 See the [SST docs on custom domains](https://sst.dev/docs/custom-domains) for
 more information.
 
-#### No domain (for now)
+If your domain is not hosted by AWS Route 53 make sure to add the Cloudflare or
+Vercel credentials to your `.env` file (see `.env.example` for more info and the SST docs).
 
-Just kicking the tires? You can skip this setting up a domain for now.
-
-> [!WARNING]
-> Having no domain configured means emails and Stripe payments won’t
-> work and you can only use the admin account from the initial database seed.
-
-1. Comment out all the code in `infra/email.ts` and all its references (in
-   `link`).
-2. Remove the `domain` configurations from `infra/index.ts`, `infra/stripe.ts`,
-   and `infra/api.ts`:
-
-```diff
-- domain: {
--   name: domain,
--   dns: sst.cloudflare.dns(),
-- },
-```
+After that you can set your domain in `infra/dns.ts`.
 
 ### Neon
 
@@ -325,6 +312,28 @@ Go to production
 ```sh
 bunx sst deploy --production
 ```
+
+### Authentication
+
+The following methods are supported:
+
+- Email/Code
+- Magic Links
+- Social Logins (Github)
+
+Under the hood, we are using `remix-auth`, `remix-auth-totp` and
+`remix-auth-github` to handle the authentication process.
+
+In order to speed up development, the OTP code will also be displayed in the
+terminal/console, so you don't have to constantly check the email inbox.
+(Recommended for development purposes only.)
+
+You can authenticate as `admin` by using the following credentials:
+
+- Email: `admin@admin.com`
+- Code: OTP Code is provided by the terminal/console, as email is not sent to
+  the `admin` user.
+
 ### Subscriptions
 
 The following subscription features are included:
