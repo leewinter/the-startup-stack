@@ -231,30 +231,6 @@ Vercel credentials to your `.env` file (see `.env.example` for more info and the
 
 After that you can set your domain in `infra/dns.ts`.
 
-### Neon
-
-1. Get an account on [Neon](https://neon.tech) and create a Postgres database.
-2. Add your connection string:
-
-```sh
-bunx sst secret set DATABASE_URL your-connection-string
-```
-
-Run the following commands in this order:
-
-```sh
-# Push the latest migration to Neon (already in the repository)
-bun run db:push
-# Seed the database
-bun run db:seed
-```
-
-Whenever you make changes to the database schema you should run:
-
-```sh
-bun run db:migrate
-```
-
 ### Stripe
 
 In order to use Stripe Subscriptions and seed our database, we need to get the
@@ -276,6 +252,9 @@ bunx sst secret set STRIPE_PUBLIC_KEY your-key
 bunx sst secret set STRIPE_SECRET_KEY your-secret
 ```
 
+Stripe products and prices are created per stage (such as `production` and your personal local stage).
+This means you can change products/prices in code and test the flow before going to production.
+
 ### Secrets
 
 Lastly, there are some other secrets we need to configure:
@@ -287,6 +266,47 @@ bunx sst secret set SESSION_SECRET "$(openssl rand -hex 32)"
 bunx sst secret set ENCRYPTION_SECRET "$(openssl rand -hex 32)"
 # Secures honeypot values in forms.
 bunx sst secret set HONEYPOT_ENCRYPTION_SEED "$(openssl rand -hex 32)"
+```
+
+### Neon
+
+One of the unique benefits of [Neon][] is branching for convenient developer [flows](https://neon.tech/flow).
+Every time you want to use a different branch, you have to manually create the branch and change
+the connection string.
+
+1. Get an account on [Neon][] and create a Postgres database.
+2. Optionally create a dev branch for yourself or use the main branch of your database.
+3. Add your connection string:
+
+```sh
+bunx sst secret set DATABASE_URL your-connection-string
+```
+
+Run the following commands in this order:
+
+```sh
+# Push the latest migration to Neon (already in the repository)
+bun run db:push
+```
+Once you have successfully ran `bun run dev` for the first time
+your new Stripe products have been created, which we need to 
+seed the database.
+
+> [!NOTE]
+> Stripe products and prices are created per stage (such as `production` and your personal local stage).
+> The seed will populate the Neon branch of your connection string with the products
+> of the current stage (see `packages/core/src/plan/seed.ts`).
+> Make sure to keep these in sync. If you deploy to production,
+> you need to seed the production branch with the production Stripe products.
+
+```sh
+bun run db:seed
+```
+
+Whenever you make changes to the database schema you should run:
+
+```sh
+bun run db:migrate
 ```
 
 ## Use
