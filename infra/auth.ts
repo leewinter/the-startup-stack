@@ -18,13 +18,7 @@ export const auth = new sst.aws.Auth('Auth', {
   forceUpgrade: 'v2',
   authorizer: {
     handler: 'packages/functions/auth.handler',
-    link: [
-      email,
-      authTable,
-      secret.GITHUB_CLIENT_ID,
-      secret.GITHUB_CLIENT_SECRET,
-      secret.DATABASE_URL,
-    ],
+    link: [email, authTable, secret.DATABASE_URL],
     permissions: [
       {
         actions: ['ses:SendEmail'],

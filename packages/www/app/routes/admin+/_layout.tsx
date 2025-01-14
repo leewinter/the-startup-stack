@@ -1,10 +1,8 @@
 import type { MetaFunction, LoaderFunctionArgs } from 'react-router'
 import { useLoaderData } from 'react-router'
-import { LucideShoppingBasket, LucideExternalLink } from 'lucide-react'
+import { LucideShoppingBasket } from 'lucide-react'
 import { requireUserWithRole } from '#app/utils/permissions.server'
-import { cn } from '#app/utils/misc.js'
 import { siteConfig } from '#app/utils/constants/brand'
-import { buttonVariants } from '#app/components/ui/button'
 import { Navigation } from '#app/components/navigation'
 import { Subscription } from '@company/core/src/subscription/index'
 import { User } from '@company/core/src/user/index'
@@ -57,22 +55,6 @@ export default function Admin() {
                     </p>
                   </div>
                 </div>
-                <div className="z-10 flex items-center justify-center">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://github.com/dev-xo/remix-saas/tree/main/docs#welcome-to-%EF%B8%8F-remix-saas-documentation"
-                    className={cn(
-                      `${buttonVariants({ variant: 'ghost', size: 'sm' })} gap-2`,
-                    )}
-                  >
-                    <span className="text-sm font-medium text-primary/60 group-hover:text-primary">
-                      Explore Documentation
-                    </span>
-                    <LucideExternalLink className="h-4 w-4 stroke-[1.5px] text-primary/60 group-hover:text-primary" />
-                  </a>
-                </div>
-
                 <div className="base-grid absolute h-full w-full opacity-40" />
                 <div className="absolute bottom-0 h-full w-full bg-gradient-to-t from-[hsl(var(--card))] to-transparent" />
               </div>

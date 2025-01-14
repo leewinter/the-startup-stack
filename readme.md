@@ -61,7 +61,6 @@ Check it live 👉 <https://stack.merlijn.site>
 - Postgres Row-Level Security (see [Drizzle](https://orm.drizzle.team/docs/rls)
   and [Neon](https://neon.tech/docs/guides/neon-authorize) docs).
 - File uploads to S3 and served over Cloudfront.
-- The new SST [OpenAUTH](https://openauth.js.org) component instead of rolling it ourselves.
 - Tailwind [v4.0](https://tailwindcss.com/blog/tailwindcss-v4-beta) when it
   comes out.
 
@@ -326,28 +325,6 @@ Go to production
 ```sh
 bunx sst deploy --production
 ```
-
-### Authentication
-
-The following methods are supported:
-
-- Email/Code
-- Magic Links
-- Social Logins (Github)
-
-Under the hood, we are using `remix-auth`, `remix-auth-totp` and
-`remix-auth-github` to handle the authentication process.
-
-In order to speed up development, the OTP code will also be displayed in the
-terminal/console, so you don't have to constantly check the email inbox.
-(Recommended for development purposes only.)
-
-You can authenticate as `admin` by using the following credentials:
-
-- Email: `admin@admin.com`
-- Code: OTP Code is provided by the terminal/console, as email is not sent to
-  the `admin` user.
-
 ### Subscriptions
 
 The following subscription features are included:

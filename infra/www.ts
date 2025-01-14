@@ -27,8 +27,6 @@ export const www = new sst.aws.React('ReactRouter', {
     secret.DATABASE_URL,
     secret.STRIPE_PUBLIC_KEY,
     secret.STRIPE_SECRET_KEY,
-    secret.GITHUB_CLIENT_ID,
-    secret.GITHUB_CLIENT_SECRET,
     secret.HONEYPOT_ENCRYPTION_SEED,
   ],
 })
