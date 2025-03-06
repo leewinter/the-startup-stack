@@ -4,7 +4,7 @@
     "": {
       "name": "the-startup-stack",
       "dependencies": {
-        "sst": "^3.3.27",
+        "sst": "^3.9.27",
       },
       "devDependencies": {
         "@biomejs/biome": "^1.9.4",
@@ -18,7 +18,7 @@
         "@neondatabase/serverless": "^0.9.5",
         "@openauthjs/openauth": "^0.3.2",
         "drizzle-orm": "^0.36.2",
-        "sst": "^3.3.27",
+        "sst": "^3.9.27",
         "stripe": "^15.5.0",
         "ulid": "^2.3.0",
         "valibot": "^1.0.0-beta.11",
@@ -36,7 +36,7 @@
       "dependencies": {
         "@openauthjs/openauth": "^0.3.2",
         "hono": "^4.6.3",
-        "sst": "^3.3.27",
+        "sst": "^3.9.27",
       },
       "devDependencies": {
         "typescript": "^5.7.2",
@@ -76,7 +76,7 @@
         "remix-i18next": "^7.0.1",
         "remix-utils": "^7.6.0",
         "sonner": "^1.4.41",
-        "sst": "^3.3.27",
+        "sst": "^3.9.27",
         "tailwind-merge": "^2.3.0",
         "tailwindcss-animate": "^1.0.7",
         "zod": "^3.23.6",
@@ -1649,17 +1649,17 @@
 
     "ssri": ["ssri@10.0.6", "", { "dependencies": { "minipass": "^7.0.3" } }, "sha512-MGrFH9Z4NP9Iyhqn16sDtBpRRNJ0Y2hNa6D65h736fVSaPCHr4DM4sWUNvVaSuC+0OBGhwsrydQwmgfg5LncqQ=="],
 
-    "sst": ["sst@3.5.3", "", { "dependencies": { "aws4fetch": "^1.0.18", "jose": "5.2.3", "openid-client": "5.6.4" }, "optionalDependencies": { "sst-darwin-arm64": "3.5.3", "sst-darwin-x64": "3.5.3", "sst-linux-arm64": "3.5.3", "sst-linux-x64": "3.5.3", "sst-linux-x86": "3.5.3" }, "peerDependencies": { "hono": "4.x", "valibot": "0.30.x" }, "optionalPeers": ["hono", "valibot"], "bin": { "sst": "bin/sst.mjs" } }, "sha512-fQg08JkI0meQ8b0WR8EvzZVrd0fR6fcnqKDYf9tztyVkCxfth0XKUoJaEz1NI93DjRLaTiCSLBbIJqfONhUjKw=="],
+    "sst": ["sst@3.9.27", "", { "dependencies": { "aws4fetch": "^1.0.18", "jose": "5.2.3", "openid-client": "5.6.4" }, "optionalDependencies": { "sst-darwin-arm64": "3.9.27", "sst-darwin-x64": "3.9.27", "sst-linux-arm64": "3.9.27", "sst-linux-x64": "3.9.27", "sst-linux-x86": "3.9.27" }, "bin": { "sst": "bin/sst.mjs" } }, "sha512-kt9Lw65MhqSwIJBywBalhZrj3FFLnKHn9KcVI4FuoLXpek+0tvQKW2mnwxsO9pqF96a8sYtlNRki6F1neb9qgg=="],
 
-    "sst-darwin-arm64": ["sst-darwin-arm64@3.5.3", "", { "os": "darwin", "cpu": "arm64" }, "sha512-LUtDuDMQKO9uUCcxhJakV9L02Kh/dDKaJ6HS4W7M1/qK7HQY653ktv4kSpMG7zaWk8r0MDPelQHm2KN9gg0XmQ=="],
+    "sst-darwin-arm64": ["sst-darwin-arm64@3.9.27", "", { "os": "darwin", "cpu": "arm64" }, "sha512-eDmSOFoW2EXzM8+CfqW0n+0bb5gFCSNkAS/wcwMT3iyAPPJANtWXAyFYUsXbLgXjIpg6uofMTbEGb4T3gEmpJg=="],
 
-    "sst-darwin-x64": ["sst-darwin-x64@3.5.3", "", { "os": "darwin", "cpu": "x64" }, "sha512-bM97o6XtGRdgEzIFyCgayk7UO+hcFHz8uhiWQNAdXFp6jNaweSWjHZ8f7ldyXUMG5wdJngm4Q3GHfaEbH+JRSA=="],
+    "sst-darwin-x64": ["sst-darwin-x64@3.9.27", "", { "os": "darwin", "cpu": "x64" }, "sha512-qRfXwBtCZfI1lHSlvPdt9wex3uTRCTE2e4tCQ749mtY3s0mdSYQ4ikdD1/7uxpjVxTwve705jfQBNpa4Pn6DIg=="],
 
-    "sst-linux-arm64": ["sst-linux-arm64@3.5.3", "", { "os": "linux", "cpu": "arm64" }, "sha512-7hFrITuXhdmVB8dgkxarYiTYRSGYg+4lbH4GS4VdKLUN5Z21NErv6P9FDnrPkokPMti0lLdRxvLn0QdzHMArKA=="],
+    "sst-linux-arm64": ["sst-linux-arm64@3.9.27", "", { "os": "linux", "cpu": "arm64" }, "sha512-BbGM59rYcBdwHLUsp3++VkbtZABxon4eYmgrc7v8iP3CrpbeoWn1VCP1MnFoXdXvx9n6Nbmui3oATQUVeWgBFg=="],
 
-    "sst-linux-x64": ["sst-linux-x64@3.5.3", "", { "os": "linux", "cpu": "x64" }, "sha512-8LIy3SdfIj39bsz4TtpZrVccKCLdlGXMvZAsDNatdz+smCoZ7869KkhEAHi3zN1i2a4CyFaYDcEEstBokkzzjw=="],
+    "sst-linux-x64": ["sst-linux-x64@3.9.27", "", { "os": "linux", "cpu": "x64" }, "sha512-ZSBmYryaXkQVgVfbPx/ZlPqZXQTX2aGnbCAQ91vkKnhDx7kaF84zAx7bIvk9Jk/1ZbPg5HTvoKm0CWFgJjKKxg=="],
 
-    "sst-linux-x86": ["sst-linux-x86@3.5.3", "", { "os": "linux", "cpu": "none" }, "sha512-cnU/oFwYcJHjwN1TCiwhM5TZKSWIwqPktGmmB0kIAsWE/mrxy3Ng40xNuekid1Nha4z2UxJTa4tvgp892B2y5Q=="],
+    "sst-linux-x86": ["sst-linux-x86@3.9.27", "", { "os": "linux", "cpu": "none" }, "sha512-aMw7b+SJjPrlSqasJjkIIf6Saz3HVFugo1XDoCW8rNIgwfzVX7/gT2ds87KefpCOYdMARICcKuCycQq1nT+4jg=="],
 
     "stackback": ["stackback@0.0.2", "", {}, "sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw=="],
 

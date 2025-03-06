@@ -16,7 +16,7 @@
   },
   "workspaces": ["packages/*"],
   "dependencies": {
-    "sst": "^3.3.27"
+    "sst": "^3.9.27"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
